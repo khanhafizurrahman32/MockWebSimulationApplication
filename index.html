@@ -15,7 +15,6 @@
     <link rel="stylesheet" type="text/css" href="css/userInterface.css">
     
     <!-- project specific js  -->
-<<<<<<< HEAD
 
 	<script type="text/javascript" src="js/defineSVGContainer.js"></script>
 	<script type="text/javascript" src="js/defineGradientColors.js"></script>
@@ -33,6 +32,8 @@
 	<script type="text/javascript" src="js/HandlingBroadCast.js"></script>
 	<script type="text/javascript" src="js/scalingWidthnHeight.js"></script>
 	<script type="text/javascript" src="js/drawMoldDirective.js"></script>
+	<script type="text/javascript" src="js/upperMoldDirective.js"></script>
+	<script type="text/javascript" src="js/LowerMoldDirective.js"></script>
 	<script type="text/javascript" src="js/UpperMoldComponent.js"></script>
 	<script type="text/javascript" src="js/drawingWithD3.js"></script>
 
@@ -40,22 +41,7 @@
 </head>
 
 <body ng-app="mySimPGMWebApp">
-=======
-	<script type="text/javascript" src="js/commonAngular.js"></script>
-	<script type="text/javascript" src="js/dynamicControllers.js"></script>
-    <script type="text/javascript" src="js/defineGradientColors.js"></script>
-    <script type="text/javascript" src="js/commonPolygonDraw.js"></script>
-	<script type="text/javascript" src="js/drawMoldDirective.js"></script>
-	<script type="text/javascript" src="js/manipulateUpperMoldData.js"></script>    
-	<script type="text/javascript" src="js/manipulateLowerMoldData.js"></script>
-	<script type="text/javascript" src="js/selectedParameters.js"></script>
-    <script type="text/javascript" src="js/SimPGMService.js"></script> 
-   
-</head>
 
-<body ng-app="mySimPGMWebApp">
-	<div ng-controller ="ControllerOne">
->>>>>>> db2980f34217dae08fbeea6752fe7677a7c24690
 		<div class = "container">
 			<div class ="row">
 				<div class = "col-md-3">
@@ -63,11 +49,7 @@
                     <!-- <div id="parameterInput"> -->
                     	<!-- <selected-parameters></selected-parameters> -->
                     <!-- </div> -->
-<<<<<<< HEAD
 				</div>
-=======
-				</div>	
->>>>>>> db2980f34217dae08fbeea6752fe7677a7c24690
 				<div class = "col-md-6">
 					<draw-complete-mold>
 					</draw-complete-mold>
@@ -76,40 +58,24 @@
 			  		<div class= "inputParameters">
 	  			  		 <div id="upperMoldDieInputValue" ng-if="upperMoldDieInputShow ==true" ng-controller="upperMoldDieInputController" ng-model="upperMoldDieDataC" >
 	                    	<label> UpperMoldDieData</label> <hr>
-<<<<<<< HEAD
+
 							<label>D_upp_Mold </label> <span><input type="text" ng-model= upperMoldDieDataC.D_Mold> </span></br>
 							<label>H_upp_Mold </label> <span><input type="text" ng-model= upperMoldDieDataC.H_Mold> </span></br>
 							<label>H_1_upp_Sleeve_1 </label> <span><input type="text" ng-model= upperMoldDieDataC.H_1_Sleeve_1> </span></br>
-=======
-							<label>D_upp_Insert </label> <span><input type="text" ng-model= upperMoldDieDataC[0].D_upp_Insert> </span></br>
-							<label>D_upp_Mold </label> <span><input type="text" ng-model= upperMoldDieDataC[0].D_upp_Mold> </span></br>
-							<label>H_upp_Mold </label> <span><input type="text" ng-model= upperMoldDieDataC[0].H_upp_Mold> </span></br>
-							<label>H_1_upp_Sleeve_1 </label> <span><input type="text" ng-model= upperMoldDieDataC[0].H_1_upp_Sleeve_1> </span></br>
-							<label>H_1_upp_Insert </label> <span><input type="text" ng-model= upperMoldDieDataC[0].H_1_upp_Insert> </span></br>
-							<label>D_1_upp_Insert </label> <span><input type="text" ng-model= upperMoldDieDataC[0].D_1_upp_Insert> </span></br>
->>>>>>> db2980f34217dae08fbeea6752fe7677a7c24690
+
 							<hr>
 						</div>
 						<div id="upperMoldInsertInputValue" ng-if="upperMoldInsertInputShow == true" ng-controller="upperMoldInsertInputController" ng-model="upperMoldInsertDataC">
 							<label> UpperMoldInsertData</label> <hr>
-<<<<<<< HEAD
 							<label>D_upp_Insert </label> <span><input type="text" ng-model= upperMoldInsertDataC.D_Insert> </span></br>
 							<label>H_upp_Insert </label> <span><input type="text" ng-model= upperMoldInsertDataC.H_Insert> </span></br>
 							<label>H_1_upp_Insert </label> <span><input type="text" ng-model= upperMoldInsertDataC.H_1_Insert> </span></br>
 							<label>D_1_upp_Insert </label> <span><input type="text" ng-model= upperMoldInsertDataC.D_1_Insert> </span></br>
-=======
-							<label>D_upp_Insert </label> <span><input type="text" ng-model= upperMoldInsertDataC[0].D_upp_Insert> </span></br>
-							<label>D_upp_Mold </label> <span><input type="text" ng-model= upperMoldInsertDataC[0].D_upp_Mold> </span></br>
-							<label>H_upp_Mold </label> <span><input type="text" ng-model= upperMoldInsertDataC[0].H_upp_Mold> </span></br>
-							<label>H_1_upp_Sleeve_1 </label> <span><input type="text" ng-model= upperMoldInsertDataC[0].H_1_upp_Sleeve_1> </span></br>
-							<label>H_1_upp_Insert </label> <span><input type="text" ng-model= upperMoldInsertDataC[0].H_1_upp_Insert> </span></br>
-							<label>D_1_upp_Insert </label> <span><input type="text" ng-model= upperMoldInsertDataC[0].D_1_upp_Insert> </span></br>
->>>>>>> db2980f34217dae08fbeea6752fe7677a7c24690
+
 							<hr>
 						</div>
 							<div id="curveParameter" ng-if="upperMoldCurveShow ==true" ng-controller="upperMoldCurveController" ng-model="upperMoldCurveDataC">
 								<label> UpperMoldCurveData</label> <hr>
-<<<<<<< HEAD
 								<label> D_surf_upp_Mold </label> <span><input type="text" ng-model= upperMoldCurveDataC.D_surf_Mold> </span></br>
 								<label> R_surf_upp_Mold </label> <span><input type="text" ng-model= upperMoldCurveDataC.R_surf_Mold> </span></br>
 								<label> K_surf_upp_Mold </label> <span><input type="text" ng-model= upperMoldCurveDataC.K_surf_Mold> </span></br>
@@ -125,21 +91,7 @@
 								<label> A20_surf_upp_Mold </label> <span><input type="text" ng-model= upperMoldCurveDataC.A20_surf_Mold> </span></br>
 								<hr>
 								<label>Flip:<input type="checkbox" ng-model="upperCurveFlip" ng-change="multiplyUpperCurveParameterbyMinus1()" id="flipCheckBoxId" />
-=======
-								<label> D_surf_upp_Mold </label> <span><input type="text" ng-model= upperMoldCurveDataC[0].D_surf_upp_Mold> </span></br>
-								<label> R_surf_upp_Mold </label> <span><input type="text" ng-model= upperMoldCurveDataC[0].R_surf_upp_Mold> </span></br>
-								<label> K_surf_upp_Mold </label> <span><input type="text" ng-model= upperMoldCurveDataC[0].K_surf_upp_Mold> </span></br>
-								<label> A2_surf_upp_Mold </label> <span><input type="text" ng-model= upperMoldCurveDataC[0].A2_surf_upp_Mold> </span></br>
-								<label> A4_surf_upp_Mold </label> <span><input type="text" ng-model= upperMoldCurveDataC[0].A4_surf_upp_Mold> </span></br>
-								<label> A6_surf_upp_Mold </label> <span><input type="text" ng-model= upperMoldCurveDataC[0].A6_surf_upp_Mold> </span></br>
-								<label> A8_surf_upp_Mold </label> <span><input type="text" ng-model= upperMoldCurveDataC[0].A8_surf_upp_Mold> </span></br>
-								<label> A10_surf_upp_Mol </label> <span><input type="text" ng-model= upperMoldCurveDataC[0].A10_surf_upp_Mold> </span></br>
-								<label> A12_surf_upp_Mold </label> <span><input type="text" ng-model= upperMoldCurveDataC[0].A12_surf_upp_Mold> </span></br>
-								<label> A14_surf_upp_Mold </label> <span><input type="text" ng-model= upperMoldCurveDataC[0].A14_surf_upp_Mold> </span></br>
-								<label> A16_surf_upp_Mold </label> <span><input type="text" ng-model= upperMoldCurveDataC[0].A16_surf_upp_Mold> </span></br>
-								<label> A18_surf_upp_Mold </label> <span><input type="text" ng-model= upperMoldCurveDataC[0].A18_surf_upp_Mold> </span></br>
-								<label> A20_surf_upp_Mold </label> <span><input type="text" ng-model= upperMoldCurveDataC[0].A20_surf_upp_Mold> </span></br>
->>>>>>> db2980f34217dae08fbeea6752fe7677a7c24690
+
 								<hr>
 							</div>
 							<div id="circleInputValue" ng-if="circleInputShow == true" ng-controller = "circleInputController" ng-model= "circleDataC">
@@ -149,40 +101,26 @@
 							</div>
 							 <div id="lowerMoldDieInputValue" ng-if="lowerMoldDieInputShow ==true" ng-controller="lowerMoldDieInputController" ng-model="lowerMoldDieDataC" >
 			                    <label> lowerMoldDieData</label> <hr>
-<<<<<<< HEAD
+
 								<label>D_low_Mold </label> <span><input type="text" ng-model= lowerMoldDieDataC.D_Mold> </span></br>
 								<label>H_low_Mold </label> <span><input type="text" ng-model= lowerMoldDieDataC.H_Mold> </span></br>
 								<label>H_1_low_Sleeve_1 </label> <span><input type="text" ng-model= lowerMoldDieDataC.H_1_Sleeve_1> </span></br>
-=======
-								<label>D_upp_Insert </label> <span><input type="text" ng-model= lowerMoldDieDataC[0].D_upp_Insert> </span></br>
-								<label>D_upp_Mold </label> <span><input type="text" ng-model= lowerMoldDieDataC[0].D_upp_Mold> </span></br>
-								<label>H_upp_Mold </label> <span><input type="text" ng-model= lowerMoldDieDataC[0].H_upp_Mold> </span></br>
-								<label>H_1_upp_Sleeve_1 </label> <span><input type="text" ng-model= lowerMoldDieDataC[0].H_1_upp_Sleeve_1> </span></br>
-								<label>H_1_upp_Insert </label> <span><input type="text" ng-model= lowerMoldDieDataC[0].H_1_upp_Insert> </span></br>
-								<label>D_1_upp_Insert </label> <span><input type="text" ng-model= lowerMoldDieDataC[0].D_1_upp_Insert> </span></br>
->>>>>>> db2980f34217dae08fbeea6752fe7677a7c24690
+
 								<hr>
 			                </div>
 			                <div id="lowerMoldInsertInputValue" ng-if="lowerMoldInsertInputShow ==true" ng-controller="lowerMoldInsertInputController" ng-model="lowerMoldInsertDataC">
 								<label> lowerMoldInsertData</label> <hr>
-<<<<<<< HEAD
+
 								<label>D_low_Insert </label> <span><input type="text" ng-model= lowerMoldInsertDataC.D_Insert> </span></br>
 								<label>H_low_Insert </label> <span><input type="text" ng-model= lowerMoldInsertDataC.H_Insert> </span></br>
 								<label>H_1_low_Insert </label> <span><input type="text" ng-model= lowerMoldInsertDataC.H_1_Insert> </span></br>
 								<label>D_1_low_Insert </label> <span><input type="text" ng-model= lowerMoldInsertDataC.D_1_Insert> </span></br>
-=======
-								<label>D_upp_Insert </label> <span><input type="text" ng-model= lowerMoldInsertDataC[0].D_upp_Insert> </span></br>
-								<label>D_upp_Mold </label> <span><input type="text" ng-model= lowerMoldInsertDataC[0].D_upp_Mold> </span></br>
-								<label>H_upp_Mold </label> <span><input type="text" ng-model= lowerMoldInsertDataC[0].H_upp_Mold> </span></br>
-								<label>H_1_upp_Sleeve_1 </label> <span><input type="text" ng-model= lowerMoldInsertDataC[0].H_1_upp_Sleeve_1> </span></br>
-								<label>H_1_upp_Insert </label> <span><input type="text" ng-model= lowerMoldInsertDataC[0].H_1_upp_Insert> </span></br>
-								<label>D_1_upp_Insert </label> <span><input type="text" ng-model= lowerMoldInsertDataC[0].D_1_upp_Insert> </span></br>
->>>>>>> db2980f34217dae08fbeea6752fe7677a7c24690
+
 								<hr>
 			                </div>
 							<div id="lowerCurveParameter" ng-if="lowerMoldCurveShow ==true" ng-controller="lowerMoldCurveController" ng-model="lowerMoldCurveDataC">
 								<label> LowerMoldCurveData</label> <hr>
-<<<<<<< HEAD
+
 								<label> D_surf_low_Mold </label> <span><input type="text" ng-model= lowerMoldCurveDataC.D_surf_Mold> </span></br>
 								<label> R_surf_low_Mold </label> <span><input type="text" ng-model= lowerMoldCurveDataC.R_surf_Mold> </span></br>
 								<label> K_surf_low_Mold </label> <span><input type="text" ng-model= lowerMoldCurveDataC.K_surf_Mold> </span></br>
@@ -205,30 +143,6 @@
 			</div>
 		</div>
 
-=======
-								<label> D_surf_upp_Mold </label> <span><input type="text" ng-model= lowerMoldCurveDataC[0].D_surf_upp_Mold> </span></br>
-								<label> R_surf_upp_Mold </label> <span><input type="text" ng-model= lowerMoldCurveDataC[0].R_surf_upp_Mold> </span></br>
-								<label> K_surf_upp_Mold </label> <span><input type="text" ng-model= lowerMoldCurveDataC[0].K_surf_upp_Mold> </span></br>
-								<label> A2_surf_upp_Mold </label> <span><input type="text" ng-model= lowerMoldCurveDataC[0].A2_surf_upp_Mold> </span></br>
-								<label> A4_surf_upp_Mold </label> <span><input type="text" ng-model= lowerMoldCurveDataC[0].A4_surf_upp_Mold> </span></br>
-								<label> A6_surf_upp_Mold </label> <span><input type="text" ng-model= lowerMoldCurveDataC[0].A6_surf_upp_Mold> </span></br>
-								<label> A8_surf_upp_Mold </label> <span><input type="text" ng-model= lowerMoldCurveDataC[0].A8_surf_upp_Mold> </span></br>
-								<label> A10_surf_upp_Mol </label> <span><input type="text" ng-model= lowerMoldCurveDataC[0].A10_surf_upp_Mold> </span></br>
-								<label> A12_surf_upp_Mold </label> <span><input type="text" ng-model= lowerMoldCurveDataC[0].A12_surf_upp_Mold> </span></br>
-								<label> A14_surf_upp_Mold </label> <span><input type="text" ng-model= lowerMoldCurveDataC[0].A14_surf_upp_Mold> </span></br>
-								<label> A16_surf_upp_Mold </label> <span><input type="text" ng-model= lowerMoldCurveDataC[0].A16_surf_upp_Mold> </span></br>
-								<label> A18_surf_upp_Mold </label> <span><input type="text" ng-model= lowerMoldCurveDataC[0].A18_surf_upp_Mold> </span></br>
-								<label> A20_surf_upp_Mold </label> <span><input type="text" ng-model= lowerMoldCurveDataC[0].A20_surf_upp_Mold> </span></br>
-								<hr>
-							</div>
-							<div id="checkInit" ng-model="checked" ng-init="checked=true">
-							</div>
-			  		</div>
-			  	</div>	
-			</div>
-		</div>
-	</div>
->>>>>>> db2980f34217dae08fbeea6752fe7677a7c24690
 </body>
 </html>
 

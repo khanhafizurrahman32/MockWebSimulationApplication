@@ -1,14 +1,14 @@
 /**
-<<<<<<< HEAD
+
  *
-=======
+
  * 
->>>>>>> db2980f34217dae08fbeea6752fe7677a7c24690
+2980f34217dae08fbeea6752fe7677a7c24690
  */
 
 myModule.directive('drawCompleteMold',function (SimPGMDataProviderService){
 	var link = function ($scope, $element, attrs){
-<<<<<<< HEAD
+
         var defineSVGdrawPropertiesObject = defineSVGProperties();
         // .attr(width) or .attr(height) dile responsive thake na
         var svgContainer = d3.select($element[0]).append("svg")
@@ -195,167 +195,13 @@ myModule.directive('drawCompleteMold',function (SimPGMDataProviderService){
         })
 
     }
-=======
-		var svgContainer = d3.select($element[0]).append("svg")
-				.attr("preserveAspectRatio","xMinYMin meet").attr("viewBox", "0 0 580 707").classed("svg-content-responsive",true).attr("id","globalSVG")
-				.style("border", "1px solid black");
-				
-		defineGradientColorsforEachPart(svgContainer);
-		callUpperMoldPortion(SimPGMDataProviderService,svgContainer,$scope);
-		var circleData = SimPGMDataProviderService.circleData;
-		drawDieandInsert(SimPGMDataProviderService,svgContainer,"circleDraw",circleData,$scope);
-		callLowerMoldPortion(SimPGMDataProviderService,svgContainer,$scope);
-		
-		
-		
-		$scope.$on ('handleUpperMoldDieDataBroadcast',function (){
-			console.log('handleUpperMoldDieDataBroadcast started!!!');
-			upperMoldDieData = manipulateUpperMoldDieData(SimPGMDataProviderService);
-			drawUpperMoldDieBroadcast(upperMoldDieData);
-			console.log('handleUpperMoldDieDataBroadcast ended!!!');
-		});
-		
-		function drawUpperMoldDieBroadcast(upperMoldDieData){
-			d3.selectAll('#globalSVG .upperMoldDieclass').remove();
-			drawDieandInsert(SimPGMDataProviderService,svgContainer,"upperMoldDie", upperMoldDieData,$scope);
-			drawDieandInsert(SimPGMDataProviderService,svgContainer,"upperMoldDieMirror", upperMoldDieData,$scope);
-		}
-		
-		$scope.$on ('handleUpperMoldInsertDataBroadcast',function (){
-			console.log('handleUpperMoldInsertDataBroadcast started!!!');
-			upperMoldInsertData = manipulateUpperMoldInsertdata(SimPGMDataProviderService);
-			drawUpperMoldInsertBroadcast(upperMoldInsertData);
-			if(document.getElementById("upperMoldCurveid").style.fill != 'red')
-				SimPGMDataProviderService.upperCurveDataCounter = 0;
-			upperMoldCurveData = manipulatecurveParameterData(SimPGMDataProviderService);
-			drawUpperMoldCurveBroadcast(upperMoldCurveData);
-			console.log('handleUpperMoldInsertDataBroadcast ended!!!');
-		});
-		
-		function drawUpperMoldInsertBroadcast(upperMoldInsertData){
-			d3.selectAll('#globalSVG .upperMoldInsertclass').remove();
-			drawDieandInsert(SimPGMDataProviderService,svgContainer,"upperMoldInsert", upperMoldInsertData,$scope);
-			drawDieandInsert(SimPGMDataProviderService,svgContainer,"upperMoldInsertMirror", upperMoldInsertData,$scope);
-		}
-		
-		$scope.$on ('handleUpperMoldCurveDataBroadcast',function (){
-			console.log('handleUpperMoldCurveDataBroadcast started!!!');
-			if(document.getElementById("upperMoldDieid").style.fill != 'red')
-				SimPGMDataProviderService.upperMoldDieCounter = 0;
-			if(document.getElementById("upperMoldInsertid").style.fill != 'red')
-				SimPGMDataProviderService.upperMoldInsertCounter = 0;
-			
-			upperMoldCurveData = manipulatecurveParameterData(SimPGMDataProviderService);
-			upperMoldInsertData = manipulateUpperMoldInsertdata(SimPGMDataProviderService);
-			upperMoldDieData = manipulateUpperMoldDieData(SimPGMDataProviderService);
-			drawUpperMoldDieBroadcast(upperMoldDieData);
-			drawUpperMoldInsertBroadcast(upperMoldInsertData);
-			drawUpperMoldCurveBroadcast(upperMoldCurveData);
-			console.log('handleUpperMoldCurveDataBroadcast ended!!!');
-		});
-		
-		function drawUpperMoldCurveBroadcast(upperMoldCurveData){
-			d3.selectAll('#globalSVG .upperMoldCurveclass').remove();
-			drawDieandInsert(SimPGMDataProviderService,svgContainer,"upperMoldCurve", upperMoldCurveData,$scope);
-			drawDieandInsert(SimPGMDataProviderService,svgContainer,"upperMoldCurveMirror", upperMoldCurveData,$scope);
-		}
-		
-		$scope.$on ('handlecircleDataBroadcast',function (){
-			circleData = SimPGMDataProviderService.circleData;
-			console.log(circleData);
-			d3.selectAll('#globalSVG #circleDrawid').remove();
-			drawDieandInsert(SimPGMDataProviderService,svgContainer,"circleDraw",circleData,$scope);
-		})
-		 
-		function lowerMoldDieBroadcast(lowerMoldDieData){
-			d3.selectAll('#globalSVG .lowerMoldDieclass').remove();
-			drawDieandInsert(SimPGMDataProviderService,svgContainer,"lowerMoldDie", lowerMoldDieData,$scope);
-			drawDieandInsert(SimPGMDataProviderService,svgContainer,"lowerMoldDieMirror", lowerMoldDieData,$scope);
-		}
-		
-		$scope.$on ('handleLowerMoldDieDataBroadcast',function(){
-			console.log('handleLowerMoldDieDataBroadcast started!!!');
-			lowerMoldDieData = manipulateLowerMoldDieData(SimPGMDataProviderService);
-			lowerMoldDieBroadcast(lowerMoldDieData);
-			console.log('handleLowerMoldDieDataBroadcast ended!!!');
-		})
-		
-		function lowerMoldInsertBroadcast(){
-			d3.selectAll('#globalSVG .lowerMoldInsertclass').remove();
-			drawDieandInsert(SimPGMDataProviderService,svgContainer,"lowerMoldInsert",lowerMoldInsertData,$scope);
-			drawDieandInsert(SimPGMDataProviderService,svgContainer,"lowerMoldInsertMirror",lowerMoldInsertData,$scope);
-		}
-		
-		$scope.$on ('handleLowerMoldInsertDataBroadcast',function(){
-			console.log('handleLowerMoldInsertDataBroadcast started!!!');
-			lowerMoldInsertData = manipulateLowerMoldInsertData(SimPGMDataProviderService);
-			lowerMoldInsertBroadcast()
-			if(document.getElementById('lowerMoldCurveid').style.fill != 'red')
-				SimPGMDataProviderService.lowerCurveDataCounter = 0;
-			lowerMoldCurveData = manipulateLowerCurveParameterData(SimPGMDataProviderService);
-			drawLowerMoldCurveBroadcast(lowerMoldCurveData);
-			console.log('handleLowerMoldInsertDataBroadcast ended!!!');
-		})
-		
-		function drawLowerMoldCurveBroadcast(lowerMoldCurveData){
-			d3.selectAll('#globalSVG .lowerMoldCurveclass').remove();
-			drawDieandInsert(SimPGMDataProviderService,svgContainer,"lowerMoldCurve", lowerMoldCurveData,$scope);
-			drawDieandInsert(SimPGMDataProviderService,svgContainer,"lowerMoldCurveMirror", lowerMoldCurveData,$scope);
-		}
-		
-		$scope.$on ('handleLowerMoldCurveDataBroadcast',function (){
-			console.log('handleLowerMoldCurveDataBroadcast started!!!');
-			if(document.getElementById("lowerMoldDieid").style.fill != 'red')
-				SimPGMDataProviderService.lowerMoldDieCounter = 0;
-			if(document.getElementById("lowerMoldInsertid").style.fill != 'red')
-				SimPGMDataProviderService.lowerMoldInsertCounter = 0;
-			
-			lowerMoldCurveData = manipulateLowerCurveParameterData(SimPGMDataProviderService);
-			lowerMoldInsertData = manipulateLowerMoldInsertData(SimPGMDataProviderService);
-			lowerMoldDieData = manipulateLowerMoldDieData(SimPGMDataProviderService); 
-			lowerMoldDieBroadcast(lowerMoldDieData);
-			lowerMoldInsertBroadcast(lowerMoldInsertData);
-			drawLowerMoldCurveBroadcast(lowerMoldCurveData);
-			console.log('handleUpperMoldCurveDataBroadcast ended!!!');
-		})	
-	}	
->>>>>>> db2980f34217dae08fbeea6752fe7677a7c24690
+
 	return {
 		link : link
 	}
 })
 
-<<<<<<< HEAD
-=======
-function callUpperMoldPortion(SimPGMDataProviderService,svgContainer,$scope){
-	var upperMoldCurveData = manipulatecurveParameterData(SimPGMDataProviderService);
-	var upperMoldInsertData = manipulateUpperMoldInsertdata(SimPGMDataProviderService);
-	var upperMoldDieData = manipulateUpperMoldDieData(SimPGMDataProviderService);
-	invokeUpperDieandInsert(SimPGMDataProviderService,svgContainer,$scope,upperMoldCurveData,upperMoldInsertData,upperMoldDieData);	
-}
 
-function invokeUpperDieandInsert(SimPGMDataProviderService,svgContainer,$scope,upperMoldCurveData,upperMoldInsertData,upperMoldDieData){
-	drawDieandInsert(SimPGMDataProviderService,svgContainer,"upperMoldDie", upperMoldDieData,$scope);
-	drawDieandInsert(SimPGMDataProviderService,svgContainer,"upperMoldDieMirror", upperMoldDieData,$scope);
-	drawDieandInsert(SimPGMDataProviderService,svgContainer,"upperMoldInsert", upperMoldInsertData,$scope);
-	drawDieandInsert(SimPGMDataProviderService,svgContainer,"upperMoldInsertMirror", upperMoldInsertData,$scope);
-	drawDieandInsert(SimPGMDataProviderService,svgContainer,"upperMoldCurve", upperMoldCurveData,$scope);
-	drawDieandInsert(SimPGMDataProviderService,svgContainer,"upperMoldCurveMirror", upperMoldCurveData,$scope);
-}
 
-function callLowerMoldPortion(SimPGMDataProviderService,svgContainer,$scope){
-	var lowerMoldCurveData = manipulateLowerCurveParameterData(SimPGMDataProviderService);
-	var lowerMoldInsertData = manipulateLowerMoldInsertData(SimPGMDataProviderService);
-	var lowerMoldDieData = manipulateLowerMoldDieData(SimPGMDataProviderService); 
-	invokeLowerDieandInsert(SimPGMDataProviderService,svgContainer,$scope,lowerMoldCurveData,lowerMoldInsertData,lowerMoldDieData);
-}
 
-function invokeLowerDieandInsert(SimPGMDataProviderService,svgContainer,$scope,lowerMoldCurveData,lowerMoldInsertData,lowerMoldDieData){
-	drawDieandInsert(SimPGMDataProviderService,svgContainer,"lowerMoldDie", lowerMoldDieData,$scope);
-	drawDieandInsert(SimPGMDataProviderService,svgContainer,"lowerMoldDieMirror", lowerMoldDieData,$scope);
-	drawDieandInsert(SimPGMDataProviderService,svgContainer,"lowerMoldInsert",lowerMoldInsertData,$scope);
-	drawDieandInsert(SimPGMDataProviderService,svgContainer,"lowerMoldInsertMirror",lowerMoldInsertData,$scope);
-	drawDieandInsert(SimPGMDataProviderService,svgContainer,"lowerMoldCurve", lowerMoldCurveData,$scope);
-	drawDieandInsert(SimPGMDataProviderService,svgContainer,"lowerMoldCurveMirror", lowerMoldCurveData,$scope);
-}
->>>>>>> db2980f34217dae08fbeea6752fe7677a7c24690
+

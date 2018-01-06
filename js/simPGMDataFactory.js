@@ -82,6 +82,7 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
         return previousCircle;
     }
     var prepForMoldDataBroadcast = function (nameOfData, currentData, oldValue) {
+        console.log(currentData);
         setPreviousCircleValue(oldValue);
         switch(nameOfData){
             case "upperMoldDieData" :
