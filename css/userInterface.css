@@ -1,0 +1,16 @@
+@CHARSET "ISO-8859-1";
+#parameterInput {
+    width: 200px;
+    height: 700px;
+    border: 1px solid #BEE1C2;
+    background-color: #f5e7f6;
+}
+
+.inputParameters{
+	font-size:x-small;
+}
+
+/* #globalSVG .lowerMoldDie { */
+	/* position:relative; */
+	/* top:100px; */
+/* } */
