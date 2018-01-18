@@ -23,9 +23,14 @@ myModule.directive('drawCompleteMold',function (SimPGMDataProviderService){
         var upperMoldDataStructure = new defDataStr();
         var curvePointsData = new generatingCoordinates();
         var simPGMUpperMoldProperties = new moldPropertiesDef();
+        simPGMUpperMoldProperties.settingProp(35*1e-3, 32*1e-3, 15*1e-3, 8*1e-3, 0, 32*1e-3, 15*1e-3, 4*1e-3, 64*1e-3, 15*1e-3);
         var createUpperMoldComponents = new createIndividualMold();
         var allPolygonHandleBroadcast = new afterAngularBroadcast ();
+        var upperMD = new upperMoldDirective();
+        var upperMB = new respondToUpperMold ();
+        var lowerMD = new lowerMoldDirective();
         var lowerMB = new respondToLowerMold ();
+        var scalingObj = new ScalingGangFunction();
 
         SimPGMDataProviderService.setUpperMoldCurveObject(32,-100,0,0,0,0,0,0,0,0,0,0,0);
         var simPGMUpperCurveData = SimPGMDataProviderService.getUpperMoldCurveObject();
@@ -33,27 +38,34 @@ myModule.directive('drawCompleteMold',function (SimPGMDataProviderService){
         var simPGMUpperInsertData = SimPGMDataProviderService.getUpperMoldInsertObject();
         SimPGMDataProviderService.setUpperMoldDieObject(0.044,0.064,0.015,0.04,0.004,0.036);
         var simPGMUpperDieData = SimPGMDataProviderService.getUpperMoldDieObject();
+
         var drawWidthDiameter_D = 464;
         var drawwidthHeight_H = 607;
-        var scalingFactor = new ScalingGangFunction().scalingWidthNHeight(drawWidthDiameter_D,drawwidthHeight_H);
+
 
         var lowerMoldDataC = new moldDataCreation();
         var lowerMoldDataStructure = new defDataStr();
         var curveLowerPointsData = new generatingCoordinates();
         var simPGMLowerMoldProperties = new moldPropertiesDef();
+        simPGMLowerMoldProperties.settingProp(35*1e-3, 32*1e-3, 15*1e-3, 8*1e-3, 0, 32*1e-3, 15*1e-3, 4*1e-3, 64*1e-3, 15*1e-3);
         var createLowerMoldComponents = new createIndividualMold();
 
         SimPGMDataProviderService.setLowerMoldCurveObject(32,-100,0,0,0,0,0,0,0,0,0,0,0);
         var simPGMLowerCurveData = SimPGMDataProviderService.getLowerMoldCurveObject();
-        SimPGMDataProviderService.setLowerMoldInsertObject(0.044,0.064,0.015,0.04,0.015,0.004,0.036);
+        SimPGMDataProviderService.setLowerMoldInsertObject(0.044,0.064,0.015,0.04,0.015,0.004,0.036,32,-100,0,0,0,0,0,0,0,0,0,0,0);
         var simPGMLowerInsertData = SimPGMDataProviderService.getLowerMoldInsertObject();
         SimPGMDataProviderService.setLowerMoldDieObject(0.044,0.064,0.015,0.04,0.004,0.036);
         var simPGMLowerDieData = SimPGMDataProviderService.getLowerMoldDieObject();
-        var lowerMD = new lowerMoldDirective();
-        lowerMD.configurationForLowerMold(createLowerMoldComponents,SimPGMDataProviderService, lowerMoldDataStructure, curveLowerPointsData, simPGMLowerCurveData,lowerMoldDataC, simPGMLowerMoldProperties, simPGMLowerInsertData, simPGMLowerDieData, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer);
-
         SimPGMDataProviderService.setCircleData(0,.0768,.0069);//0.00000001
         var relativeDataForCircle = SimPGMDataProviderService.circleData();
+        //var widthDivisor = Math.max.apply(Math,lowerMD.mergeInsert_n_DieData(simPGMLowerInsertData, simPGMLowerDieData));
+        //var heightDivisor = scalingObj.getHeightDivisor(createLowerMoldComponents, SimPGMDataProviderService, lowerMoldDataStructure, curveLowerPointsData, simPGMLowerCurveData, lowerMoldDataC, simPGMLowerMoldProperties, simPGMLowerInsertData, simPGMLowerDieData, createUpperMoldComponents, upperMoldDataStructure, curvePointsData, simPGMUpperCurveData, upperMoldDataC, simPGMUpperMoldProperties, simPGMUpperInsertData, simPGMUpperDieData);
+        var widthDivisor = simPGMUpperDieData.D_Mold;
+        var heightDivisor = simPGMUpperDieData.H_Mold + .001 + 2* relativeDataForCircle[0].radius + simPGMLowerDieData.H_Mold;
+        var scalingFactor = scalingObj.scalingWidthNHeight(drawWidthDiameter_D,drawwidthHeight_H,widthDivisor,heightDivisor);
+        lowerMD.configurationForLowerMold(createLowerMoldComponents,SimPGMDataProviderService, lowerMoldDataStructure, curveLowerPointsData, simPGMLowerCurveData,lowerMoldDataC, simPGMLowerMoldProperties, simPGMLowerInsertData, simPGMLowerDieData, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer);
+
+
         var afterScalingFactorRelativeDataforCircle = new ScalingGangFunction().multiplyingEachCirclePointWithScalingFactor(relativeDataForCircle,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H);
         var circleComponent = new polygonDefinition();
         var circleComponentProperties = {svgContainer : svgContainer,className : 'circleClass', idName : 'circleDrawid',polygonClassName : null,clickClassId : null, clickClassPolygonName : null, clickClassIdName: null, dataForDrawing: afterScalingFactorRelativeDataforCircle, scaleXPointsFunction: null,scaleYPointsFunction : null,counter : 0}
@@ -61,55 +73,20 @@ myModule.directive('drawCompleteMold',function (SimPGMDataProviderService){
         var circleComponentClick = new clickEventsToPolygon();
         var totalDistancebetweenGroundtoUpperMold = scalingFactor * (simPGMUpperDieData.H_Mold + relativeDataForCircle[0].radius*2 + .001);
 
-        var upperMD = new upperMoldDirective();
+
         upperMD.configurationForUpperMold(createUpperMoldComponents, SimPGMDataProviderService, upperMoldDataStructure, curvePointsData, simPGMUpperCurveData, upperMoldDataC, simPGMUpperMoldProperties, simPGMUpperInsertData, simPGMUpperDieData, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H, defineSVGdrawPropertiesObject, totalDistancebetweenGroundtoUpperMold, eachPolygon, $scope, svgContainer);
 
 
         $scope.$on('handleLowerMoldDieDataBroadcast',function () {
-            lowerMB.respondToLowerMoldDie(simPGMLowerDieData, SimPGMDataProviderService, relativeDataForLowerDie, createLowerMoldComponents, lowerMoldDataStructure, curvePointsData, lowerMoldDataC, simPGMLowerMoldProperties );
+            lowerMB.respondToLowerMoldDie(simPGMLowerDieData, SimPGMDataProviderService, createLowerMoldComponents, lowerMoldDataStructure, curveLowerPointsData, curvePointsData, lowerMoldDataC, simPGMLowerMoldProperties, drawWidthDiameter_D, drawwidthHeight_H,  eachPolygon, $scope, svgContainer, simPGMLowerInsertData, simPGMLowerCurveData, true );
         })
 
         $scope.$on('handleLowerMoldInsertDataBroadcast',function () {
-            simPGMLowerInsertData = SimPGMDataProviderService.getLowerMoldInsertObject();
-            relativeDataForLowerInsert = createLowerMoldComponents.createInsert(SimPGMDataProviderService,lowerMoldDataStructure,curvePointsData,lowerMoldDataC,simPGMLowerMoldProperties,simPGMLowerInsertData);
-            var insertPolygonColor = d3.select('#lowerMoldInsertId')[0][0].style.fill;
-            var mirrorInsertPolygonColor = d3.select('#lowerMoldInsertMirrorId')[0][0].style.fill;
-            d3.selectAll('#globalSVG .lowerMoldInsertClass').remove();
-            // eachPolygon.drawEachPolygon(svgContainer,'lowerMoldInsertClass','lowerMoldInsertId','lowerMoldInsertPolygon',relativeDataForLowerInsert,scaleXLowerFunction,mirrorScaleYLowerFunction,simPGMLowerInsertData,insertPolygonColor,$scope);
-            // eachPolygon.drawEachPolygon(svgContainer,'lowerMoldInsertClass','lowerMoldInsertMirrorId','lowerMoldInsertMirrorPolygon',relativeDataForLowerInsert,mirrorScaleXLowerFunction,mirrorScaleYLowerFunction,simPGMLowerInsertData,mirrorInsertPolygonColor,$scope);
-            var curvePolygonColor = d3.select('#lowerMoldCurveId')[0][0].style.fill;
-            var mirrorCurvePolygonColor = d3.select('#lowerMoldCurveMirrorId')[0][0].style.fill;
-            d3.selectAll('#globalSVG .lowerMoldCurveClass').remove();
-            // eachPolygon.drawEachPolygon(svgContainer,'lowerMoldCurveClass','lowerMoldCurveId','lowerMoldCurvePolygon',relativeDataForLowerCurve,scaleXLowerFunction,mirrorScaleYLowerFunction,simPGMLowerCurveData,curvePolygonColor,$scope);
-            // eachPolygon.drawEachPolygon(svgContainer,'lowerMoldCurveClass','lowerMoldCurveMirrorId','lowerMoldCurveMirrorPolygon',relativeDataForLowerCurve,mirrorScaleXLowerFunction,mirrorScaleYLowerFunction,simPGMLowerCurveData,mirrorCurvePolygonColor,$scope);
+           lowerMB.respondToLowerMoldInsert(simPGMLowerInsertData, SimPGMDataProviderService, createLowerMoldComponents, lowerMoldDataStructure, curvePointsData, lowerMoldDataC, simPGMLowerMoldProperties, simPGMLowerCurveData, curveLowerPointsData, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMLowerDieData);
         })
 
-        // eachPolygon.drawEachPolygon(svgContainer,'lowerMoldCurveClass','lowerMoldCurveId','lowerMoldCurvePolygon',relativeDataForLowerCurve,scaleXLowerFunction,mirrorScaleYLowerFunction,simPGMLowerCurveData,null,$scope);
-        // eachPolygon.drawEachPolygon(svgContainer,'lowerMoldCurveClass','lowerMoldCurveMirrorId','lowerMoldCurveMirrorPolygon',relativeDataForLowerCurve,mirrorScaleXLowerFunction,mirrorScaleYLowerFunction,simPGMLowerCurveData,null,$scope);
         $scope.$on ('handleLowerMoldCurveDataBroadcast',function (){
-            simPGMLowerCurveData = SimPGMDataProviderService.getLowerMoldCurveObject();
-            relativeDataForLowerCurve = createLowerMoldComponents.createCurve(SimPGMDataProviderService,lowerMoldDataStructure,curveLowerPointsData,simPGMLowerCurveData);
-            simPGMLowerInsertData = SimPGMDataProviderService.getLowerMoldInsertObject();
-            relativeDataForLowerInsert = createLowerMoldComponents.createInsert(SimPGMDataProviderService,lowerMoldDataStructure,curvePointsData,lowerMoldDataC,simPGMLowerMoldProperties,simPGMLowerInsertData);
-            simPGMLowerDieData = SimPGMDataProviderService.getLowerMoldDieObject();
-            relativeDataForLowerDie = createLowerMoldComponents.createDie(SimPGMDataProviderService,lowerMoldDataStructure,curvePointsData,lowerMoldDataC,simPGMLowerMoldProperties,simPGMLowerDieData);
-            var diePolygonColor = d3.select('#lowerMoldDieId')[0][0].style.fill;
-            var mirrorDiePolygonColor = d3.select('#lowerMoldDieMirrorId')[0][0].style.fill;
-            d3.selectAll('#globalSVG .lowerMoldDieClass').remove();
-            // eachPolygon.drawEachPolygon(svgContainer,'lowerMoldDieClass','lowerMoldDieId','lowerMoldDiePolygon',relativeDataForLowerDie,scaleXLowerFunction,mirrorScaleYLowerFunction,simPGMLowerDieData,diePolygonColor,$scope);
-            // eachPolygon.drawEachPolygon(svgContainer,'lowerMoldDieClass','lowerMoldDieMirrorId','lowerMoldDieMirrorPolygon',relativeDataForLowerDie,mirrorScaleXLowerFunction,mirrorScaleYLowerFunction,simPGMLowerDieData,mirrorDiePolygonColor,$scope);
-
-            var insertPolygonColor = d3.select('#lowerMoldInsertId')[0][0].style.fill;
-            var mirrorInsertPolygonColor = d3.select('#lowerMoldInsertMirrorId')[0][0].style.fill;
-            d3.selectAll('#globalSVG .lowerMoldInsertClass').remove();
-            // eachPolygon.drawEachPolygon(svgContainer,'lowerMoldInsertClass','lowerMoldInsertId','lowerMoldInsertPolygon',relativeDataForLowerInsert,scaleXLowerFunction,mirrorScaleYLowerFunction,simPGMLowerInsertData,insertPolygonColor,$scope);
-            // eachPolygon.drawEachPolygon(svgContainer,'lowerMoldInsertClass','lowerMoldInsertMirrorId','lowerMoldInsertMirrorPolygon',relativeDataForLowerInsert,mirrorScaleXLowerFunction,mirrorScaleYLowerFunction,simPGMLowerInsertData,mirrorInsertPolygonColor,$scope);
-
-            var curvePolygonColor = d3.select('#lowerMoldCurveId')[0][0].style.fill;
-            var mirrorCurvePolygonColor = d3.select('#lowerMoldCurveMirrorId')[0][0].style.fill;
-            d3.selectAll('#globalSVG .lowerMoldCurveClass').remove();
-            // eachPolygon.drawEachPolygon(svgContainer,'lowerMoldCurveClass','lowerMoldCurveId','lowerMoldCurvePolygon',relativeDataForLowerCurve,scaleXLowerFunction,mirrorScaleYLowerFunction,simPGMLowerCurveData,curvePolygonColor,$scope);
-            // eachPolygon.drawEachPolygon(svgContainer,'lowerMoldCurveClass','lowerMoldCurveMirrorId','lowerMoldCurveMirrorPolygon',relativeDataForLowerCurve,mirrorScaleXLowerFunction,mirrorScaleYLowerFunction,simPGMLowerCurveData,mirrorCurvePolygonColor,$scope);
+           // may be we dont need to capture it individually, backup in handlingBroadcast
         })
 
         $scope.$on('handlecircleDataBroadcast',function () {
@@ -118,36 +95,12 @@ myModule.directive('drawCompleteMold',function (SimPGMDataProviderService){
             d3.selectAll('#globalSVG #circleDrawid').remove();
         })
 
-
-
         $scope.$on('handleUpperMoldDieDataBroadcast',function () {
-            simPGMUpperDieData = SimPGMDataProviderService.getUpperMoldDieObject();
-            relativeDataForUpperDie = createUpperMoldComponents.createDie(SimPGMDataProviderService,upperMoldDataStructure,curvePointsData,upperMoldDataC,simPGMUpperMoldProperties,simPGMUpperDieData);
-            var diePolygonColor = d3.select('#upperMoldDieId')[0][0].style.fill;
-            var mirrorDiePolygonColor =d3.select('#upperMoldDieMirrorId')[0][0].style.fill;
-            d3.selectAll('#globalSVG .upperMoldDieClass').remove();
-            // eachPolygon.drawEachPolygon(svgContainer,'upperMoldDieClass','upperMoldDieId','upperMoldDiePolygon',relativeDataForUpperDie,scaleXUpperFunction,scaleYUpperFunction,simPGMUpperDieData,diePolygonColor,$scope);
-            // eachPolygon.drawEachPolygon(svgContainer,'upperMoldDieClass','upperMoldDieMirrorId','upperMoldDieMirrorPolygon',relativeDataForUpperDie,mirrorScaleXUpperFunction,scaleYUpperFunction,simPGMUpperDieData,mirrorDiePolygonColor,$scope);
+            upperMB.respondToUpperMoldDie(simPGMUpperDieData, SimPGMDataProviderService, createUpperMoldComponents, upperMoldDataStructure, curvePointsData, upperMoldDataC, simPGMUpperMoldProperties, eachPolygon, $scope, scalingFactor, relativeDataForCircle, defineSVGdrawPropertiesObject, drawWidthDiameter_D, drawwidthHeight_H, svgContainer, eachPolygon)
         })
 
         $scope.$on('handleUpperMoldInsertDataBroadcast',function () {
-            var simPGMUpperInsertData = SimPGMDataProviderService.getUpperMoldInsertObject();
-            for(var key in simPGMUpperInsertData){
-                if(typeof (simPGMUpperInsertData[key])){
-                    simPGMUpperInsertData[key] = parseFloat(simPGMUpperInsertData[key]);
-                }
-            }
-            relativeDataForUpperInsert = createUpperMoldComponents.createInsert(SimPGMDataProviderService,upperMoldDataStructure,curvePointsData,upperMoldDataC,simPGMUpperMoldProperties,simPGMUpperInsertData);
-            var insertPolygonColor = d3.select('#upperMoldInsertId')[0][0].style.fill;
-            var mirrorInsertPolygonColor = d3.select('#upperMoldInsertMirrorId')[0][0].style.fill;
-            d3.selectAll('#globalSVG .upperMoldInsertClass').remove();
-            // eachPolygon.drawEachPolygon(svgContainer,'upperMoldInsertClass','upperMoldInsertId','upperMoldInsertPolygon',relativeDataForUpperInsert,scaleXUpperFunction,scaleYUpperFunction,simPGMUpperInsertData,insertPolygonColor,$scope);
-            // eachPolygon.drawEachPolygon(svgContainer,'upperMoldInsertClass','upperMoldInsertMirrorId','upperMoldInsertMirrorPolygon',relativeDataForUpperInsert,mirrorScaleXUpperFunction,scaleYUpperFunction,simPGMUpperInsertData,mirrorInsertPolygonColor,$scope);
-            var curvePolygonColor = d3.select('#upperMoldCurveId')[0][0].style.fill;
-            var mirrorCurvePolygonColor = d3.select('#upperMoldCurveMirrorId')[0][0].style.fill;
-            d3.selectAll('#globalSVG .upperMoldCurveClass').remove();
-            // eachPolygon.drawEachPolygon(svgContainer,'upperMoldCurveClass','upperMoldCurveId','upperMoldCurvePolygon',relativeDataForUpperCurve,scaleXUpperFunction,scaleYUpperFunction,simPGMUpperCurveData,curvePolygonColor,$scope);
-            // eachPolygon.drawEachPolygon(svgContainer,'upperMoldCurveClass','upperMoldCurveMirrorId','upperMoldCurveMirrorPolygon',relativeDataForUpperCurve,mirrorScaleXUpperFunction,scaleYUpperFunction,simPGMUpperCurveData,mirrorCurvePolygonColor,$scope);
+            upperMB.respondToLowerMoldInsert(SimPGMDataProviderService, createUpperMoldComponents, upperMoldDataStructure, curvePointsData, upperMoldDataC, simPGMUpperMoldProperties);
         })
 
 

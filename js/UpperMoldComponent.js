@@ -26,7 +26,7 @@ var createIndividualMold = function () {
         MoldDataStructure.setYVal50PointsArray([(curvePointsData.y_RF_surf_fin_Mold-simPGMUMoldProperties.getPropertiesForInsert().RF_surf_Mold),
             (curvePointsData.y_RF_surf_fin_Mold-simPGMUMoldProperties.getPropertiesForInsert().RF_surf_Mold-(this.simPGMInsertData.H_Mold-this.simPGMInsertData.H_Insert)),
             (curvePointsData.y_RF_surf_fin_Mold-simPGMUMoldProperties.getPropertiesForInsert().RF_surf_Mold+this.simPGMInsertData.H_Insert)]);
-        MoldDataC.definingInsertPoints(MoldDataStructure.gettempArrayforFiftyPoints(),curvePointsData.x_RF_surf_fin_Mold,curvePointsData.y_RF_surf_fin_Mold,simPGMUMoldProperties.getPropertiesForInsert().RF_surf_Mold,this.simPGMInsertData.D_1_Insert,simPGMInsertData.H_Mold,this.simPGMInsertData.H_Insert,this.simPGMInsertData.H_1_Insert,this.simPGMInsertData.D_Insert,this.simPGMInsertData.D_Mold,MoldDataStructure);
+        MoldDataC.definingInsertPoints(MoldDataStructure.gettempArrayforFiftyPoints(),curvePointsData.x_RF_surf_fin_Mold,curvePointsData.y_RF_surf_fin_Mold,simPGMUMoldProperties.getPropertiesForInsert().RF_surf_Mold,this.simPGMInsertData.D_1_Insert,this.simPGMInsertData.H_Mold,this.simPGMInsertData.H_Insert,this.simPGMInsertData.H_1_Insert,this.simPGMInsertData.D_Insert,this.simPGMInsertData.D_Mold,MoldDataStructure);
         return MoldDataStructure.getObjectArray();
     };
     var createDie = function (SimPGMDataProviderService,MoldDataStructure,curvePointsData,MoldDataC,simPGMUMoldProperties,simPGMDieData) {

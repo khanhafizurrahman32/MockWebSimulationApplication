@@ -73,10 +73,23 @@ myModule.controller('lowerMoldDieInputController',['$scope','SimPGMDataProviderS
 myModule.controller('lowerMoldInsertInputController',['$scope','SimPGMDataProviderService', function($scope,SimPGMDataProviderService){
 
     $scope.$watch('lowerMoldInsertDataC', function(data){
-
         SimPGMDataProviderService.prepForMoldDataBroadcast('lowerMoldInsertData',data);
     },true);
 
+    $scope.multiplyLowerCurveInInsertParameterbyMinus1 = function () {
+        $scope.lowerMoldInsertDataC.D_surf_Mold = -1*$scope.lowerMoldInsertDataC.D_surf_Mold;
+        $scope.lowerMoldInsertDataC.R_surf_Mold = -1*$scope.lowerMoldInsertDataC.R_surf_Mold;
+        $scope.lowerMoldInsertDataC.A2_surf_Mold = -1*$scope.lowerMoldInsertDataC.A2_surf_Mold;
+        $scope.lowerMoldInsertDataC.A4_surf_Mold = -1*$scope.lowerMoldInsertDataC.A4_surf_Mold;
+        $scope.lowerMoldInsertDataC.A6_surf_Mold = -1*$scope.lowerMoldInsertDataC.A6_surf_Mold;
+        $scope.lowerMoldInsertDataC.A8_surf_Mold = -1*$scope.lowerMoldInsertDataC.A8_surf_Mold;
+        $scope.lowerMoldInsertDataC.A10_surf_Mold = -1*$scope.lowerMoldInsertDataC.A10_surf_Mold;
+        $scope.lowerMoldInsertDataC.A12_surf_Mold = -1*$scope.lowerMoldInsertDataC.A12_surf_Mold;
+        $scope.lowerMoldInsertDataC.A14_surf_Mold = -1*$scope.lowerMoldInsertDataC.A14_surf_Mold;
+        $scope.lowerMoldInsertDataC.A16_surf_Mold = -1*$scope.lowerMoldInsertDataC.A16_surf_Mold;
+        $scope.lowerMoldInsertDataC.A18_surf_Mold = -1*$scope.lowerMoldInsertDataC.A18_surf_Mold;
+        $scope.lowerMoldInsertDataC.A20_surf_Mold = -1*$scope.lowerMoldInsertDataC.A20_surf_Mold;
+    };
 }]);
 
 myModule.controller('lowerMoldCurveController',['$scope','SimPGMDataProviderService', function($scope, SimPGMDataProviderService){

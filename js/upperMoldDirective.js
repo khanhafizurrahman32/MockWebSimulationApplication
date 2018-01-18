@@ -29,7 +29,24 @@ var upperMoldDirective = function(){
         eachPolygon.drawEachPolygon(svgContainer,'upperMoldDieClass','upperMoldDieMirrorId','upperMoldDieMirrorPolygon',afterAdjustHeightScalingFactorRelativeDataForMirrorUpperDie,null,null,simPGMUpperDieData,null,$scope);
         eachPolygon.drawEachPolygon(svgContainer,'upperMoldInsertClass','upperMoldInsertId','upperMoldInsertPolygon',afterAdjustHeightScalingFactorRelativeDataForUpperInsertNCurveTogether,null,null,simPGMUpperInsertData,null,$scope);
     }
+
+    var mergeInsert_n_DieData = function (obj1, obj2) {
+        var obj3 = {};
+        var mergeArray = [];
+        for (var attrname in obj1){ obj3[attrname] = obj1[attrname]; }
+        for (var attrname in obj2){
+            if (obj3.hasOwnProperty(attrname)){
+                if (obj3[attrname] < obj2[attrname]){
+                    obj3[attrname] = obj2[attrname];
+                }
+            }
+        }
+        for (var attrname in obj3) {mergeArray.push(obj3[attrname])}
+        return mergeArray;
+    }
+
     return {
-        configurationForUpperMold: configurationForUpperMold
+        configurationForUpperMold: configurationForUpperMold,
+        mergeInsert_n_DieData: mergeInsert_n_DieData
     }
 }

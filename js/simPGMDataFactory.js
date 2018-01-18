@@ -52,9 +52,11 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
         return lowerMoldInsertObject;
     }
 
-    var setLowerMoldInsertObject = function (D_InsertValue,D_MoldValue,H_MoldValue,H_1_Sleeve_1Value,H_Insert_Value,H_1_InsertValue,D_1_InsertValue) {
+    var setLowerMoldInsertObject = function (D_InsertValue,D_MoldValue,H_MoldValue,H_1_Sleeve_1Value,H_Insert_Value,H_1_InsertValue,D_1_InsertValue,D_surf_MoldValue,R_surf_MoldValue,K_surf_MoldValue,A2_surf_MoldValue,A4_surf_MoldValue,A6_surf_MoldValue,A8_surf_MoldValue,A10_surf_MoldValue,A12_surf_MoldValue,A14_surf_MoldValue,A16_surf_MoldValue,A18_surf_MoldValue,A20_surf_MoldValue) {
         lowerMoldInsertObject = {"D_Insert": D_InsertValue,  "D_Mold":D_MoldValue, "H_Mold":H_MoldValue, "H_1_Sleeve_1":H_1_Sleeve_1Value,"H_Insert": H_Insert_Value, "H_1_Insert":H_1_InsertValue,
-            "D_1_Insert" : D_1_InsertValue}
+            "D_1_Insert" : D_1_InsertValue, "D_surf_Mold": D_surf_MoldValue, "R_surf_Mold": R_surf_MoldValue, "K_surf_Mold":K_surf_MoldValue, "A2_surf_Mold": A2_surf_MoldValue,
+            "A4_surf_Mold": A4_surf_MoldValue, "A6_surf_Mold": A6_surf_MoldValue, "A8_surf_Mold": A8_surf_MoldValue, "A10_surf_Mold": A10_surf_MoldValue,
+            "A12_surf_Mold": A12_surf_MoldValue, "A14_surf_Mold": A14_surf_MoldValue, "A16_surf_Mold": A16_surf_MoldValue, "A18_surf_Mold":A18_surf_MoldValue, "A20_surf_Mold": A20_surf_MoldValue }
     }
 
     var getLowerMoldCurveObject = function () {
@@ -82,7 +84,6 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
         return previousCircle;
     }
     var prepForMoldDataBroadcast = function (nameOfData, currentData, oldValue) {
-        console.log(currentData);
         setPreviousCircleValue(oldValue);
         switch(nameOfData){
             case "upperMoldDieData" :
@@ -102,7 +103,7 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
                 $rootScope.$broadcast('handleLowerMoldDieDataBroadcast'); break;
 
             case "lowerMoldInsertData" :
-                setUpperMoldInsertObject(currentData.D_Insert,currentData.D_Mold,currentData.H_Mold,currentData.H_1_Sleeve_1,currentData.H_1_Insert,currentData.D_1_Insert);
+                setLowerMoldInsertObject(currentData.D_Insert,currentData.D_Mold,currentData.H_Mold,currentData.H_1_Sleeve_1,currentData.H_Insert,currentData.H_1_Insert,currentData.D_1_Insert,currentData.D_surf_Mold,currentData.R_surf_Mold,currentData.K_surf_Mold,currentData.A2_surf_Mold,currentData.A4_surf_Mold,currentData.A6_surf_Mold,currentData.A8_surf_Mold,currentData.A10_surf_Mold,currentData.A12_surf_Mold,currentData.A14_surf_Mold,currentData.A16_surf_Mold,currentData.A18_surf_Mold,currentData.A20_surf_Mold);
                 $rootScope.$broadcast('handleLowerMoldInsertDataBroadcast'); break;
 
             case "lowerMoldCurveData" :
