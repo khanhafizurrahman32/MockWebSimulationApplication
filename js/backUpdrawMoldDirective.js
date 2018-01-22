@@ -149,7 +149,7 @@ myModule.directive('drawCompleteMold',function (SimPGMDataProviderService){
         // var circleComponentProperties = {svgContainer : svgContainer,className : 'circleClass', idName : 'circleDrawid',polygonClassName : null,clickClassId : null, clickClassPolygonName : null, clickClassIdName: null, dataForDrawing: relativeDataForCircle, scaleXPointsFunction: scaleXUpperFunction,scaleYPointsFunction : mirrorScaleYLowerFunction,counter : 0}
         // circleComponent.polyComponent(circleComponentProperties);
         // var circleComponentClick = new clickEventsToPolygon();
-        // circleComponentClick.clickToCircle(circleComponentProperties.idName,$scope,circleScaleY);
+         circleComponentClick.clickToCircle(circleComponentProperties.idName,$scope,circleScaleY);
         $scope.$on('handlecircleDataBroadcast',function () {
             relativeDataForCircle = SimPGMDataProviderService.circleData();
             var circleColor = d3.select('#circleDrawid')[0][0].style.fill;

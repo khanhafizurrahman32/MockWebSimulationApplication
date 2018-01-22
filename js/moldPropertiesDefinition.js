@@ -19,8 +19,7 @@ var moldPropertiesDef = function () {
 
 
     var getPropertiesForInsert = function () {
-        return {D_Insert : this.D_Insert,D_1_Insert : this.D_1_Insert,H_Insert : this.H_Insert,H_1_Insert: this.H_1_Insert,RF_surf_Mold: this.RF_surf_Mold};
-        // return {D_Insert : D_Insert,D_1_Insert : D_1_Insert,H_Insert : H_Insert,H_1_Insert: H_1_Insert,RF_surf_Mold: RF_surf_Mold};
+        return {D_Insert : D_Insert,D_1_Insert : D_1_Insert,H_Insert : H_Insert,H_1_Insert: H_1_Insert,RF_surf_Mold: RF_surf_Mold};
     }
 
     var getPropertiesForDie = function () {

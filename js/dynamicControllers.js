@@ -72,12 +72,22 @@ myModule.controller('lowerMoldDieInputController',['$scope','SimPGMDataProviderS
 
 myModule.controller('lowerMoldInsertInputController',['$scope','SimPGMDataProviderService', function($scope,SimPGMDataProviderService){
 
-    $scope.$watch('lowerMoldInsertDataC', function(data){
-        SimPGMDataProviderService.prepForMoldDataBroadcast('lowerMoldInsertData',data);
+    $scope.$watch('lowerMoldInsertDataC', function(data,oldData){
+        for(var key in data){
+            for(var propertyName in data){
+                if(data.hasOwnProperty(propertyName) && oldData.hasOwnProperty(propertyName)){
+                    if (data[propertyName] !== oldData[propertyName]){
+                        data['changedTextBoxName'] = propertyName;
+                    }
+                }
+            }
+        }
+
+        SimPGMDataProviderService.prepForMoldDataBroadcast('lowerMoldInsertData',data,oldData,'lowerMoldInsertInputController');
     },true);
 
     $scope.multiplyLowerCurveInInsertParameterbyMinus1 = function () {
-        $scope.lowerMoldInsertDataC.D_surf_Mold = -1*$scope.lowerMoldInsertDataC.D_surf_Mold;
+
         $scope.lowerMoldInsertDataC.R_surf_Mold = -1*$scope.lowerMoldInsertDataC.R_surf_Mold;
         $scope.lowerMoldInsertDataC.A2_surf_Mold = -1*$scope.lowerMoldInsertDataC.A2_surf_Mold;
         $scope.lowerMoldInsertDataC.A4_surf_Mold = -1*$scope.lowerMoldInsertDataC.A4_surf_Mold;
