@@ -50,20 +50,16 @@ myModule.directive('drawCompleteMold',function (SimPGMDataProviderService){
         simPGMLowerMoldProperties.settingProp(35*1e-3, 32*1e-3, 15*1e-3, 8*1e-3, 0, 32*1e-3, 15*1e-3, 4*1e-3, 64*1e-3, 15*1e-3);
         var createLowerMoldComponents = new createIndividualMold();
 
-        SimPGMDataProviderService.setLowerMoldCurveObject(32,-100,0,0,0,0,0,0,0,0,0,0,0);
-        var simPGMLowerCurveData = SimPGMDataProviderService.getLowerMoldCurveObject();
         SimPGMDataProviderService.setLowerMoldInsertObject(0.044,0.064,0.015,0.04,0.015,0.004,0.036,32,-100,0,0,0,0,0,0,0,0,0,0,0);
         var simPGMLowerInsertData = SimPGMDataProviderService.getLowerMoldInsertObject();
         SimPGMDataProviderService.setLowerMoldDieObject(0.044,0.064,0.015,0.04,0.004,0.036);
         var simPGMLowerDieData = SimPGMDataProviderService.getLowerMoldDieObject();
         SimPGMDataProviderService.setCircleData(0,.0768,.0069);//0.00000001
         var relativeDataForCircle = SimPGMDataProviderService.circleData();
-        //var widthDivisor = Math.max.apply(Math,lowerMD.mergeInsert_n_DieData(simPGMLowerInsertData, simPGMLowerDieData));
-        //var heightDivisor = scalingObj.getHeightDivisor(createLowerMoldComponents, SimPGMDataProviderService, lowerMoldDataStructure, curveLowerPointsData, simPGMLowerCurveData, lowerMoldDataC, simPGMLowerMoldProperties, simPGMLowerInsertData, simPGMLowerDieData, createUpperMoldComponents, upperMoldDataStructure, curvePointsData, simPGMUpperCurveData, upperMoldDataC, simPGMUpperMoldProperties, simPGMUpperInsertData, simPGMUpperDieData);
         var widthDivisor = simPGMUpperDieData.D_Mold;
         var heightDivisor = simPGMUpperDieData.H_Mold + .001 + 2* relativeDataForCircle[0].radius + simPGMLowerDieData.H_Mold;
         var scalingFactor = scalingObj.scalingWidthNHeight(drawWidthDiameter_D,drawwidthHeight_H,widthDivisor,heightDivisor);
-        lowerMD.configurationForLowerMold(createLowerMoldComponents,SimPGMDataProviderService, lowerMoldDataStructure, curveLowerPointsData, simPGMLowerCurveData,lowerMoldDataC, simPGMLowerMoldProperties, simPGMLowerInsertData, simPGMLowerDieData, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer);
+        lowerMD.configurationForLowerMold(createLowerMoldComponents,SimPGMDataProviderService, lowerMoldDataStructure, curveLowerPointsData, lowerMoldDataC, simPGMLowerMoldProperties, simPGMLowerInsertData, simPGMLowerDieData, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer);
 
 
         var afterScalingFactorRelativeDataforCircle = new ScalingGangFunction().multiplyingEachCirclePointWithScalingFactor(relativeDataForCircle,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H);
@@ -71,6 +67,7 @@ myModule.directive('drawCompleteMold',function (SimPGMDataProviderService){
         var circleComponentProperties = {svgContainer : svgContainer,className : 'circleClass', idName : 'circleDrawid',polygonClassName : null,clickClassId : null, clickClassPolygonName : null, clickClassIdName: null, dataForDrawing: afterScalingFactorRelativeDataforCircle, scaleXPointsFunction: null,scaleYPointsFunction : null,counter : 0}
         circleComponent.polyComponent(circleComponentProperties);
         var circleComponentClick = new clickEventsToPolygon();
+        circleComponentClick.clickToCircle(circleComponentProperties.idName,$scope);
         var totalDistancebetweenGroundtoUpperMold = scalingFactor * (simPGMUpperDieData.H_Mold + relativeDataForCircle[0].radius*2 + .001);
 
 
@@ -78,11 +75,11 @@ myModule.directive('drawCompleteMold',function (SimPGMDataProviderService){
 
 
         $scope.$on('handleLowerMoldDieDataBroadcast',function () {
-            lowerMB.respondToLowerMoldDie(simPGMLowerDieData, SimPGMDataProviderService, createLowerMoldComponents, lowerMoldDataStructure, curveLowerPointsData, curvePointsData, lowerMoldDataC, simPGMLowerMoldProperties, drawWidthDiameter_D, drawwidthHeight_H,  eachPolygon, $scope, svgContainer, simPGMLowerInsertData, simPGMLowerCurveData, true );
+            lowerMB.respondToLowerMoldDie(simPGMLowerDieData, SimPGMDataProviderService, createLowerMoldComponents, lowerMoldDataStructure, curveLowerPointsData, curvePointsData, lowerMoldDataC, simPGMLowerMoldProperties, drawWidthDiameter_D, drawwidthHeight_H,  eachPolygon, $scope, svgContainer, simPGMLowerInsertData, true );
         })
 
         $scope.$on('handleLowerMoldInsertDataBroadcast',function () {
-           lowerMB.respondToLowerMoldInsert(simPGMLowerInsertData, SimPGMDataProviderService, createLowerMoldComponents, lowerMoldDataStructure, curvePointsData, lowerMoldDataC, simPGMLowerMoldProperties, simPGMLowerCurveData, curveLowerPointsData, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMLowerDieData);
+           lowerMB.respondToLowerMoldInsert(simPGMLowerInsertData, SimPGMDataProviderService, createLowerMoldComponents, lowerMoldDataStructure, curvePointsData, lowerMoldDataC, simPGMLowerMoldProperties, curveLowerPointsData, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMLowerDieData);
         })
 
         $scope.$on ('handleLowerMoldCurveDataBroadcast',function (){
