@@ -36,8 +36,7 @@ var ScalingGangFunction = function () {
         return relativeDataForUpperAfterMult;
     }
 
-    var adjustHeightAfterScaling = function (currentArray, HeightFromGround) {
-
+    var adjustHeightAfterScaling = function (currentArray, HeightFromGround ) {
         var currentArray_M = currentArray.map(function (currentObj) {
             return (currentObj.y + HeightFromGround) -200 ; // all -200 just for better showing
         });
@@ -45,6 +44,7 @@ var ScalingGangFunction = function () {
         var relativeDataForUpperAfterMult = [];
         for (var i in currentArray_M)
             relativeDataForUpperAfterMult.push({x: currentArray[i].x, y: currentArray_M[i]});
+            // relativeDataForUpperAfterMult.push({x: currentArray[i].x, y: currentArray[i].y});
         return relativeDataForUpperAfterMult;
     }
 

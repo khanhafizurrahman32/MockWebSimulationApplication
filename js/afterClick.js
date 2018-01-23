@@ -92,12 +92,12 @@ var clickEventsToPolygon = function () {
         }
     }
 
-    var clickToCircle = function (circleId, $scope, circleScaleFunction) {
+    var clickToCircle = function (circleId, $scope, data) {
         circleId = '#'+circleId;
         d3.select(circleId).on('click',function(){
             $scope.circleInputShow = !$scope.circleInputShow;
             $scope.$apply(function () {
-                $scope.circleScaleY = circleScaleFunction;
+                $scope.circleDataC = data;
             });
             ($scope.circleInputShow) ? 	d3.selectAll(circleId).style("fill","red") :
                                         d3.selectAll(circleId).style("fill","#99d8c9");

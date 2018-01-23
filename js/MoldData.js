@@ -39,7 +39,6 @@ var moldDataCreation = function (){
             point5 = {"x":D_Mold/2, "y": (y_RF_surf_Mold-RF_surf_Mold+H_Insert)};
             point8 = {"x":D_Insert/2, "y": (y_RF_surf_Mold-RF_surf_Mold+H_Insert)};
         }else if (portion.includes('lower') && (tempArrayForFiftyPoints[49].y> tempArrayForFiftyPoints[0].y)){
-            console.log('jfhsdjfhjdkh:: 47');
             point5 = {"x":D_Mold/2, "y": (y_RF_surf_Mold-RF_surf_Mold+(H_Insert-tempArrayForFiftyPoints[49].y))};
             point8 = {"x":D_Insert/2, "y": (y_RF_surf_Mold-RF_surf_Mold+(H_Insert-tempArrayForFiftyPoints[49].y))};
         }

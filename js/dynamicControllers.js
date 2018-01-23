@@ -15,9 +15,33 @@ myModule.controller('upperMoldDieInputController',['$scope','SimPGMDataProviderS
 
 myModule.controller('upperMoldInsertInputController',['$scope','SimPGMDataProviderService', function($scope,SimPGMDataProviderService){
 
-    $scope.$watch('upperMoldInsertDataC', function(data){
+    $scope.$watch('upperMoldInsertDataC', function(data,oldData){
+        for(var key in data){
+            for(var propertyName in data){
+                if(data.hasOwnProperty(propertyName) && oldData.hasOwnProperty(propertyName)){
+                    if (data[propertyName] !== oldData[propertyName]){
+                        SimPGMDataProviderService.setChangePropertyName(propertyName);
+                    }
+                }
+            }
+        }
         SimPGMDataProviderService.prepForMoldDataBroadcast('upperMoldInsertData',data);
     },true);
+
+    $scope.multiplyupperCurveInInsertParameterbyMinus1 = function () {
+
+        $scope.upperMoldInsertDataC.R_surf_Mold = -1*$scope.upperMoldInsertDataC.R_surf_Mold;
+        $scope.upperMoldInsertDataC.A2_surf_Mold = -1*$scope.upperMoldInsertDataC.A2_surf_Mold;
+        $scope.upperMoldInsertDataC.A4_surf_Mold = -1*$scope.upperMoldInsertDataC.A4_surf_Mold;
+        $scope.upperMoldInsertDataC.A6_surf_Mold = -1*$scope.upperMoldInsertDataC.A6_surf_Mold;
+        $scope.upperMoldInsertDataC.A8_surf_Mold = -1*$scope.upperMoldInsertDataC.A8_surf_Mold;
+        $scope.upperMoldInsertDataC.A10_surf_Mold = -1*$scope.upperMoldInsertDataC.A10_surf_Mold;
+        $scope.upperMoldInsertDataC.A12_surf_Mold = -1*$scope.upperMoldInsertDataC.A12_surf_Mold;
+        $scope.upperMoldInsertDataC.A14_surf_Mold = -1*$scope.upperMoldInsertDataC.A14_surf_Mold;
+        $scope.upperMoldInsertDataC.A16_surf_Mold = -1*$scope.upperMoldInsertDataC.A16_surf_Mold;
+        $scope.upperMoldInsertDataC.A18_surf_Mold = -1*$scope.upperMoldInsertDataC.A18_surf_Mold;
+        $scope.upperMoldInsertDataC.A20_surf_Mold = -1*$scope.upperMoldInsertDataC.A20_surf_Mold;
+    };
 
 }]);
 
@@ -46,18 +70,16 @@ myModule.controller('circleInputController',['$scope','SimPGMDataProviderService
 
     $scope.circleDataC = SimPGMDataProviderService.circleData();
     $scope.circleScaleY;
-    $scope.testA = 5;
     $scope.$watch('circleDataC', function(data,oldValue){
         var differenceInCircularRadius = data[0].radius - oldValue[0].radius;
 
         // - because of the drawing y axis is invert ... plus moves to down and - moves to up
         if(differenceInCircularRadius != 0 ){
 
-            // data[0].y_axis = $scope.circleScaleY.invert($scope.circleScaleY(data[0].y_axis) - differenceInCircularRadius);
+            data[0].y_axis = data[0].y_axis - differenceInCircularRadius;
 
         }
-        // - because of the drawing y axis is invert ... plus moves to down and - moves to up
-        SimPGMDataProviderService.prepForMoldDataBroadcast('circleData',data,oldValue);
+        SimPGMDataProviderService.prepForMoldDataBroadcast('circleData',data,oldValue,'circle');
     },true);
 
 }]);
@@ -77,7 +99,9 @@ myModule.controller('lowerMoldInsertInputController',['$scope','SimPGMDataProvid
             for(var propertyName in data){
                 if(data.hasOwnProperty(propertyName) && oldData.hasOwnProperty(propertyName)){
                     if (data[propertyName] !== oldData[propertyName]){
-                        data['changedTextBoxName'] = propertyName;
+                        SimPGMDataProviderService.setChangePropertyName(propertyName);
+                        //console.log(propertyName);
+                        //data['changedTextBoxName'] = propertyName;
                     }
                 }
             }

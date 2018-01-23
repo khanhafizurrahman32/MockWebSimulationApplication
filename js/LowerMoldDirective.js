@@ -25,23 +25,13 @@ var lowerMoldDirective = function(){
 
     }
 
-    var mergeInsert_n_DieData = function (obj1, obj2) {
-        var obj3 = {};
-        var mergeArray = [];
-        for (var attrname in obj1){ obj3[attrname] = obj1[attrname]; }
-        for (var attrname in obj2){
-            if (obj3.hasOwnProperty(attrname)){
-                if (obj3[attrname] < obj2[attrname]){
-                    obj3[attrname] = obj2[attrname];
-                }
-            }
-        }
-        for (var attrname in obj3) {mergeArray.push(obj3[attrname])}
-        return mergeArray;
-    }
+
 
     return {
-        configurationForLowerMold: configurationForLowerMold,
-        mergeInsert_n_DieData: mergeInsert_n_DieData
+        configurationForLowerMold: configurationForLowerMold
     }
 }
+
+
+
+

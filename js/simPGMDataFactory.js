@@ -6,6 +6,8 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
     var upperMoldDieObject,upperMoldInsertObject,upperMoldCurveObject,circleDatas,previousCircle;
     var lowerMoldDieObject,lowerMoldCurveObject;
     var lowerMoldInsertObject ={};
+    var upperMoldInsertObject = {};
+    var changePropertyName;
     var moldCounter = function () {
         var counter = {"MoldDieCounter" : 0,"MoldInsertCounter" : 0,"CurveDataCounter": 0, "circleCounter": 0};
         return counter;
@@ -24,9 +26,27 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
         return upperMoldInsertObject;
     }
 
-    var setUpperMoldInsertObject = function (D_InsertValue,D_MoldValue,H_MoldValue,H_1_Sleeve_1Value,H_Insert_Value,H_1_InsertValue,D_1_InsertValue) {
-        upperMoldInsertObject = {"D_Insert": D_InsertValue,  "D_Mold":D_MoldValue, "H_Mold":H_MoldValue, "H_1_Sleeve_1":H_1_Sleeve_1Value,"H_Insert": H_Insert_Value, "H_1_Insert":H_1_InsertValue,
-            "D_1_Insert" : D_1_InsertValue};
+    var setUpperMoldInsertObject = function (D_InsertValue,D_MoldValue,H_MoldValue,H_1_Sleeve_1Value,H_Insert_Value,H_1_InsertValue,D_1_InsertValue,D_surf_MoldValue,R_surf_MoldValue,K_surf_MoldValue,A2_surf_MoldValue,A4_surf_MoldValue,A6_surf_MoldValue,A8_surf_MoldValue,A10_surf_MoldValue,A12_surf_MoldValue,A14_surf_MoldValue,A16_surf_MoldValue,A18_surf_MoldValue,A20_surf_MoldValue) {
+        upperMoldInsertObject['D_Insert'] = D_InsertValue;
+        upperMoldInsertObject['D_Mold'] = D_MoldValue;
+        upperMoldInsertObject['H_Mold'] = H_MoldValue;
+        upperMoldInsertObject['H_1_Sleeve_1'] = H_1_Sleeve_1Value;
+        upperMoldInsertObject['H_Insert'] = H_Insert_Value;
+        upperMoldInsertObject['H_1_Insert'] = H_1_InsertValue;
+        upperMoldInsertObject['D_1_Insert'] = D_1_InsertValue;
+        upperMoldInsertObject['D_surf_Mold'] = D_surf_MoldValue;
+        upperMoldInsertObject['R_surf_Mold'] = R_surf_MoldValue;
+        upperMoldInsertObject['K_surf_Mold'] = K_surf_MoldValue;
+        upperMoldInsertObject['A2_surf_Mold'] = A2_surf_MoldValue;
+        upperMoldInsertObject['A4_surf_Mold'] = A4_surf_MoldValue;
+        upperMoldInsertObject['A6_surf_Mold'] = A6_surf_MoldValue;
+        upperMoldInsertObject['A8_surf_Mold'] = A8_surf_MoldValue;
+        upperMoldInsertObject['A10_surf_Mold'] = A10_surf_MoldValue;
+        upperMoldInsertObject['A12_surf_Mold'] = A12_surf_MoldValue;
+        upperMoldInsertObject['A14_surf_Mold'] = A14_surf_MoldValue;
+        upperMoldInsertObject['A16_surf_Mold'] = A16_surf_MoldValue;
+        upperMoldInsertObject['A18_surf_Mold'] = A18_surf_MoldValue;
+        upperMoldInsertObject['A20_surf_Mold'] = A20_surf_MoldValue;
     }
 
     var getUpperMoldCurveObject = function () {
@@ -108,16 +128,23 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
         return previousCircle;
     }
 
+    var setChangePropertyName = function (changePropertyValue) {
+        changePropertyName = changePropertyValue;
+    }
+
+    var getChangePropertyName = function () {
+        return changePropertyName;
+    }
+
     var prepForMoldDataBroadcast = function (nameOfData, currentData, oldValue, portion) {
-        if(portion.includes('circle'))
-            setPreviousCircleValue(oldValue);
+
         switch(nameOfData){
             case "upperMoldDieData" :
                 setUpperMoldDieObject(currentData.D_Insert,currentData.D_Mold,currentData.H_Mold,currentData.H_1_Sleeve_1,currentData.H_1_Insert,currentData.D_1_Insert);
                 $rootScope.$broadcast('handleUpperMoldDieDataBroadcast'); break;
 
             case "upperMoldInsertData" :
-                setUpperMoldInsertObject(currentData.D_Insert,currentData.D_Mold,currentData.H_Mold,currentData.H_1_Sleeve_1,currentData.H_Insert,currentData.H_1_Insert,currentData.D_1_Insert);
+                setUpperMoldInsertObject(currentData.D_Insert,currentData.D_Mold,currentData.H_Mold,currentData.H_1_Sleeve_1,currentData.H_Insert,currentData.H_1_Insert,currentData.D_1_Insert,currentData.D_surf_Mold,currentData.R_surf_Mold,currentData.K_surf_Mold,currentData.A2_surf_Mold,currentData.A4_surf_Mold,currentData.A6_surf_Mold,currentData.A8_surf_Mold,currentData.A10_surf_Mold,currentData.A12_surf_Mold,currentData.A14_surf_Mold,currentData.A16_surf_Mold,currentData.A18_surf_Mold,currentData.A20_surf_Mold);
                 $rootScope.$broadcast('handleUpperMoldInsertDataBroadcast'); break;
 
             case "upperMoldCurveData" :
@@ -129,14 +156,6 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
                 $rootScope.$broadcast('handleLowerMoldDieDataBroadcast'); break;
 
             case "lowerMoldInsertData" :
-                // for(var propertyName in currentData){
-                //     if(currentData.hasOwnProperty(propertyName) && oldValue.hasOwnProperty(propertyName)){
-                //         if (currentData[propertyName] !== oldValue[propertyName]){
-                //             console.log('',propertyName,typeof propertyName);
-                //             currentData['changedTextBoxName'] = propertyName;
-                //         }
-                //     }
-                // }
                 setLowerMoldInsertObject(currentData.D_Insert,currentData.D_Mold,currentData.H_Mold,currentData.H_1_Sleeve_1,currentData.H_Insert,currentData.H_1_Insert,currentData.D_1_Insert,currentData.D_surf_Mold,currentData.R_surf_Mold,currentData.K_surf_Mold,currentData.A2_surf_Mold,currentData.A4_surf_Mold,currentData.A6_surf_Mold,currentData.A8_surf_Mold,currentData.A10_surf_Mold,currentData.A12_surf_Mold,currentData.A14_surf_Mold,currentData.A16_surf_Mold,currentData.A18_surf_Mold,currentData.A20_surf_Mold);
                 $rootScope.$broadcast('handleLowerMoldInsertDataBroadcast'); break;
 
@@ -165,7 +184,10 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
         setLowerMoldCurveObject : setLowerMoldCurveObject,
         circleData : circleData,
         setCircleData : setCircleData,
+        setPreviousCircleValue: setPreviousCircleValue,
         getPreviousCircle : getPreviousCircle,
-        prepForMoldDataBroadcast : prepForMoldDataBroadcast
+        prepForMoldDataBroadcast : prepForMoldDataBroadcast,
+        setChangePropertyName : setChangePropertyName,
+        getChangePropertyName : getChangePropertyName
     }
 }])
