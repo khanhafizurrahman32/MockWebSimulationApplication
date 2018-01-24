@@ -21,7 +21,7 @@ var ScalingGangFunction = function () {
         });
 
         var relativeDataForUpper_Y_mult_scalingNumber = currentObjectArray.map(function (currentObject) {
-            return -(scalingFactor * currentObject.y) + drawwidthHeight_H/2;
+            return (-(scalingFactor * currentObject.y) + drawwidthHeight_H/2) ;
         });
 
         var relativeDataForUpperAfterMult = [];
@@ -36,9 +36,9 @@ var ScalingGangFunction = function () {
         return relativeDataForUpperAfterMult;
     }
 
-    var adjustHeightAfterScaling = function (currentArray, HeightFromGround ) {
+    var adjustHeightAfterScaling = function (currentArray, posToMove ) {
         var currentArray_M = currentArray.map(function (currentObj) {
-            return (currentObj.y + HeightFromGround) -200 ; // all -200 just for better showing
+            return (currentObj.y - posToMove)  ; // all -200 just for better showing
         });
 
         var relativeDataForUpperAfterMult = [];
@@ -60,7 +60,7 @@ var ScalingGangFunction = function () {
         });
 
         var relativeDataForLower_Y_mult_scalingNumber = currentObjectArray.map(function (currentObject) {
-            return ((scalingFactor * currentObject.y) + drawwidthHeight_H) -200;
+            return ((scalingFactor * currentObject.y) + drawwidthHeight_H)  //-200
         });
 
         var relativeDataForLowerCurveAfterMult = [];
@@ -78,7 +78,7 @@ var ScalingGangFunction = function () {
     var multiplyingEachCirclePointWithScalingFactor = function (currentObjectArray,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H) {
         var newObjectArray = [{"x_axis": 0, "y_axis": 0, "radius": 0}];
         newObjectArray[0].x_axis = scalingFactor * currentObjectArray[0].x_axis + (drawWidthDiameter_D/2);
-        newObjectArray[0].y_axis = scalingFactor * currentObjectArray[0].y_axis -200;
+        newObjectArray[0].y_axis = scalingFactor * currentObjectArray[0].y_axis ; //-200
         newObjectArray[0].radius = scalingFactor * currentObjectArray[0].radius;
         return newObjectArray;
     }
@@ -119,6 +119,11 @@ var ScalingGangFunction = function () {
         var width_n_HeightObject = {width: widthDivisor, height: heightDivisor}
         return width_n_HeightObject;
     }
+
+    var gettingRemainingYPos = function (scalingFactor, draw_Height, remainingSpace) {
+        return ((remainingSpace - (draw_Height/2))/-scalingFactor);
+    }
+
     return {
         scalingWidthNHeight : scalingWidthNHeight,
         multiplyingEachUpperPointWithScalingFactor : multiplyingEachUpperPointWithScalingFactor,
@@ -126,7 +131,8 @@ var ScalingGangFunction = function () {
         multiplyingEachLowerPointWithScalingFactor : multiplyingEachLowerPointWithScalingFactor,
         adjustHeightAfterScaling : adjustHeightAfterScaling,
         getHeightNwidthDivisorObj : getHeightNwidthDivisorObj,
-        getHeightDivisor_2 : getHeightDivisor_2
+        getHeightDivisor_2 : getHeightDivisor_2,
+        gettingRemainingYPos : gettingRemainingYPos
     }
 }
 

@@ -95,8 +95,6 @@ myModule.directive('drawCompleteMold',function (SimPGMDataProviderService){
         })
 
         $scope.$on('handleUpperMoldInsertDataBroadcast',function () {
-            // upperMB.respondToUpperMoldInsert(simPGMUpperInsertData,SimPGMDataProviderService, createUpperMoldComponents, upperMoldDataStructure, curvePointsData, upperMoldDataC, simPGMUpperMoldProperties, curveUpperPointsData, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMUpperDieData, relativeDataForCircle);
-            console.log(simPGMUpperInsertData);
             upperMB.respondToUpperMoldInsert(SimPGMDataProviderService, createUpperMoldComponents, upperMoldDataStructure, curvePointsData, upperMoldDataC, simPGMUpperMoldProperties, curveUpperPointsData, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMUpperDieData, true, relativeDataForCircle, defineSVGdrawPropertiesObject);
         })
 
