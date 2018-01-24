@@ -3,6 +3,8 @@
  */
 
 var lowerMoldDirective = function(){
+    var setAfterDrawingValues = [];
+
     var configurationForLowerMold = function (createLowerMoldComponents,SimPGMDataProviderService, lowerMoldDataStructure, curveLowerPointsData,lowerMoldDataC, simPGMLowerMoldProperties, simPGMLowerInsertData, simPGMLowerDieData, scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,eachPolygon,$scope,svgContainer ) {
         var relativeDataForLowerCurve = createLowerMoldComponents.createCurve(SimPGMDataProviderService,lowerMoldDataStructure,curveLowerPointsData,simPGMLowerInsertData);
         var relativeDataForLowerInsert = createLowerMoldComponents.createInsert(SimPGMDataProviderService,lowerMoldDataStructure,curveLowerPointsData,lowerMoldDataC,simPGMLowerMoldProperties,simPGMLowerInsertData,'lower');
@@ -13,8 +15,13 @@ var lowerMoldDirective = function(){
         var afterScalingFactorRelativeDataForMirrorLowerDie = new ScalingGangFunction().multiplyingEachLowerPointWithScalingFactor(relativeDataForLowerDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
         var afterScalingFactorRelativeDataForLowerInsertNCurveTogether = new ScalingGangFunction().multiplyingEachLowerPointWithScalingFactor(combinationofRelativeDataLowerForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
         var afterScalingFactorRelativeDataForMirrorLowerInsertNCurveTogether = new ScalingGangFunction().multiplyingEachLowerPointWithScalingFactor(combinationofRelativeDataLowerForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
-        drawLowerMold(svgContainer,eachPolygon,afterScalingFactorRelativeDataForLowerDie,simPGMLowerDieData,$scope,afterScalingFactorRelativeDataForMirrorLowerDie,afterScalingFactorRelativeDataForLowerInsertNCurveTogether,simPGMLowerInsertData, afterScalingFactorRelativeDataForMirrorLowerInsertNCurveTogether);
+        SimPGMDataProviderService.setAfterScalingLowerDieData(afterScalingFactorRelativeDataForLowerDie);
+        SimPGMDataProviderService.setAfterScalingMirrorLowerDieData(afterScalingFactorRelativeDataForMirrorLowerDie);
+        SimPGMDataProviderService.setAfterScalingLowerInsertData(afterScalingFactorRelativeDataForLowerInsertNCurveTogether);
+        SimPGMDataProviderService.setAfterScalingMirrorLowerInsertData(afterScalingFactorRelativeDataForMirrorLowerInsertNCurveTogether);
+        //drawLowerMold(svgContainer,eachPolygon,afterScalingFactorRelativeDataForLowerDie,simPGMLowerDieData,$scope,afterScalingFactorRelativeDataForMirrorLowerDie,afterScalingFactorRelativeDataForLowerInsertNCurveTogether,simPGMLowerInsertData, afterScalingFactorRelativeDataForMirrorLowerInsertNCurveTogether);
 
+        //setAfterDrawing(afterScalingFactorRelativeDataForLowerDie,afterScalingFactorRelativeDataForMirrorLowerDie,afterScalingFactorRelativeDataForLowerInsertNCurveTogether,afterScalingFactorRelativeDataForMirrorLowerInsertNCurveTogether);
     }
 
     var drawLowerMold = function (svgContainer,eachPolygon,afterScalingFactorRelativeDataForLowerDie,simPGMLowerDieData,$scope,afterScalingFactorRelativeDataForMirrorLowerDie,afterScalingFactorRelativeDataForLowerInsertNCurveTogether,simPGMLowerInsertData, afterScalingFactorRelativeDataForMirrorLowerInsertNCurveTogether) {
@@ -25,10 +32,22 @@ var lowerMoldDirective = function(){
 
     }
 
+    var setAfterDrawing = function (afterScalingFactorRelativeDataForLowerDie,afterScalingFactorRelativeDataForMirrorLowerDie,afterScalingFactorRelativeDataForLowerInsertNCurveTogether,afterScalingFactorRelativeDataForMirrorLowerInsertNCurveTogether) {
 
+        var heightOfDie = Math.max.apply(Math, afterScalingFactorRelativeDataForLowerDie.map(function (currentObj) {
+            return currentObj.y;
+        })) - Math.min.apply(Math, afterScalingFactorRelativeDataForLowerDie.map(function (currentObj) {
+                return currentObj.y;
+            }));
+        console.log(heightOfDie);
+    }
 
+    var getAfterDrawing = function () {
+        return setAfterDrawingValues;
+    }
     return {
-        configurationForLowerMold: configurationForLowerMold
+        configurationForLowerMold: configurationForLowerMold,
+        getAfterDrawing: getAfterDrawing
     }
 }
 

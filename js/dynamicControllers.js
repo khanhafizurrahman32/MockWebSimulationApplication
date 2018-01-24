@@ -106,7 +106,6 @@ myModule.controller('lowerMoldInsertInputController',['$scope','SimPGMDataProvid
                 }
             }
         }
-
         SimPGMDataProviderService.prepForMoldDataBroadcast('lowerMoldInsertData',data,oldData,'lowerMoldInsertInputController');
     },true);
 

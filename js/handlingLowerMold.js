@@ -3,7 +3,7 @@
  */
 
 var respondToLowerMold = function(){
-    var respondToLowerMoldDie = function(simPGMLowerDieData, SimPGMDataProviderService, createLowerMoldComponents, lowerMoldDataStructure, curveLowerPointsData, curvePointsData, lowerMoldDataC, simPGMLowerMoldProperties, drawWidthDiameter_D, drawwidthHeight_H,  eachPolygon, $scope, svgContainer, simPGMLowerInsertData, callFromDrawMoldDirective){
+    var respondToLowerMoldDie = function(simPGMLowerDieData, SimPGMDataProviderService, createLowerMoldComponents, lowerMoldDataStructure, curveLowerPointsData, curvePointsData, lowerMoldDataC, simPGMLowerMoldProperties, drawWidthDiameter_D, drawwidthHeight_H,  eachPolygon, $scope, svgContainer, simPGMLowerInsertData, callFromDrawMoldDirective, lastObjectToDrawEverything, scalingFunc, defineSVGdrawPropertiesObject){
         simPGMLowerDieData = SimPGMDataProviderService.getLowerMoldDieObject();
         for (var key in simPGMLowerDieData){
             if(typeof (simPGMLowerDieData[key]) === "string"){
@@ -22,27 +22,31 @@ var respondToLowerMold = function(){
             if(typeof individualObject === "undefined")
                 console.log("undefined")
         })
-        var scalingFunc = new ScalingGangFunction();
         var width_HeightObj = scalingFunc.getHeightNwidthDivisorObj(SimPGMDataProviderService);
         var scalingFactor = scalingFunc.scalingWidthNHeight(drawWidthDiameter_D,drawwidthHeight_H,width_HeightObj.width,width_HeightObj.height);
-        var diePolygonColor = d3.select('#lowerMoldDieId')[0][0].style.fill;
-        var mirrorDiePolygonColor = d3.select('#lowerMoldDieMirrorId')[0][0].style.fill;
-        d3.selectAll('#globalSVG .lowerMoldDieClass').remove();
-        configurationToDrawLowerDie(createLowerMoldComponents,SimPGMDataProviderService,lowerMoldDataStructure,curveLowerPointsData, lowerMoldDataC, simPGMLowerMoldProperties,simPGMLowerDieData, relativeDataForLowerDie, diePolygonColor, mirrorDiePolygonColor, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H,  eachPolygon, $scope, svgContainer);
-        if(callFromDrawMoldDirective)
-            respondToLowerMoldInsert(simPGMLowerInsertData, SimPGMDataProviderService, createLowerMoldComponents, lowerMoldDataStructure, curveLowerPointsData, lowerMoldDataC, simPGMLowerMoldProperties, curveLowerPointsData, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer );
+        // var diePolygonColor = d3.select('#lowerMoldDieId')[0][0].style.fill;
+        // var mirrorDiePolygonColor = d3.select('#lowerMoldDieMirrorId')[0][0].style.fill;
+        // d3.selectAll('#globalSVG .lowerMoldDieClass').remove();
+        // configurationToDrawLowerDie(createLowerMoldComponents,SimPGMDataProviderService,lowerMoldDataStructure,curveLowerPointsData, lowerMoldDataC, simPGMLowerMoldProperties,simPGMLowerDieData, relativeDataForLowerDie, diePolygonColor, mirrorDiePolygonColor, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H,  eachPolygon, $scope, svgContainer, lastObjectToDrawEverything, scalingFunc, defineSVGdrawPropertiesObject);
+        configurationToDrawLowerDie(createLowerMoldComponents,SimPGMDataProviderService,lowerMoldDataStructure,curveLowerPointsData, lowerMoldDataC, simPGMLowerMoldProperties,simPGMLowerDieData, relativeDataForLowerDie, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H,  eachPolygon, $scope, svgContainer, lastObjectToDrawEverything, scalingFunc, defineSVGdrawPropertiesObject);
+        // if(callFromDrawMoldDirective)
+        //     respondToLowerMoldInsert(simPGMLowerInsertData, SimPGMDataProviderService, createLowerMoldComponents, lowerMoldDataStructure, curveLowerPointsData, lowerMoldDataC, simPGMLowerMoldProperties, curveLowerPointsData, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer );
     }
 
 
-    var configurationToDrawLowerDie = function (createLowerMoldComponents,SimPGMDataProviderService,lowerMoldDataStructure,curveLowerPointsData, lowerMoldDataC, simPGMLowerMoldProperties,simPGMLowerDieData, relativeDataForLowerDie, diePolygonColor, mirrorDiePolygonColor, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H,  eachPolygon, $scope, svgContainer) {
+    // var configurationToDrawLowerDie = function (createLowerMoldComponents,SimPGMDataProviderService,lowerMoldDataStructure,curveLowerPointsData, lowerMoldDataC, simPGMLowerMoldProperties,simPGMLowerDieData, relativeDataForLowerDie, diePolygonColor, mirrorDiePolygonColor, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H,  eachPolygon, $scope, svgContainer, lastObjectToDrawEverything, scalingFunc, defineSVGdrawPropertiesObject) {
+    var configurationToDrawLowerDie = function (createLowerMoldComponents,SimPGMDataProviderService,lowerMoldDataStructure,curveLowerPointsData, lowerMoldDataC, simPGMLowerMoldProperties,simPGMLowerDieData, relativeDataForLowerDie, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H,  eachPolygon, $scope, svgContainer, lastObjectToDrawEverything, scalingFunc, defineSVGdrawPropertiesObject) {
 
-        var afterScalingFactorRelativeDataForLowerDie = new ScalingGangFunction().multiplyingEachLowerPointWithScalingFactor(relativeDataForLowerDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
-        var afterScalingFactorRelativeDataForMirrorLowerDie = new ScalingGangFunction().multiplyingEachLowerPointWithScalingFactor(relativeDataForLowerDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
-        eachPolygon.drawEachPolygon(svgContainer,'lowerMoldDieClass','lowerMoldDieId','lowerMoldDiePolygon',afterScalingFactorRelativeDataForLowerDie,null,null,simPGMLowerDieData,diePolygonColor,$scope);
-        eachPolygon.drawEachPolygon(svgContainer,'lowerMoldDieClass','lowerMoldDieMirrorId','lowerMoldDieMirrorPolygon',afterScalingFactorRelativeDataForMirrorLowerDie,null,null,simPGMLowerDieData,mirrorDiePolygonColor,$scope);
+        var afterScalingFactorRelativeDataForLowerDie = scalingFunc.multiplyingEachLowerPointWithScalingFactor(relativeDataForLowerDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
+        var afterScalingFactorRelativeDataForMirrorLowerDie = scalingFunc.multiplyingEachLowerPointWithScalingFactor(relativeDataForLowerDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
+        SimPGMDataProviderService.setAfterScalingLowerDieData(afterScalingFactorRelativeDataForLowerDie);
+        SimPGMDataProviderService.setAfterScalingMirrorLowerDieData(afterScalingFactorRelativeDataForMirrorLowerDie);
+        lastObjectToDrawEverything.drawEveryThingAfterScaling(SimPGMDataProviderService,scalingFactor,defineSVGdrawPropertiesObject, scalingFunc, eachPolygon, $scope, svgContainer)
+        // eachPolygon.drawEachPolygon(svgContainer,'lowerMoldDieClass','lowerMoldDieId','lowerMoldDiePolygon',afterScalingFactorRelativeDataForLowerDie,null,null,simPGMLowerDieData,diePolygonColor,$scope);
+        // eachPolygon.drawEachPolygon(svgContainer,'lowerMoldDieClass','lowerMoldDieMirrorId','lowerMoldDieMirrorPolygon',afterScalingFactorRelativeDataForMirrorLowerDie,null,null,simPGMLowerDieData,mirrorDiePolygonColor,$scope);
     }
 
-    var respondToLowerMoldInsert = function (simPGMLowerInsertData, SimPGMDataProviderService, createLowerMoldComponents, lowerMoldDataStructure, curvePointsData, lowerMoldDataC, simPGMLowerMoldProperties, curveLowerPointsData, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMLowerDieData ) {
+    var respondToLowerMoldInsert = function (simPGMLowerInsertData, SimPGMDataProviderService, createLowerMoldComponents, lowerMoldDataStructure, curveLowerPointsData, curvePointsData, lowerMoldDataC, simPGMLowerMoldProperties, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMLowerDieData, callFromDrawMoldDirective, lastObjectToDrawEverything, scalingFunc, defineSVGdrawPropertiesObject ) {
         simPGMLowerInsertData = SimPGMDataProviderService.getLowerMoldInsertObject();
         for (var key in simPGMLowerInsertData){
             if(typeof (simPGMLowerInsertData[key]) === "string"){
@@ -74,23 +78,32 @@ var respondToLowerMold = function(){
                     enableOtherInputs(simPGMLowerInsertData)
                 }
         }
-        var scalingFunc = new ScalingGangFunction();
         var width_HeightObj = scalingFunc.getHeightNwidthDivisorObj(SimPGMDataProviderService);
         var scalingFactor = scalingFunc.scalingWidthNHeight(drawWidthDiameter_D,drawwidthHeight_H,width_HeightObj.width,width_HeightObj.height);
         // i dont know why but after comment out the bottom line it shows can not read property of null
         scalingFunc.multiplyingEachLowerPointWithScalingFactor(relativeDataForLowerInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
-        var insertPolygonColor = d3.select('#lowerMoldInsertId')[0][0].style.fill;
-        var mirrorInsertPolygonColor = d3.select('#lowerMoldInsertMirrorId')[0][0].style.fill;
-        d3.selectAll('#globalSVG .lowerMoldInsertClass').remove();
-        configurationToDrawLowerInsert(combinationofRelativeDataLowerForCurveNInsert, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMLowerInsertData, insertPolygonColor, mirrorInsertPolygonColor);
-        respondToLowerMoldDie(simPGMLowerDieData, SimPGMDataProviderService, createLowerMoldComponents, lowerMoldDataStructure, curveLowerPointsData, curvePointsData, lowerMoldDataC, simPGMLowerMoldProperties, drawWidthDiameter_D, drawwidthHeight_H,  eachPolygon, $scope, svgContainer, simPGMLowerInsertData, false)
+        settingDieDataBeforeFinalDraw(simPGMLowerDieData,SimPGMDataProviderService,createLowerMoldComponents,lowerMoldDataStructure,curveLowerPointsData,lowerMoldDataC,simPGMLowerMoldProperties,scalingFunc,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H);
+        configurationToDrawLowerInsert(combinationofRelativeDataLowerForCurveNInsert, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMLowerInsertData, SimPGMDataProviderService, lastObjectToDrawEverything, defineSVGdrawPropertiesObject, scalingFunc);
+        //respondToLowerMoldDie(simPGMLowerDieData, SimPGMDataProviderService, createLowerMoldComponents, lowerMoldDataStructure, curveLowerPointsData, curvePointsData, lowerMoldDataC, simPGMLowerMoldProperties, drawWidthDiameter_D, drawwidthHeight_H,  eachPolygon, $scope, svgContainer, simPGMLowerInsertData, false)
     }
 
-    var configurationToDrawLowerInsert = function (combinationofRelativeDataLowerForCurveNInsert, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMLowerInsertData, insertPolygonColor, mirrorInsertPolygonColor) {
+    var configurationToDrawLowerInsert = function (combinationofRelativeDataLowerForCurveNInsert, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMLowerInsertData, SimPGMDataProviderService, lastObjectToDrawEverything, defineSVGdrawPropertiesObject, scalingFunc) {
         var afterScalingFactorRelativeDataForLowerInsertNCurveTogether = new ScalingGangFunction().multiplyingEachLowerPointWithScalingFactor(combinationofRelativeDataLowerForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
         var afterScalingFactorRelativeDataForMirrorLowerInsertNCurveTogether = new ScalingGangFunction().multiplyingEachLowerPointWithScalingFactor(combinationofRelativeDataLowerForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
-        eachPolygon.drawEachPolygon(svgContainer,'lowerMoldInsertClass','lowerMoldInsertMirrorId','lowerMoldInsertMirrorPolygon',afterScalingFactorRelativeDataForMirrorLowerInsertNCurveTogether,null,null,simPGMLowerInsertData,insertPolygonColor,$scope);
-        eachPolygon.drawEachPolygon(svgContainer,'lowerMoldInsertClass','lowerMoldInsertId','lowerMoldInsertPolygon',afterScalingFactorRelativeDataForLowerInsertNCurveTogether,null,null,simPGMLowerInsertData,mirrorInsertPolygonColor,$scope);
+        SimPGMDataProviderService.setAfterScalingLowerInsertData(afterScalingFactorRelativeDataForLowerInsertNCurveTogether);
+        SimPGMDataProviderService.setAfterScalingMirrorLowerInsertData(afterScalingFactorRelativeDataForMirrorLowerInsertNCurveTogether);
+        lastObjectToDrawEverything.drawEveryThingAfterScaling(SimPGMDataProviderService,scalingFactor,defineSVGdrawPropertiesObject, scalingFunc, eachPolygon, $scope, svgContainer)
+        // eachPolygon.drawEachPolygon(svgContainer,'lowerMoldInsertClass','lowerMoldInsertMirrorId','lowerMoldInsertMirrorPolygon',afterScalingFactorRelativeDataForMirrorLowerInsertNCurveTogether,null,null,simPGMLowerInsertData,insertPolygonColor,$scope);
+        // eachPolygon.drawEachPolygon(svgContainer,'lowerMoldInsertClass','lowerMoldInsertId','lowerMoldInsertPolygon',afterScalingFactorRelativeDataForLowerInsertNCurveTogether,null,null,simPGMLowerInsertData,mirrorInsertPolygonColor,$scope);
+    }
+
+    var settingDieDataBeforeFinalDraw = function (simPGMLowerDieData,SimPGMDataProviderService,createLowerMoldComponents,lowerMoldDataStructure,curveLowerPointsData,lowerMoldDataC,simPGMLowerMoldProperties,scalingFunc,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H) {
+        simPGMLowerDieData = SimPGMDataProviderService.getLowerMoldDieObject();
+        var relativeDataForLowerDie = createLowerMoldComponents.createDie(SimPGMDataProviderService,lowerMoldDataStructure,curveLowerPointsData,lowerMoldDataC,simPGMLowerMoldProperties,simPGMLowerDieData,'lower');
+        var afterScalingFactorRelativeDataForLowerDie = scalingFunc.multiplyingEachLowerPointWithScalingFactor(relativeDataForLowerDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
+        var afterScalingFactorRelativeDataForMirrorLowerDie = scalingFunc.multiplyingEachLowerPointWithScalingFactor(relativeDataForLowerDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
+        SimPGMDataProviderService.setAfterScalingLowerDieData(afterScalingFactorRelativeDataForLowerDie);
+        SimPGMDataProviderService.setAfterScalingMirrorLowerDieData(afterScalingFactorRelativeDataForMirrorLowerDie);
     }
 
     var respondToLowerMoldCurve = function () {

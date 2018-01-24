@@ -124,6 +124,20 @@ var ScalingGangFunction = function () {
         return ((remainingSpace - (draw_Height/2))/-scalingFactor);
     }
 
+    var transformEveryPoints = function (currentArray, transforming_X_Pos, transforming_Y_Pos) {
+        var currentArray_X_M = currentArray.map(function (currentObj) {
+            return(currentObj.x + transforming_X_Pos);
+        })
+        var currentArray_Y_M = currentArray.map(function (currentObj) {
+            return (currentObj.y - transforming_Y_Pos)  ;
+        });
+
+        var relativeDataForUpperAfterMult = [];
+        for (var i in currentArray_X_M)
+            relativeDataForUpperAfterMult.push({x: currentArray_X_M[i], y: currentArray_Y_M[i]});
+        return relativeDataForUpperAfterMult;
+    }
+
     return {
         scalingWidthNHeight : scalingWidthNHeight,
         multiplyingEachUpperPointWithScalingFactor : multiplyingEachUpperPointWithScalingFactor,
@@ -132,7 +146,8 @@ var ScalingGangFunction = function () {
         adjustHeightAfterScaling : adjustHeightAfterScaling,
         getHeightNwidthDivisorObj : getHeightNwidthDivisorObj,
         getHeightDivisor_2 : getHeightDivisor_2,
-        gettingRemainingYPos : gettingRemainingYPos
+        gettingRemainingYPos : gettingRemainingYPos,
+        transformEveryPoints : transformEveryPoints
     }
 }
 

@@ -5,9 +5,27 @@
 myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
     var upperMoldDieObject,upperMoldInsertObject,upperMoldCurveObject,circleDatas,previousCircle;
     var lowerMoldDieObject,lowerMoldCurveObject;
-    var lowerMoldInsertObject ={};
+    var lowerMoldInsertObject = {} ;
     var upperMoldInsertObject = {};
     var changePropertyName;
+    var scaleLowerMoldDieData;
+    var scaleMirrorLowerMoldDieData;
+    var scaleLowerMoldInsertData;
+    var scaleMirrorLowerMoldInsertData;
+    var scaleCircleData;
+    var scaleUpperMoldDieData;
+    var scaleMirrorUpperMoldDieData;
+    var scaleUpperMoldInsertData;
+    var scaleMirrorUpperMoldInsertData;
+    var finalDrawLowerMoldDieData;
+    var finalDrawMirrorLowerMoldDieData;
+    var finalDrawLowerMoldInsertData;
+    var finalDrawMirrorLowerMoldInsertData;
+    var finalDrawUpperMoldDieData;
+    var finalDrawMirrorUpperMoldDieData;
+    var finalDrawUpperMoldInsertData;
+    var finalDrawMirrorUpperMoldInsertData;
+
     var moldCounter = function () {
         var counter = {"MoldDieCounter" : 0,"MoldInsertCounter" : 0,"CurveDataCounter": 0, "circleCounter": 0};
         return counter;
@@ -136,6 +154,109 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
         return changePropertyName;
     }
 
+    var setAfterScalingLowerDieData = function (scaleLowerMoldDieData) {
+        this.scaleLowerMoldDieData = scaleLowerMoldDieData;
+    }
+
+    var getAfterScalingLowerDieData = function () {
+        return this.scaleLowerMoldDieData;
+    }
+
+    var setAfterScalingMirrorLowerDieData = function (scaleMirrorLowerMoldDieData) {
+        this.scaleMirrorLowerMoldDieData = scaleMirrorLowerMoldDieData;
+    }
+
+    var getAfterScalingMirrorLowerDieData = function () {
+        return this.scaleMirrorLowerMoldDieData;
+    }
+
+    var setAfterScalingLowerInsertData = function (scaleLowerMoldInsertData) {
+        this.scaleLowerMoldInsertData = scaleLowerMoldInsertData;
+    }
+
+    var getAfterScalingLowerInsertData = function () {
+        return this.scaleLowerMoldInsertData;
+    }
+
+    var setAfterScalingMirrorLowerInsertData = function (scaleMirrorLowerMoldInsertData) {
+        this.scaleMirrorLowerMoldInsertData = scaleMirrorLowerMoldInsertData;
+    }
+
+    var getAfterScalingMirrorLowerInsertData = function () {
+        return this.scaleMirrorLowerMoldInsertData;
+    }
+
+    var setScaleCircleData = function (scaleCircleData) {
+        this.scaleCircleData = scaleCircleData;
+    }
+
+    var getScaleCircleData = function () {
+        return this.scaleCircleData
+    }
+    var setAfterScalingUpperDieData = function (scaleUpperMoldDieData) {
+        this.scaleUpperMoldDieData = scaleUpperMoldDieData;
+    }
+
+    var getAfterScalingUpperDieData = function () {
+        return this.scaleUpperMoldDieData;
+    }
+
+    var setAfterScalingMirrorUpperDieData = function (scaleMirrorUpperMoldDieData) {
+        this.scaleMirrorUpperMoldDieData = scaleMirrorUpperMoldDieData;
+    }
+
+    var getAfterScalingMirrorUpperDieData = function () {
+        return this.scaleMirrorUpperMoldDieData;
+    }
+
+    var setAfterScalingUpperInsertData = function (scaleUpperMoldInsertData) {
+        this.scaleUpperMoldInsertData = scaleUpperMoldInsertData;
+    }
+
+    var getAfterScalingUpperInsertData = function () {
+        return this.scaleUpperMoldInsertData;
+    }
+
+    var setAfterScalingMirrorUpperInsertData = function (scaleMirrorUpperMoldInsertData) {
+        this.scaleMirrorUpperMoldInsertData = scaleMirrorUpperMoldInsertData;
+    }
+
+    var getAfterScalingMirrorUpperInsertData = function () {
+        return this.scaleMirrorUpperMoldInsertData;
+    }
+
+    var setFinalDrawLowerMoldDieData = function (finalDrawLowerMoldDieData) {
+        this.finalDrawLowerMoldDieData = finalDrawLowerMoldDieData
+    }
+
+    var getFinalDrawLowerMoldDieData = function () {
+        return this.finalDrawLowerMoldDieData;
+    }
+
+    var setFinalDrawLowerMoldInsertData = function (finalDrawLowerMoldInsertData) {
+        this.finalDrawLowerMoldInsertData = finalDrawLowerMoldInsertData
+    }
+
+    var getFinalDrawLowerMoldInsertData = function () {
+        return this.finalDrawLowerMoldInsertData;
+    }
+
+    var setFinalDrawUpperMoldDieData = function (finalDrawUpperMoldDieData) {
+        this.finalDrawUpperMoldDieData = finalDrawUpperMoldDieData
+    }
+
+    var getFinalDrawUpperMoldDieData = function () {
+        return this.finalDrawUpperMoldDieData;
+    }
+
+    var setFinalDrawUpperMoldInsertData = function (finalDrawUpperMoldInsertData) {
+        this.finalDrawUpperMoldInsertData = finalDrawUpperMoldInsertData
+    };
+
+    var getFinalDrawUpperMoldInsertData = function () {
+        return this.finalDrawUpperMoldInsertData;
+    };
+
     var prepForMoldDataBroadcast = function (nameOfData, currentData, oldValue, portion) {
 
         switch(nameOfData){
@@ -188,6 +309,32 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
         getPreviousCircle : getPreviousCircle,
         prepForMoldDataBroadcast : prepForMoldDataBroadcast,
         setChangePropertyName : setChangePropertyName,
-        getChangePropertyName : getChangePropertyName
+        getChangePropertyName : getChangePropertyName,
+        setAfterScalingLowerDieData : setAfterScalingLowerDieData,
+        getAfterScalingLowerDieData : getAfterScalingLowerDieData,
+        setAfterScalingMirrorLowerDieData : setAfterScalingMirrorLowerDieData,
+        getAfterScalingMirrorLowerDieData : getAfterScalingMirrorLowerDieData,
+        setAfterScalingLowerInsertData : setAfterScalingLowerInsertData,
+        getAfterScalingLowerInsertData : getAfterScalingLowerInsertData,
+        setAfterScalingMirrorLowerInsertData : setAfterScalingMirrorLowerInsertData,
+        getAfterScalingMirrorLowerInsertData : getAfterScalingMirrorLowerInsertData,
+        setScaleCircleData : setScaleCircleData,
+        getScaleCircleData : getScaleCircleData,
+        setAfterScalingUpperDieData : setAfterScalingUpperDieData,
+        getAfterScalingUpperDieData : getAfterScalingUpperDieData,
+        setAfterScalingMirrorUpperDieData : setAfterScalingMirrorUpperDieData,
+        getAfterScalingMirrorUpperDieData : getAfterScalingMirrorUpperDieData,
+        setAfterScalingUpperInsertData : setAfterScalingUpperInsertData,
+        getAfterScalingUpperInsertData : getAfterScalingUpperInsertData,
+        setAfterScalingMirrorUpperInsertData : setAfterScalingMirrorUpperInsertData,
+        getAfterScalingMirrorUpperInsertData : getAfterScalingMirrorUpperInsertData,
+        setFinalDrawLowerMoldDieData : setFinalDrawLowerMoldDieData,
+        getFinalDrawLowerMoldDieData : getFinalDrawLowerMoldDieData,
+        setFinalDrawLowerMoldInsertData : setFinalDrawLowerMoldInsertData,
+        getFinalDrawLowerMoldInsertData : getFinalDrawLowerMoldInsertData,
+        setFinalDrawUpperMoldDieData : setFinalDrawUpperMoldDieData,
+        getFinalDrawUpperMoldDieData : getFinalDrawUpperMoldDieData,
+        setFinalDrawUpperMoldInsertData : setFinalDrawUpperMoldInsertData,
+        getFinalDrawUpperMoldInsertData : getFinalDrawUpperMoldInsertData
     }
 }])
