@@ -125,6 +125,12 @@ var finalOutput = function () {
         SimPGMDataProviderService.setAfterScalingMirrorLowerInsertData(afterScalingFactorRelativeDataForMirrorLowerInsertNCurveTogether);
     }
 
+    var settingCircleDataBeforeFinalDraw = function (SimPGMDataProviderService,scalingObj,scalingFactor, drawWidthDiameter_D, drawwidthHeight_H) {
+        var relativeDataForCircle = SimPGMDataProviderService.circleData();
+        var afterScalingFactorRelativeDataforCircle = scalingObj.multiplyingEachCirclePointWithScalingFactor(relativeDataForCircle,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H);
+        SimPGMDataProviderService.setScaleCircleData(afterScalingFactorRelativeDataforCircle);
+    }
+
     var settingUpperDieDataBeforeFinalDraw = function (SimPGMDataProviderService,createUpperMoldComponents,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,scalingFunc,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,relativeDataForCircle, defineSVGdrawPropertiesObject) {
         var simPGMUpperDieData = SimPGMDataProviderService.getUpperMoldDieObject();
         var relativeDataForUpperDie = createUpperMoldComponents.createDie(SimPGMDataProviderService,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,simPGMUpperDieData,'upper');
@@ -240,6 +246,7 @@ var finalOutput = function () {
     var calculateMaxCircleYPoint = function (SimPGMDataProviderService) {
         return SimPGMDataProviderService.getScaleCircleData()[0].y_axis - SimPGMDataProviderService.getScaleCircleData()[0].radius;
     }
+
     var configureDieData = function (SimPGMDataProviderService,createUpperMoldComponents,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,scalingFunc, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H) {
         var simPGMUpperDieData = SimPGMDataProviderService.getUpperMoldDieObject();
         var relativeDataForUpperDie = createUpperMoldComponents.createDie(SimPGMDataProviderService,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,simPGMUpperDieData,'upper');
@@ -265,6 +272,7 @@ var finalOutput = function () {
         settingUpperInsertDataBeforeFinalDraw: settingUpperInsertDataBeforeFinalDraw,
         findHeightLowerMoldPlusCircle: findHeightLowerMoldPlusCircle,
         calculateRemainingSpaceForUpperMold: calculateRemainingSpaceForUpperMold,
-        findMaximumPointBetween_U_CurveNInsert: findMaximumPointBetween_U_CurveNInsert
+        findMaximumPointBetween_U_CurveNInsert: findMaximumPointBetween_U_CurveNInsert,
+        settingCircleDataBeforeFinalDraw: settingCircleDataBeforeFinalDraw
     }
 }
