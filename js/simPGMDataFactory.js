@@ -18,10 +18,6 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
     var scaleUpperMoldInsertData;
     var scaleMirrorUpperMoldInsertData;
 
-    var scaleBeforeAdjustUpperMoldDieData;
-    var scaleBeforeAdjustMirrorUpperMoldDieData;
-    var scaleBeforeAdjustUpperMoldInsertData;
-    var scaleBeforeAdjustMirrorUpperMoldInsertData;
 
 
     var moldCounter = function () {
@@ -109,13 +105,6 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
         lowerMoldInsertObject['A16_surf_Mold'] = A16_surf_MoldValue;
         lowerMoldInsertObject['A18_surf_Mold'] = A18_surf_MoldValue;
         lowerMoldInsertObject['A20_surf_Mold'] = A20_surf_MoldValue;
-       // lowerMoldInsertObject['changedTextBoxName'] = changedTextBox;
-
-
-        // lowerMoldInsertObject = {"D_Insert": D_InsertValue,  "D_Mold":D_MoldValue, "H_Mold":H_MoldValue, "H_1_Sleeve_1":H_1_Sleeve_1Value,"H_Insert": H_Insert_Value, "H_1_Insert":H_1_InsertValue,
-        //     "D_1_Insert" : D_1_InsertValue, "D_surf_Mold": D_surf_MoldValue, "R_surf_Mold": R_surf_MoldValue, "K_surf_Mold":K_surf_MoldValue, "A2_surf_Mold": A2_surf_MoldValue,
-        //     "A4_surf_Mold": A4_surf_MoldValue, "A6_surf_Mold": A6_surf_MoldValue, "A8_surf_Mold": A8_surf_MoldValue, "A10_surf_Mold": A10_surf_MoldValue,
-        //     "A12_surf_Mold": A12_surf_MoldValue, "A14_surf_Mold": A14_surf_MoldValue, "A16_surf_Mold": A16_surf_MoldValue, "A18_surf_Mold":A18_surf_MoldValue, "A20_surf_Mold": A20_surf_MoldValue, "changedTextBoxName": changedTextBox};
 
     }
 
@@ -223,38 +212,6 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
         return this.scaleMirrorUpperMoldInsertData;
     }
 
-    var setBeforeAdjustUpperDieData = function (scaleBeforeAdjustUpperMoldDieData) {
-        this.scaleBeforeAdjustUpperMoldDieData = scaleBeforeAdjustUpperMoldDieData;
-    }
-
-    var getBeforeAdjustUpperDieData = function () {
-        return this.scaleBeforeAdjustUpperMoldDieData;
-    }
-
-    var setBeforeAdjustMirrorUpperDieData = function (scaleBeforeAdjustMirrorUpperMoldDieData) {
-        this.scaleBeforeAdjustMirrorUpperMoldDieData = scaleBeforeAdjustMirrorUpperMoldDieData;
-    }
-
-    var getBeforeAdjustMirrorUpperDieData = function () {
-        return this.scaleBeforeAdjustMirrorUpperMoldDieData;
-    }
-
-    var setBeforeAdjustUpperInsertData = function (scaleBeforeAdjustUpperMoldInsertData) {
-        this.scaleBeforeAdjustUpperMoldInsertData = scaleBeforeAdjustUpperMoldInsertData;
-    }
-
-    var getBeforeAdjustUpperInsertData = function () {
-        return this.scaleBeforeAdjustUpperMoldInsertData;
-    }
-
-    var setBeforeAdjustMirrorUpperInsertData = function (scaleBeforeAdjustMirrorUpperMoldInsertData) {
-        this.scaleBeforeAdjustMirrorUpperMoldInsertData = scaleBeforeAdjustMirrorUpperMoldInsertData;
-    }
-
-    var getBeforeAdjustMirrorUpperInsertData = function () {
-        return this.scaleBeforeAdjustMirrorUpperMoldInsertData;
-    }
-
 
 
     var prepForMoldDataBroadcast = function (nameOfData, currentData, oldValue, portion) {
@@ -328,14 +285,6 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
         getAfterScalingUpperInsertData : getAfterScalingUpperInsertData,
         setAfterScalingMirrorUpperInsertData : setAfterScalingMirrorUpperInsertData,
         getAfterScalingMirrorUpperInsertData : getAfterScalingMirrorUpperInsertData,
-        setBeforeAdjustUpperDieData : setBeforeAdjustUpperDieData,
-        getBeforeAdjustUpperDieData : getBeforeAdjustUpperDieData,
-        setBeforeAdjustUpperInsertData : setBeforeAdjustUpperInsertData,
-        getBeforeAdjustUpperInsertData : getBeforeAdjustUpperInsertData,
-        setBeforeAdjustMirrorUpperDieData : setBeforeAdjustMirrorUpperDieData,
-        getBeforeAdjustMirrorUpperDieData : getBeforeAdjustMirrorUpperDieData,
-        setBeforeAdjustMirrorUpperInsertData : setBeforeAdjustMirrorUpperInsertData,
-        getBeforeAdjustMirrorUpperInsertData : getBeforeAdjustMirrorUpperInsertData
 
     }
 }])

@@ -59,7 +59,8 @@ myModule.directive('drawCompleteMold',function (SimPGMDataProviderService){
 
         var afterScalingFactorRelativeDataforCircle = new ScalingGangFunction().multiplyingEachCirclePointWithScalingFactor(relativeDataForCircle,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H);
         SimPGMDataProviderService.setScaleCircleData(afterScalingFactorRelativeDataforCircle);
-        var totalDistancebetweenGroundtoUpperMold = scalingFactor * (simPGMLowerDieData.H_Mold + relativeDataForCircle[0].radius*2 + .001);
+        // var totalDistancebetweenGroundtoUpperMold = scalingFactor * (simPGMLowerDieData.H_Mold + relativeDataForCircle[0].radius*2 + .001);
+        var totalDistancebetweenGroundtoUpperMold = lastObjectToDrawEverything.findHeightLowerMoldPlusCircle(SimPGMDataProviderService);
 
         SimPGMDataProviderService.setUpperMoldInsertObject(0.044,0.064,0.015,0.04,0.015,0.004,0.036,32,-100,0,0,0,0,0,0,0,0,0,0,0);
         var simPGMUpperInsertData = SimPGMDataProviderService.getUpperMoldInsertObject();

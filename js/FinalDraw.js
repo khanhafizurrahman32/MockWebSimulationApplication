@@ -9,12 +9,11 @@ var finalOutput = function () {
         var drawAbleMirrorLowerDieData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingMirrorLowerDieData(),transform_X,transform_Y)
         var drawAbleLowerInsertData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingLowerInsertData(),transform_X,transform_Y)
         var drawAbleMirrorLowerInsertData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingMirrorLowerInsertData(),transform_X,transform_Y)
-        console.log(SimPGMDataProviderService.getAfterScalingUpperDieData());
         var drawAbleUpperDieData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingUpperDieData(),transform_X,transform_Y)
-        console.log(SimPGMDataProviderService.getAfterScalingUpperDieData());
         var drawAbleMirrorUpperDieData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingMirrorUpperDieData(),transform_X,transform_Y)
         var drawAbleUpperInsertData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingUpperInsertData(),transform_X,transform_Y)
         var drawAbleMirrorUpperInsertData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingMirrorUpperInsertData(),transform_X,transform_Y)
+        //console.log(drawAbleLowerDieData, drawAbleMirrorLowerDieData, drawAbleLowerInsertData, drawAbleLowerInsertData, drawAbleUpperDieData, drawAbleMirrorUpperDieData, drawAbleUpperInsertData, drawAbleMirrorUpperInsertData );
         renderEveryThingAfterScaling(eachPolygon,drawAbleLowerDieData, $scope, svgContainer, SimPGMDataProviderService, drawAbleMirrorLowerDieData, drawAbleLowerInsertData, drawAbleMirrorLowerInsertData, drawAbleUpperDieData, drawAbleMirrorUpperDieData, drawAbleUpperInsertData, drawAbleMirrorUpperInsertData, transform_X, transform_Y)
     }
 
@@ -139,7 +138,6 @@ var finalOutput = function () {
         var afterAdjustHeightScalingFactorRelativeDataForUpperDie =scalingFunc.adjustHeightAfterScaling(afterScalingFactorRelativeDataForUpperDie, transformingDelta);
         var afterScalingFactorRelativeDataForMirrorUpperDie = scalingFunc.multiplyingEachUpperPointWithScalingFactor(relativeDataForUpperDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
         var afterAdjustHeightScalingFactorRelativeDataForMirrorUpperDie = scalingFunc.adjustHeightAfterScaling(afterScalingFactorRelativeDataForMirrorUpperDie, transformingDelta);
-        console.log(afterAdjustHeightScalingFactorRelativeDataForUpperDie);
         SimPGMDataProviderService.setAfterScalingUpperDieData(afterAdjustHeightScalingFactorRelativeDataForUpperDie);
         SimPGMDataProviderService.setAfterScalingMirrorUpperDieData(afterAdjustHeightScalingFactorRelativeDataForMirrorUpperDie);
     }
@@ -180,11 +178,7 @@ var finalOutput = function () {
         var maxAmongthree = Math.max.apply(Math,[circleYPosition,heightOfSimPGM_L_DieData,heightOfSimPGM_L_InsertData]);
         return maxAmongthree;
     }
-    // var calculateRemainingSpaceForUpperMold = function (scalingFactor,SimPGMDataProviderService,relativeDataForCircle,defineSVGdrawPropertiesObject) {
-    //     var totalDistancebetweenGroundtoUpperMold = scalingFactor * (SimPGMDataProviderService.getLowerMoldDieObject().H_Mold + relativeDataForCircle[0].radius*2 + .001);
-    //     var remainingSpaceforUpperMold = defineSVGdrawPropertiesObject.getViewBoxHeight() - totalDistancebetweenGroundtoUpperMold;
-    //     return remainingSpaceforUpperMold;
-    // }
+
 
     var findMaximumHeightBetween_U_CurveNInsert = function(SimPGMDataProviderService){
         var afterScalingFactorRelativeDataForUpperDie = SimPGMDataProviderService.getAfterScalingUpperDieData();
@@ -268,6 +262,9 @@ var finalOutput = function () {
         settingLowerDieDataBeforeFinalDraw: settingLowerDieDataBeforeFinalDraw,
         settingLowerInsertDataBeforeFinalDraw: settingLowerInsertDataBeforeFinalDraw,
         settingUpperDieDataBeforeFinalDraw: settingUpperDieDataBeforeFinalDraw,
-        settingUpperInsertDataBeforeFinalDraw: settingUpperInsertDataBeforeFinalDraw
+        settingUpperInsertDataBeforeFinalDraw: settingUpperInsertDataBeforeFinalDraw,
+        findHeightLowerMoldPlusCircle: findHeightLowerMoldPlusCircle,
+        calculateRemainingSpaceForUpperMold: calculateRemainingSpaceForUpperMold,
+        findMaximumPointBetween_U_CurveNInsert: findMaximumPointBetween_U_CurveNInsert
     }
 }

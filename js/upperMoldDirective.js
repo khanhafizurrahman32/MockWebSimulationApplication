@@ -12,10 +12,6 @@ var upperMoldDirective = function(){
         var afterScalingFactorRelativeDataForMirrorUpperInsertNCurveTogether = new ScalingGangFunction().multiplyingEachUpperPointWithScalingFactor(combinantionofRelativeDataForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
         var afterScalingFactorRelativeDataForUpperDie = new ScalingGangFunction().multiplyingEachUpperPointWithScalingFactor(relativeDataForUpperDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
         var afterScalingFactorRelativeDataForMirrorUpperDie = new ScalingGangFunction().multiplyingEachUpperPointWithScalingFactor(relativeDataForUpperDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
-        SimPGMDataProviderService.setBeforeAdjustUpperDieData(afterScalingFactorRelativeDataForUpperDie);
-        SimPGMDataProviderService.setBeforeAdjustUpperInsertData(afterScalingFactorRelativeDataForUpperInsertNCurveTogether);
-        SimPGMDataProviderService.setBeforeAdjustMirrorUpperDieData(afterScalingFactorRelativeDataForMirrorUpperDie);
-        SimPGMDataProviderService.setBeforeAdjustMirrorUpperInsertData(afterScalingFactorRelativeDataForMirrorUpperInsertNCurveTogether);
         var remainingSpaceforUpperMold = defineSVGdrawPropertiesObject.getViewBoxHeight() - totalDistancebetweenGroundtoUpperMold;
         var maxPointOfAfterScalingFactorRelativeDataForUpperDie = Math.max.apply(Math, afterScalingFactorRelativeDataForUpperDie.map(function (currentObj) {
             return currentObj.y;
@@ -25,11 +21,13 @@ var upperMoldDirective = function(){
         }))
         var maxBetweenDie_N_Insert = Math.max.apply(Math,[maxPointOfAfterScalingFactorRelativeDataForUpperDie, maxPointOfAfterScalingFactorRelativeDataForUpperInsertNCurve]);
         var transformingDelta = maxBetweenDie_N_Insert - remainingSpaceforUpperMold;
+        console.log(maxBetweenDie_N_Insert,remainingSpaceforUpperMold,transformingDelta);
         var afterAdjustHeightScalingFactorRelativeDataForUpperInsertNCurveTogether = new ScalingGangFunction().adjustHeightAfterScaling(afterScalingFactorRelativeDataForUpperInsertNCurveTogether, transformingDelta);
         var afterAdjustHeightScalingFactorRelativeDataForMirrorUpperInsertNCurveTogether = new ScalingGangFunction().adjustHeightAfterScaling(afterScalingFactorRelativeDataForMirrorUpperInsertNCurveTogether, transformingDelta);
         var afterAdjustHeightScalingFactorRelativeDataForUpperDie = new ScalingGangFunction().adjustHeightAfterScaling(afterScalingFactorRelativeDataForUpperDie, transformingDelta);
         var afterAdjustHeightScalingFactorRelativeDataForMirrorUpperDie = new ScalingGangFunction().adjustHeightAfterScaling(afterScalingFactorRelativeDataForMirrorUpperDie, transformingDelta);
         //drawUpperMold(svgContainer, eachPolygon, afterAdjustHeightScalingFactorRelativeDataForMirrorUpperInsertNCurveTogether, simPGMUpperInsertData, $scope, afterAdjustHeightScalingFactorRelativeDataForUpperDie, simPGMUpperDieData, afterAdjustHeightScalingFactorRelativeDataForMirrorUpperDie, afterAdjustHeightScalingFactorRelativeDataForUpperInsertNCurveTogether);
+        console.log(afterAdjustHeightScalingFactorRelativeDataForUpperDie);
         SimPGMDataProviderService.setAfterScalingUpperDieData(afterAdjustHeightScalingFactorRelativeDataForUpperDie);
         SimPGMDataProviderService.setAfterScalingMirrorUpperDieData(afterAdjustHeightScalingFactorRelativeDataForMirrorUpperDie);
         SimPGMDataProviderService.setAfterScalingUpperInsertData(afterAdjustHeightScalingFactorRelativeDataForUpperInsertNCurveTogether);
