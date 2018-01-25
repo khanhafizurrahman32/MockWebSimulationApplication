@@ -25,7 +25,6 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
     var finalDrawMirrorUpperMoldDieData;
     var finalDrawUpperMoldInsertData;
     var finalDrawMirrorUpperMoldInsertData;
-    var transformingDelta;
 
     var moldCounter = function () {
         var counter = {"MoldDieCounter" : 0,"MoldInsertCounter" : 0,"CurveDataCounter": 0, "circleCounter": 0};
@@ -258,13 +257,6 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
         return this.finalDrawUpperMoldInsertData;
     };
 
-    var setTransformingDelta = function (transformingDelta) {
-        this.transformingDelta = transformingDelta;
-    }
-
-    var getTransformingDelta = function () {
-        return this.transformingDelta;
-    }
 
     var prepForMoldDataBroadcast = function (nameOfData, currentData, oldValue, portion) {
 
@@ -344,8 +336,6 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
         setFinalDrawUpperMoldDieData : setFinalDrawUpperMoldDieData,
         getFinalDrawUpperMoldDieData : getFinalDrawUpperMoldDieData,
         setFinalDrawUpperMoldInsertData : setFinalDrawUpperMoldInsertData,
-        getFinalDrawUpperMoldInsertData : getFinalDrawUpperMoldInsertData,
-        setTransformingDelta: setTransformingDelta,
-        getTransformingDelta: getTransformingDelta
+        getFinalDrawUpperMoldInsertData : getFinalDrawUpperMoldInsertData
     }
 }])

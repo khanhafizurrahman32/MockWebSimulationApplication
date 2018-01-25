@@ -59,11 +59,6 @@ myModule.directive('drawCompleteMold',function (SimPGMDataProviderService){
 
         var afterScalingFactorRelativeDataforCircle = new ScalingGangFunction().multiplyingEachCirclePointWithScalingFactor(relativeDataForCircle,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H);
         SimPGMDataProviderService.setScaleCircleData(afterScalingFactorRelativeDataforCircle);
-        // var circleComponent = new polygonDefinition();
-        // var circleComponentProperties = {svgContainer : svgContainer,className : 'circleClass', idName : 'circleDrawid',polygonClassName : null,clickClassId : null, clickClassPolygonName : null, clickClassIdName: null, dataForDrawing: afterScalingFactorRelativeDataforCircle, scaleXPointsFunction: null,scaleYPointsFunction : null,counter : 0}
-        // circleComponent.polyComponent(circleComponentProperties);
-        // var circleComponentClick = new clickEventsToPolygon();
-        // circleComponentClick.clickToCircle(circleComponentProperties.idName,$scope,relativeDataForCircle);
         var totalDistancebetweenGroundtoUpperMold = scalingFactor * (simPGMLowerDieData.H_Mold + relativeDataForCircle[0].radius*2 + .001);
 
         SimPGMDataProviderService.setUpperMoldInsertObject(0.044,0.064,0.015,0.04,0.015,0.004,0.036,32,-100,0,0,0,0,0,0,0,0,0,0,0);
@@ -76,11 +71,11 @@ myModule.directive('drawCompleteMold',function (SimPGMDataProviderService){
         lastObjectToDrawEverything.drawEveryThingAfterScaling(SimPGMDataProviderService,scalingFactor,defineSVGdrawPropertiesObject,scalingObj, eachPolygon, $scope, svgContainer);
 
         $scope.$on('handleLowerMoldDieDataBroadcast',function () {
-            lowerMB.respondToLowerMoldDie(simPGMLowerDieData, SimPGMDataProviderService, createLowerMoldComponents, lowerMoldDataStructure, curveLowerPointsData, curvePointsData, lowerMoldDataC, simPGMLowerMoldProperties, drawWidthDiameter_D, drawwidthHeight_H,  eachPolygon, $scope, svgContainer, simPGMLowerInsertData, true, lastObjectToDrawEverything, scalingObj, defineSVGdrawPropertiesObject );
+            lowerMB.respondToLowerMoldDie(simPGMLowerDieData, SimPGMDataProviderService, createLowerMoldComponents, lowerMoldDataStructure, curveLowerPointsData, curvePointsData, lowerMoldDataC, simPGMLowerMoldProperties, drawWidthDiameter_D, drawwidthHeight_H,  eachPolygon, $scope, svgContainer, simPGMLowerInsertData, true, lastObjectToDrawEverything, scalingObj, defineSVGdrawPropertiesObject, createUpperMoldComponents,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties, relativeDataForCircle );
         })
 
         $scope.$on('handleLowerMoldInsertDataBroadcast',function () {
-           lowerMB.respondToLowerMoldInsert(simPGMLowerInsertData, SimPGMDataProviderService, createLowerMoldComponents, lowerMoldDataStructure, curveLowerPointsData, curvePointsData, lowerMoldDataC, simPGMLowerMoldProperties, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMLowerDieData, true, lastObjectToDrawEverything, scalingObj, defineSVGdrawPropertiesObject );
+           lowerMB.respondToLowerMoldInsert(simPGMLowerInsertData, SimPGMDataProviderService, createLowerMoldComponents, lowerMoldDataStructure, curveLowerPointsData, curvePointsData, lowerMoldDataC, simPGMLowerMoldProperties, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMLowerDieData, true, lastObjectToDrawEverything, scalingObj, defineSVGdrawPropertiesObject, createUpperMoldComponents,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties, relativeDataForCircle );
         })
 
         $scope.$on ('handleLowerMoldCurveDataBroadcast',function (){
@@ -88,7 +83,7 @@ myModule.directive('drawCompleteMold',function (SimPGMDataProviderService){
         })
 
         $scope.$on('handlecircleDataBroadcast',function () {
-            new respondToCircle().respondAfterClickCircle(relativeDataForCircle,SimPGMDataProviderService,drawWidthDiameter_D,drawwidthHeight_H,svgContainer,$scope);
+            new respondToCircle().respondAfterClickCircle(relativeDataForCircle,SimPGMDataProviderService,drawWidthDiameter_D,drawwidthHeight_H,svgContainer,$scope,lastObjectToDrawEverything,defineSVGdrawPropertiesObject,scalingObj,eachPolygon);
         })
 
         $scope.$on('handleUpperMoldDieDataBroadcast',function () {
