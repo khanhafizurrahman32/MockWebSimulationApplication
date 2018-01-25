@@ -3,8 +3,8 @@
  */
 
 var respondToUpperMold = function(){
-    var respondToUpperMoldDie = function(SimPGMDataProviderService, createUpperMoldComponents, upperMoldDataStructure, curveUpperPointsData, curvePointsData, upperMoldDataC, simPGMUpperMoldProperties, eachPolygon, $scope, scalingFactor, relativeDataForCircle, defineSVGdrawPropertiesObject, drawWidthDiameter_D, drawwidthHeight_H, svgContainer, simPGMUpperInsertData, callFromDrawMoldDirective ){
-        var simPGMUpperDieData = SimPGMDataProviderService.getUpperMoldDieObject();
+    var respondToUpperMoldDie = function(simPGMUpperDieData,SimPGMDataProviderService, createUpperMoldComponents, upperMoldDataStructure, curveUpperPointsData, curvePointsData, upperMoldDataC, simPGMUpperMoldProperties, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMUpperInsertData, callFromDrawMoldDirective, lastObjectToDrawEverything, scalingFunc, defineSVGdrawPropertiesObject, relativeDataForCircle){
+        simPGMUpperDieData = SimPGMDataProviderService.getUpperMoldDieObject();
         for (var key in simPGMUpperDieData){
             if(typeof (simPGMUpperDieData[key]) === "string"){
                 if(parseFloat(simPGMUpperDieData[key]) !== 0)
@@ -22,54 +22,33 @@ var respondToUpperMold = function(){
             if(typeof individualObject === "undefined")
                 console.log("undefined")
         })
-        var scalingFunc = new ScalingGangFunction();
+
         var width_HeightObj = scalingFunc.getHeightNwidthDivisorObj(SimPGMDataProviderService);
         var scalingFactor = scalingFunc.scalingWidthNHeight(drawWidthDiameter_D,drawwidthHeight_H,width_HeightObj.width,width_HeightObj.height);
-        var diePolygonColor = d3.select('#upperMoldDieId')[0][0].style.fill;
-        var mirrorDiePolygonColor = d3.select('#upperMoldDieMirrorId')[0][0].style.fill;
-        d3.selectAll('#globalSVG .upperMoldDieClass').remove();
-        configurationToDrawUpperDie(createUpperMoldComponents,SimPGMDataProviderService,upperMoldDataStructure,curveUpperPointsData, upperMoldDataC, simPGMUpperMoldProperties,simPGMUpperDieData, relativeDataForUpperDie, diePolygonColor, mirrorDiePolygonColor, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H,  eachPolygon, $scope, svgContainer, relativeDataForCircle, defineSVGdrawPropertiesObject, scalingFunc);
-        // if(callFromDrawMoldDirective){
-        //     respondToUpperMoldInsert(SimPGMDataProviderService, createUpperMoldComponents, upperMoldDataStructure, curvePointsData, upperMoldDataC, simPGMUpperMoldProperties, curveUpperPointsData, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMUpperDieData, false , relativeDataForCircle, defineSVGdrawPropertiesObject);
-        // }
+        configurationToDrawUpperDie(createUpperMoldComponents,SimPGMDataProviderService,upperMoldDataStructure,curveUpperPointsData, upperMoldDataC, simPGMUpperMoldProperties,simPGMUpperDieData, relativeDataForUpperDie, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H,  eachPolygon, $scope, svgContainer, lastObjectToDrawEverything, scalingFunc, defineSVGdrawPropertiesObject, relativeDataForCircle);
 
     }
 
-    var configurationToDrawUpperDie = function (createUpperMoldComponents,SimPGMDataProviderService,upperMoldDataStructure,curveUpperPointsData, upperMoldDataC, simPGMUpperMoldProperties,simPGMUpperDieData, relativeDataForUpperDie, diePolygonColor, mirrorDiePolygonColor, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H,  eachPolygon, $scope, svgContainer, relativeDataForCircle, defineSVGdrawPropertiesObject, scalingFunc) {
-        var totalDistancebetweenGroundtoUpperMold = scalingFactor * (SimPGMDataProviderService.getLowerMoldDieObject().H_Mold + relativeDataForCircle[0].radius*2 + .001);
-        var remainingSpaceforUpperMold = defineSVGdrawPropertiesObject.getViewBoxHeight() - totalDistancebetweenGroundtoUpperMold;
+    var configurationToDrawUpperDie = function (createUpperMoldComponents,SimPGMDataProviderService,upperMoldDataStructure,curveUpperPointsData, upperMoldDataC, simPGMUpperMoldProperties,simPGMUpperDieData, relativeDataForUpperDie, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H,  eachPolygon, $scope, svgContainer, lastObjectToDrawEverything, scalingFunc, defineSVGdrawPropertiesObject, relativeDataForCircle) {
+        var remainingSpaceforUpperMold = calculateRemainingSpaceForUpperMold(scalingFactor,SimPGMDataProviderService,relativeDataForCircle,defineSVGdrawPropertiesObject);
         var afterScalingFactorRelativeDataForUpperDie = scalingFunc.multiplyingEachUpperPointWithScalingFactor(relativeDataForUpperDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
-        var simPGMUpperInsertData = SimPGMDataProviderService.getUpperMoldInsertObject();
-        var relativeDataForUpperCurve = createUpperMoldComponents.createCurve(SimPGMDataProviderService,upperMoldDataStructure,curveUpperPointsData,simPGMUpperInsertData);
-        var relativeDataForUpperInsert = createUpperMoldComponents.createInsert(SimPGMDataProviderService,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,simPGMUpperInsertData,'upper');
-        var combinationofRelativeDataUpperForCurveNInsert = relativeDataForUpperCurve.concat(relativeDataForUpperInsert);
+        var combinationofRelativeDataUpperForCurveNInsert = configureInsertData(SimPGMDataProviderService, createUpperMoldComponents, upperMoldDataStructure, curveUpperPointsData, upperMoldDataC, simPGMUpperMoldProperties);
         var afterScalingFactorRelativeDataForUpperInsertNCurve = scalingFunc.multiplyingEachUpperPointWithScalingFactor(combinationofRelativeDataUpperForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
-        var maxPointOfAfterScalingFactorRelativeDataForUpperDie = Math.max.apply(Math, afterScalingFactorRelativeDataForUpperDie.map(function (currentObj) {
-                return currentObj.y;
-            }))
-        var maxPointOfAfterScalingFactorRelativeDataForUpperInsertNCurve = Math.max.apply(Math, afterScalingFactorRelativeDataForUpperInsertNCurve.map(function (currentObj) {
-                return currentObj.y;
-            }))
-        var maxBetweenDie_N_Insert = -9999;
-        if(maxPointOfAfterScalingFactorRelativeDataForUpperDie >= maxPointOfAfterScalingFactorRelativeDataForUpperInsertNCurve){
-            maxBetweenDie_N_Insert = maxPointOfAfterScalingFactorRelativeDataForUpperDie;
-        }else{
-            maxBetweenDie_N_Insert = maxPointOfAfterScalingFactorRelativeDataForUpperInsertNCurve;
-        }
+        var maxBetweenDie_N_Insert = findMaximumPointBetweenCurveNInsert(afterScalingFactorRelativeDataForUpperDie,afterScalingFactorRelativeDataForUpperInsertNCurve)
         var transformingDelta = maxBetweenDie_N_Insert - remainingSpaceforUpperMold;
+        SimPGMDataProviderService.setTransformingDelta(transformingDelta);
+        lastObjectToDrawEverything.settingUpperInsertDataBeforeFinalDraw(SimPGMDataProviderService,createUpperMoldComponents,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,scalingFunc,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,transformingDelta)
         var afterAdjustHeightScalingFactorRelativeDataForUpperDie =scalingFunc.adjustHeightAfterScaling(afterScalingFactorRelativeDataForUpperDie, transformingDelta);
-        //eachPolygon.drawEachPolygon(svgContainer,'upperMoldDieClass','upperMoldDieId','upperMoldDiePolygon',afterAdjustHeightScalingFactorRelativeDataForUpperDie,null,null,simPGMUpperDieData,diePolygonColor, $scope);
         SimPGMDataProviderService.setAfterScalingUpperDieData(afterAdjustHeightScalingFactorRelativeDataForUpperDie);
-
-        var afterScalingFactorRelativeDataForMirrorUpperDie = new ScalingGangFunction().multiplyingEachUpperPointWithScalingFactor(relativeDataForUpperDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
-        var afterAdjustHeightScalingFactorRelativeDataForMirrorUpperDie = new ScalingGangFunction().adjustHeightAfterScaling(afterScalingFactorRelativeDataForMirrorUpperDie, transformingDelta);
+        var afterScalingFactorRelativeDataForMirrorUpperDie = scalingFunc.multiplyingEachUpperPointWithScalingFactor(relativeDataForUpperDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
+        var afterAdjustHeightScalingFactorRelativeDataForMirrorUpperDie = scalingFunc.adjustHeightAfterScaling(afterScalingFactorRelativeDataForMirrorUpperDie, transformingDelta);
         SimPGMDataProviderService.setAfterScalingMirrorUpperDieData(afterAdjustHeightScalingFactorRelativeDataForMirrorUpperDie);
-        //eachPolygon.drawEachPolygon(svgContainer,'upperMoldDieClass','upperMoldDieMirrorId','upperMoldDieMirrorPolygon',afterAdjustHeightScalingFactorRelativeDataForMirrorUpperDie,null,null,simPGMUpperDieData,mirrorDiePolygonColor,$scope);
-
+        lastObjectToDrawEverything.drawEveryThingAfterScaling(SimPGMDataProviderService,scalingFactor,defineSVGdrawPropertiesObject, scalingFunc, eachPolygon, $scope, svgContainer);
     }
 
-    var respondToUpperMoldInsert = function (SimPGMDataProviderService, createUpperMoldComponents, upperMoldDataStructure, curvePointsData, upperMoldDataC, simPGMUpperMoldProperties, curveUpperPointsData, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMUpperDieData, callFromDrawMoldDirective, relativeDataForCircle, defineSVGdrawPropertiesObject) {
-        var simPGMUpperInsertData = SimPGMDataProviderService.getUpperMoldInsertObject();
+
+    var respondToUpperMoldInsert = function (simPGMUpperInsertData, SimPGMDataProviderService, createUpperMoldComponents, upperMoldDataStructure, curveUpperPointsData, curvePointsData, upperMoldDataC, simPGMUpperMoldProperties, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMUpperDieData, callFromDrawMoldDirective, lastObjectToDrawEverything, scalingFunc, defineSVGdrawPropertiesObject, relativeDataForCircle) {
+        simPGMUpperInsertData = SimPGMDataProviderService.getUpperMoldInsertObject();
         for(var key in simPGMUpperInsertData){
             if(typeof (simPGMUpperInsertData[key]) === "string"){
                 var stringValue = simPGMUpperInsertData[key];
@@ -84,9 +63,7 @@ var respondToUpperMold = function(){
         simPGMUpperMoldProperties.setD_1_Insert(simPGMUpperInsertData.D_1_Insert);
         simPGMUpperDieData = SimPGMDataProviderService.getUpperMoldDieObject();
         SimPGMDataProviderService.setUpperMoldDieObject(simPGMUpperInsertData.D_Insert,simPGMUpperDieData.D_Mold,simPGMUpperDieData.H_Mold,simPGMUpperDieData.H_1_Sleeve_1,simPGMUpperInsertData.H_1_Insert,simPGMUpperInsertData.D_1_Insert);
-        var relativeDataForUpperCurve = createUpperMoldComponents.createCurve(SimPGMDataProviderService,upperMoldDataStructure,curveUpperPointsData,simPGMUpperInsertData);
-        var relativeDataForUpperInsert = createUpperMoldComponents.createInsert(SimPGMDataProviderService,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,simPGMUpperInsertData,'upper');
-        var combinationofRelativeDataUpperForCurveNInsert = relativeDataForUpperCurve.concat(relativeDataForUpperInsert);
+        var combinationofRelativeDataUpperForCurveNInsert = configureInsertData(SimPGMDataProviderService, createUpperMoldComponents, upperMoldDataStructure, curveUpperPointsData, upperMoldDataC, simPGMUpperMoldProperties);
         for (var objNumber in combinationofRelativeDataUpperForCurveNInsert){
             var objectVal = SimPGMDataProviderService.getChangePropertyName();
             if(typeof combinationofRelativeDataUpperForCurveNInsert[objNumber] === "undefined"){
@@ -100,48 +77,69 @@ var respondToUpperMold = function(){
                 enableOtherInputs(simPGMUpperInsertData)
             }
         }
-        var scalingFunc = new ScalingGangFunction();
         var width_HeightObj = scalingFunc.getHeightNwidthDivisorObj(SimPGMDataProviderService);
         var scalingFactor = scalingFunc.scalingWidthNHeight(drawWidthDiameter_D,drawwidthHeight_H,width_HeightObj.width,width_HeightObj.height);
-        scalingFunc.multiplyingEachUpperPointWithScalingFactor(relativeDataForUpperInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
-        var insertPolygonColor = d3.select('#upperMoldInsertId')[0][0].style.fill;
-        var mirrorInsertPolygonColor = d3.select('#upperMoldInsertMirrorId')[0][0].style.fill;
-        d3.selectAll('#globalSVG .upperMoldInsertClass').remove();
-        configurationToDrawUpperInsert(combinationofRelativeDataUpperForCurveNInsert, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMUpperInsertData, insertPolygonColor, mirrorInsertPolygonColor, simPGMUpperDieData, relativeDataForCircle, defineSVGdrawPropertiesObject, SimPGMDataProviderService, scalingFunc, createUpperMoldComponents, upperMoldDataStructure, curveUpperPointsData, upperMoldDataC, simPGMUpperMoldProperties);
+        //scalingFunc.multiplyingEachUpperPointWithScalingFactor(relativeDataForUpperInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
+        configurationToDrawUpperInsert(combinationofRelativeDataUpperForCurveNInsert, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMUpperInsertData, SimPGMDataProviderService, lastObjectToDrawEverything, defineSVGdrawPropertiesObject, scalingFunc, simPGMUpperDieData, relativeDataForCircle, defineSVGdrawPropertiesObject, SimPGMDataProviderService, scalingFunc, createUpperMoldComponents, upperMoldDataStructure, curveUpperPointsData, upperMoldDataC, simPGMUpperMoldProperties);
     }
 
-    var configurationToDrawUpperInsert = function (combinationofRelativeDataUpperForCurveNInsert, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMUpperInsertData, insertPolygonColor, mirrorInsertPolygonColor, simPGMUpperDieData, relativeDataForCircle, defineSVGdrawPropertiesObject, SimPGMDataProviderService, scalingFunc, createUpperMoldComponents, upperMoldDataStructure, curveUpperPointsData, upperMoldDataC, simPGMUpperMoldProperties) {
+    var configurationToDrawUpperInsert = function (combinationofRelativeDataUpperForCurveNInsert, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMUpperInsertData, SimPGMDataProviderService, lastObjectToDrawEverything, defineSVGdrawPropertiesObject, scalingFunc, simPGMUpperDieData, relativeDataForCircle, defineSVGdrawPropertiesObject, SimPGMDataProviderService, scalingFunc, createUpperMoldComponents, upperMoldDataStructure, curveUpperPointsData, upperMoldDataC, simPGMUpperMoldProperties) {
+        var remainingSpaceforUpperMold = calculateRemainingSpaceForUpperMold(scalingFactor,SimPGMDataProviderService,relativeDataForCircle,defineSVGdrawPropertiesObject)
+        var afterScalingFactorRelativeDataForUpperInsertNCurve = scalingFunc.multiplyingEachUpperPointWithScalingFactor(combinationofRelativeDataUpperForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
+        var afterScalingFactorRelativeDataForUpperDie = configureDieData(SimPGMDataProviderService,createUpperMoldComponents,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,scalingFunc, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H);
+        var maxBetweenDie_N_Insert = findMaximumPointBetweenCurveNInsert(afterScalingFactorRelativeDataForUpperDie,afterScalingFactorRelativeDataForUpperInsertNCurve);
+        var transformingDelta = maxBetweenDie_N_Insert - remainingSpaceforUpperMold;
+        SimPGMDataProviderService.setTransformingDelta(transformingDelta);
+        // configureDieData(SimPGMDataProviderService,createUpperMoldComponents,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,scalingFunc,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,transformingDelta);
+        lastObjectToDrawEverything.settingUpperDieDataBeforeFinalDraw(SimPGMDataProviderService,createUpperMoldComponents,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,scalingFunc,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,transformingDelta)
+        var afterAdjustHeightScalingFactorRelativeDataForUpperInsertNCurveTogether = new ScalingGangFunction().adjustHeightAfterScaling(afterScalingFactorRelativeDataForUpperInsertNCurve, transformingDelta);
+        SimPGMDataProviderService.setAfterScalingUpperInsertData(afterAdjustHeightScalingFactorRelativeDataForUpperInsertNCurveTogether);
+        var afterScalingFactorRelativeDataForMirrorUpperInsertNCurve = scalingFunc.multiplyingEachUpperPointWithScalingFactor(combinationofRelativeDataUpperForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
+        var afterAdjustHeightScalingFactorRelativeDataForMirrorUpperInsertNCurveTogether = new ScalingGangFunction().adjustHeightAfterScaling(afterScalingFactorRelativeDataForMirrorUpperInsertNCurve, transformingDelta);
+        SimPGMDataProviderService.setAfterScalingMirrorUpperInsertData(afterAdjustHeightScalingFactorRelativeDataForMirrorUpperInsertNCurveTogether);
+        lastObjectToDrawEverything.drawEveryThingAfterScaling(SimPGMDataProviderService,scalingFactor,defineSVGdrawPropertiesObject, scalingFunc, eachPolygon, $scope, svgContainer)
+    }
+    var respondToUpperMoldCurve = function () {
+
+    }
+
+    var calculateRemainingSpaceForUpperMold = function (scalingFactor,SimPGMDataProviderService,relativeDataForCircle,defineSVGdrawPropertiesObject) {
         var totalDistancebetweenGroundtoUpperMold = scalingFactor * (SimPGMDataProviderService.getLowerMoldDieObject().H_Mold + relativeDataForCircle[0].radius*2 + .001);
         var remainingSpaceforUpperMold = defineSVGdrawPropertiesObject.getViewBoxHeight() - totalDistancebetweenGroundtoUpperMold;
-        var afterScalingFactorRelativeDataForUpperInsertNCurve = scalingFunc.multiplyingEachUpperPointWithScalingFactor(combinationofRelativeDataUpperForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
+        return remainingSpaceforUpperMold;
+    }
+
+
+    var configureInsertData = function (SimPGMDataProviderService, createUpperMoldComponents, upperMoldDataStructure, curveUpperPointsData, upperMoldDataC, simPGMUpperMoldProperties) {
+        var simPGMUpperInsertData = SimPGMDataProviderService.getUpperMoldInsertObject();
+        var relativeDataForUpperCurve = createUpperMoldComponents.createCurve(SimPGMDataProviderService,upperMoldDataStructure,curveUpperPointsData,simPGMUpperInsertData);
+        var relativeDataForUpperInsert = createUpperMoldComponents.createInsert(SimPGMDataProviderService,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,simPGMUpperInsertData,'upper');
+        var combinationofRelativeDataUpperForCurveNInsert = relativeDataForUpperCurve.concat(relativeDataForUpperInsert);
+        return combinationofRelativeDataUpperForCurveNInsert;
+    }
+
+    var configureDieData = function (SimPGMDataProviderService,createUpperMoldComponents,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,scalingFunc, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H) {
         var simPGMUpperDieData = SimPGMDataProviderService.getUpperMoldDieObject();
         var relativeDataForUpperDie = createUpperMoldComponents.createDie(SimPGMDataProviderService,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,simPGMUpperDieData,'upper');
         var afterScalingFactorRelativeDataForUpperDie = scalingFunc.multiplyingEachUpperPointWithScalingFactor(relativeDataForUpperDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
+        return afterScalingFactorRelativeDataForUpperDie
+    }
+
+    var findMaximumPointBetweenCurveNInsert = function(afterScalingFactorRelativeDataForUpperDie,afterScalingFactorRelativeDataForUpperInsertNCurve){
+        var maxBetweenDie_N_Insert = -9999;
         var maxPointOfAfterScalingFactorRelativeDataForUpperDie = Math.max.apply(Math, afterScalingFactorRelativeDataForUpperDie.map(function (currentObj) {
             return currentObj.y;
         }))
         var maxPointOfAfterScalingFactorRelativeDataForUpperInsertNCurve = Math.max.apply(Math, afterScalingFactorRelativeDataForUpperInsertNCurve.map(function (currentObj) {
             return currentObj.y;
         }))
-        var maxBetweenDie_N_Insert = -9999;
         if(maxPointOfAfterScalingFactorRelativeDataForUpperDie >= maxPointOfAfterScalingFactorRelativeDataForUpperInsertNCurve){
             maxBetweenDie_N_Insert = maxPointOfAfterScalingFactorRelativeDataForUpperDie;
         }else{
             maxBetweenDie_N_Insert = maxPointOfAfterScalingFactorRelativeDataForUpperInsertNCurve;
         }
-        var transformingDelta = maxBetweenDie_N_Insert - remainingSpaceforUpperMold;
-        var afterAdjustHeightScalingFactorRelativeDataForUpperInsertNCurveTogether = new ScalingGangFunction().adjustHeightAfterScaling(afterScalingFactorRelativeDataForUpperInsertNCurve, transformingDelta);
-        SimPGMDataProviderService.setAfterScalingUpperInsertData(afterAdjustHeightScalingFactorRelativeDataForUpperInsertNCurveTogether);
-        //eachPolygon.drawEachPolygon(svgContainer,'upperMoldInsertClass','upperMoldInsertId','upperMoldInsertPolygon',afterAdjustHeightScalingFactorRelativeDataForUpperInsertNCurveTogether,null,null,simPGMUpperInsertData,insertPolygonColor, $scope);
-        var afterScalingFactorRelativeDataForMirrorUpperInsertNCurve = scalingFunc.multiplyingEachUpperPointWithScalingFactor(combinationofRelativeDataUpperForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
-        var afterAdjustHeightScalingFactorRelativeDataForMirrorUpperInsertNCurveTogether = new ScalingGangFunction().adjustHeightAfterScaling(afterScalingFactorRelativeDataForMirrorUpperInsertNCurve, transformingDelta);
-        SimPGMDataProviderService.setAfterScalingMirrorUpperInsertData(afterAdjustHeightScalingFactorRelativeDataForMirrorUpperInsertNCurveTogether);
-        //eachPolygon.drawEachPolygon(svgContainer,'upperMoldInsertClass','upperMoldInsertMirrorId','upperMoldInsertMirrorPolygon',afterAdjustHeightScalingFactorRelativeDataForMirrorUpperInsertNCurveTogether,null,null,simPGMUpperInsertData,mirrorInsertPolygonColor,$scope);
+        return maxBetweenDie_N_Insert;
     }
-    var respondToUpperMoldCurve = function () {
-
-    }
-
     var disableOtherInputs = function (typeOfData,objectVal) {
         var notDisabled = "#"+objectVal +'_U_id';
         for (var key in typeOfData){

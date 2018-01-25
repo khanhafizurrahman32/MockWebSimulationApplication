@@ -92,11 +92,11 @@ myModule.directive('drawCompleteMold',function (SimPGMDataProviderService){
         })
 
         $scope.$on('handleUpperMoldDieDataBroadcast',function () {
-            upperMB.respondToUpperMoldDie(SimPGMDataProviderService, createUpperMoldComponents, upperMoldDataStructure, curveUpperPointsData, curvePointsData, upperMoldDataC, simPGMUpperMoldProperties, eachPolygon, $scope, scalingFactor, relativeDataForCircle, defineSVGdrawPropertiesObject, drawWidthDiameter_D, drawwidthHeight_H, svgContainer, simPGMUpperInsertData, true )
+            upperMB.respondToUpperMoldDie(simPGMUpperDieData,SimPGMDataProviderService, createUpperMoldComponents, upperMoldDataStructure, curveUpperPointsData, curvePointsData, upperMoldDataC, simPGMUpperMoldProperties, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMUpperInsertData, true, lastObjectToDrawEverything, scalingObj, defineSVGdrawPropertiesObject, relativeDataForCircle)
         })
 
         $scope.$on('handleUpperMoldInsertDataBroadcast',function () {
-            upperMB.respondToUpperMoldInsert(SimPGMDataProviderService, createUpperMoldComponents, upperMoldDataStructure, curvePointsData, upperMoldDataC, simPGMUpperMoldProperties, curveUpperPointsData, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMUpperDieData, true, relativeDataForCircle, defineSVGdrawPropertiesObject);
+            upperMB.respondToUpperMoldInsert(simPGMUpperInsertData, SimPGMDataProviderService, createUpperMoldComponents, upperMoldDataStructure, curveUpperPointsData, curvePointsData, upperMoldDataC, simPGMUpperMoldProperties, drawWidthDiameter_D, drawwidthHeight_H, eachPolygon, $scope, svgContainer, simPGMUpperDieData, true, lastObjectToDrawEverything, scalingObj, defineSVGdrawPropertiesObject, relativeDataForCircle);
         })
 
 

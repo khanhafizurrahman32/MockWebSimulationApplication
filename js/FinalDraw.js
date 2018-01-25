@@ -3,6 +3,20 @@
  */
 var finalOutput = function () {
     var drawEveryThingAfterScaling = function (SimPGMDataProviderService,scalingFactor,defineSVGdrawPropertiesObject, scalingObj, eachPolygon, $scope, svgContainer) {
+        var transform_X = calculatingFinaltransformInX_N_Y_Direction(SimPGMDataProviderService,scalingFactor,defineSVGdrawPropertiesObject).transform_X;
+        var transform_Y = calculatingFinaltransformInX_N_Y_Direction(SimPGMDataProviderService,scalingFactor,defineSVGdrawPropertiesObject).transform_Y;
+        var drawAbleLowerDieData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingLowerDieData(),transform_X,transform_Y)
+        var drawAbleMirrorLowerDieData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingMirrorLowerDieData(),transform_X,transform_Y)
+        var drawAbleLowerInsertData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingLowerInsertData(),transform_X,transform_Y)
+        var drawAbleMirrorLowerInsertData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingMirrorLowerInsertData(),transform_X,transform_Y)
+        var drawAbleUpperDieData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingUpperDieData(),transform_X,transform_Y)
+        var drawAbleMirrorUpperDieData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingMirrorUpperDieData(),transform_X,transform_Y)
+        var drawAbleUpperInsertData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingUpperInsertData(),transform_X,transform_Y)
+        var drawAbleMirrorUpperInsertData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingMirrorUpperInsertData(),transform_X,transform_Y)
+        renderEveryThingAfterScaling(eachPolygon,drawAbleLowerDieData, $scope, svgContainer, SimPGMDataProviderService, drawAbleMirrorLowerDieData, drawAbleLowerInsertData, drawAbleMirrorLowerInsertData, drawAbleUpperDieData, drawAbleMirrorUpperDieData, drawAbleUpperInsertData, drawAbleMirrorUpperInsertData, transform_X, transform_Y)
+    }
+
+    var calculatingFinaltransformInX_N_Y_Direction = function (SimPGMDataProviderService,scalingFactor,defineSVGdrawPropertiesObject) {
         var totalDrawHeight = SimPGMDataProviderService.getLowerMoldDieObject().H_Mold + 2 * SimPGMDataProviderService.circleData()[0].radius + .001 + SimPGMDataProviderService.getUpperMoldDieObject().H_Mold;
         totalDrawHeight = scalingFactor * totalDrawHeight;
         var drawBoxHeight = defineSVGdrawPropertiesObject.getViewBoxHeight();
@@ -11,32 +25,10 @@ var finalOutput = function () {
         totalDrawWidth = scalingFactor * totalDrawWidth;
         var drawBoxWidth = defineSVGdrawPropertiesObject.getViewBoxWidth();
         var transform_X = (drawBoxWidth/2) - (totalDrawWidth/2);
-        var drawAbleLowerDieData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingLowerDieData(),transform_X,transform_Y)
-        var drawAbleMirrorLowerDieData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingMirrorLowerDieData(),transform_X,transform_Y)
-        var drawAbleLowerInsertData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingLowerInsertData(),transform_X,transform_Y)
-        var drawAbleMirrorLowerInsertData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingMirrorLowerInsertData(),transform_X,transform_Y)
-        var drawAbleCircleData = [{
-            "radius" : SimPGMDataProviderService.getScaleCircleData()[0].radius,
-            "x_axis" : SimPGMDataProviderService.getScaleCircleData()[0].x_axis + transform_X,
-            "y_axis" : SimPGMDataProviderService.getScaleCircleData()[0].y_axis - transform_Y,
-        }]
-
-        var circleComponent = new polygonDefinition();
-        var circleComponentProperties = {svgContainer : svgContainer,className : 'circleClass', idName : 'circleDrawid',polygonClassName : null,clickClassId : null, clickClassPolygonName : null, clickClassIdName: null, dataForDrawing: drawAbleCircleData, scaleXPointsFunction: null,scaleYPointsFunction : null,counter : 0}
-        circleComponent.polyComponent(circleComponentProperties);
-        var circleComponentClick = new clickEventsToPolygon();
-        circleComponentClick.clickToCircle(circleComponentProperties.idName,$scope,SimPGMDataProviderService.circleData());
-        var drawAbleUpperDieData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingUpperDieData(),transform_X,transform_Y)
-        var drawAbleMirrorUpperDieData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingMirrorUpperDieData(),transform_X,transform_Y)
-        var drawAbleUpperInsertData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingUpperInsertData(),transform_X,transform_Y)
-        var drawAbleMirrorUpperInsertData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingMirrorUpperInsertData(),transform_X,transform_Y)
-        renderEveryThingAfterScaling(eachPolygon,drawAbleLowerDieData, $scope, svgContainer, SimPGMDataProviderService, drawAbleMirrorLowerDieData, drawAbleLowerInsertData, drawAbleMirrorLowerInsertData, drawAbleUpperDieData, drawAbleMirrorUpperDieData, drawAbleUpperInsertData, drawAbleMirrorUpperInsertData)
-        console.log(SimPGMDataProviderService.getAfterScalingLowerDieData());
-        console.log(SimPGMDataProviderService.getAfterScalingLowerInsertData());
-        console.log(SimPGMDataProviderService.getAfterScalingLowerDieData()[0] , SimPGMDataProviderService.getAfterScalingLowerInsertData()[53], Object.is(SimPGMDataProviderService.getAfterScalingLowerDieData()[0] ))
+        return {"transform_X" : transform_X, "transform_Y": transform_Y};
     }
 
-    var renderEveryThingAfterScaling = function (eachPolygon,drawAbleLowerDieData, $scope, svgContainer, SimPGMDataProviderService, drawAbleMirrorLowerDieData, drawAbleLowerInsertData, drawAbleMirrorLowerInsertData, drawAbleUpperDieData, drawAbleMirrorUpperDieData, drawAbleUpperInsertData, drawAbleMirrorUpperInsertData ) {
+    var renderEveryThingAfterScaling = function (eachPolygon,drawAbleLowerDieData, $scope, svgContainer, SimPGMDataProviderService, drawAbleMirrorLowerDieData, drawAbleLowerInsertData, drawAbleMirrorLowerInsertData, drawAbleUpperDieData, drawAbleMirrorUpperDieData, drawAbleUpperInsertData, drawAbleMirrorUpperInsertData, transform_X, transform_Y ) {
         var lowerDieColor;
         var lowerMirrorDieColor;
         var lowerInsertColor;
@@ -83,13 +75,79 @@ var finalOutput = function () {
         eachPolygon.drawEachPolygon(svgContainer,'lowerMoldDieClass','lowerMoldDieMirrorId','lowerMoldDieMirrorPolygon',drawAbleMirrorLowerDieData,null,null,SimPGMDataProviderService.getLowerMoldDieObject(),lowerMirrorDieColor,$scope);
         eachPolygon.drawEachPolygon(svgContainer,'lowerMoldInsertClass','lowerMoldInsertId','lowerMoldInsertPolygon',drawAbleLowerInsertData,null,null,SimPGMDataProviderService.getLowerMoldInsertObject(),lowerInsertColor,$scope);
         eachPolygon.drawEachPolygon(svgContainer,'lowerMoldInsertClass','lowerMoldInsertMirrorId','lowerMoldInsertMirrorPolygon',drawAbleMirrorLowerInsertData,null,null,SimPGMDataProviderService.getLowerMoldInsertObject(),lowerMirrorInsertColor,$scope);
+        drawCirclePolygon(SimPGMDataProviderService,transform_X,transform_Y,svgContainer,$scope);
         eachPolygon.drawEachPolygon(svgContainer,'upperMoldDieClass','upperMoldDieId','upperMoldDiePolygon',drawAbleUpperDieData,null,null,SimPGMDataProviderService.getUpperMoldDieObject(),upperDieColor,$scope);
         eachPolygon.drawEachPolygon(svgContainer,'upperMoldDieClass','upperMoldDieMirrorId','upperMoldDieMirrorPolygon',drawAbleMirrorUpperDieData,null,null,SimPGMDataProviderService.getUpperMoldDieObject(),upperMirrorDieColor,$scope);
         eachPolygon.drawEachPolygon(svgContainer,'upperMoldInsertClass','upperMoldInsertId','upperMoldInsertPolygon',drawAbleUpperInsertData,null,null,SimPGMDataProviderService.getUpperMoldInsertObject(),upperInsertColor,$scope);
         eachPolygon.drawEachPolygon(svgContainer,'upperMoldInsertClass','upperMoldInsertMirrorId','upperMoldInsertMirrorPolygon',drawAbleMirrorUpperInsertData,null,null,SimPGMDataProviderService.getUpperMoldInsertObject(),upperMirrorInsertColor,$scope);
 
     }
+
+    var drawCirclePolygon = function (SimPGMDataProviderService,transform_X,transform_Y,svgContainer,$scope) {
+
+        var drawAbleCircleData = [{
+            "radius" : SimPGMDataProviderService.getScaleCircleData()[0].radius,
+            "x_axis" : SimPGMDataProviderService.getScaleCircleData()[0].x_axis + transform_X,
+            "y_axis" : SimPGMDataProviderService.getScaleCircleData()[0].y_axis - transform_Y,
+        }]
+
+        var circleComponent = new polygonDefinition();
+        var circleComponentProperties = {svgContainer : svgContainer,className : 'circleClass', idName : 'circleDrawid',polygonClassName : null,clickClassId : null, clickClassPolygonName : null, clickClassIdName: null, dataForDrawing: drawAbleCircleData, scaleXPointsFunction: null,scaleYPointsFunction : null,counter : 0}
+        circleComponent.polyComponent(circleComponentProperties);
+        var circleComponentClick = new clickEventsToPolygon();
+        circleComponentClick.clickToCircle(circleComponentProperties.idName,$scope,SimPGMDataProviderService.circleData());
+    }
+
+    var settingLowerDieDataBeforeFinalDraw = function (simPGMLowerDieData,SimPGMDataProviderService,createLowerMoldComponents,lowerMoldDataStructure,curveLowerPointsData,lowerMoldDataC,simPGMLowerMoldProperties,scalingFunc,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H) {
+        simPGMLowerDieData = SimPGMDataProviderService.getLowerMoldDieObject();
+        var relativeDataForLowerDie = createLowerMoldComponents.createDie(SimPGMDataProviderService,lowerMoldDataStructure,curveLowerPointsData,lowerMoldDataC,simPGMLowerMoldProperties,simPGMLowerDieData,'lower');
+        var afterScalingFactorRelativeDataForLowerDie = scalingFunc.multiplyingEachLowerPointWithScalingFactor(relativeDataForLowerDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
+        var afterScalingFactorRelativeDataForMirrorLowerDie = scalingFunc.multiplyingEachLowerPointWithScalingFactor(relativeDataForLowerDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
+        SimPGMDataProviderService.setAfterScalingLowerDieData(afterScalingFactorRelativeDataForLowerDie);
+        SimPGMDataProviderService.setAfterScalingMirrorLowerDieData(afterScalingFactorRelativeDataForMirrorLowerDie);
+    }
+
+    var settingLowerInsertDataBeforeFinalDraw = function (simPGMLowerInsertData, SimPGMDataProviderService, createLowerMoldComponents, lowerMoldDataStructure, curveLowerPointsData, lowerMoldDataC, simPGMLowerMoldProperties, scalingFunc, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H) {
+        simPGMLowerInsertData = SimPGMDataProviderService.getLowerMoldInsertObject();
+        var relativeDataForLowerCurve = createLowerMoldComponents.createCurve(SimPGMDataProviderService,lowerMoldDataStructure,curveLowerPointsData,simPGMLowerInsertData);
+        var relativeDataForLowerInsert = createLowerMoldComponents.createInsert(SimPGMDataProviderService,lowerMoldDataStructure,curveLowerPointsData,lowerMoldDataC,simPGMLowerMoldProperties,simPGMLowerInsertData,'lower');
+        var combinationofRelativeDataLowerForCurveNInsert = relativeDataForLowerCurve.concat(relativeDataForLowerInsert);
+        var afterScalingFactorRelativeDataForLowerInsertNCurveTogether = scalingFunc.multiplyingEachLowerPointWithScalingFactor(combinationofRelativeDataLowerForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
+        var afterScalingFactorRelativeDataForMirrorLowerInsertNCurveTogether = scalingFunc.multiplyingEachLowerPointWithScalingFactor(combinationofRelativeDataLowerForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
+        SimPGMDataProviderService.setAfterScalingLowerInsertData(afterScalingFactorRelativeDataForLowerInsertNCurveTogether);
+        SimPGMDataProviderService.setAfterScalingMirrorLowerInsertData(afterScalingFactorRelativeDataForMirrorLowerInsertNCurveTogether);
+    }
+
+    var settingUpperDieDataBeforeFinalDraw = function (SimPGMDataProviderService,createUpperMoldComponents,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,scalingFunc,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,transformingDelta) {
+        var simPGMUpperDieData = SimPGMDataProviderService.getUpperMoldDieObject();
+        var relativeDataForUpperDie = createUpperMoldComponents.createDie(SimPGMDataProviderService,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,simPGMUpperDieData,'upper');
+        var afterScalingFactorRelativeDataForUpperDie = scalingFunc.multiplyingEachUpperPointWithScalingFactor(relativeDataForUpperDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
+        var afterAdjustHeightScalingFactorRelativeDataForUpperDie =scalingFunc.adjustHeightAfterScaling(afterScalingFactorRelativeDataForUpperDie, transformingDelta);
+        var afterScalingFactorRelativeDataForMirrorUpperDie = scalingFunc.multiplyingEachUpperPointWithScalingFactor(relativeDataForUpperDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
+        var afterAdjustHeightScalingFactorRelativeDataForMirrorUpperDie = scalingFunc.adjustHeightAfterScaling(afterScalingFactorRelativeDataForMirrorUpperDie, transformingDelta);
+        SimPGMDataProviderService.setAfterScalingUpperDieData(afterAdjustHeightScalingFactorRelativeDataForUpperDie);
+        SimPGMDataProviderService.setAfterScalingMirrorUpperDieData(afterAdjustHeightScalingFactorRelativeDataForMirrorUpperDie);
+    }
+
+    var settingUpperInsertDataBeforeFinalDraw = function (SimPGMDataProviderService,createUpperMoldComponents,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,scalingFunc,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,transformingDelta) {
+        var simPGMUpperInsertData = SimPGMDataProviderService.getUpperMoldInsertObject();
+        var relativeDataForUpperCurve = createUpperMoldComponents.createCurve(SimPGMDataProviderService,upperMoldDataStructure,curveUpperPointsData,simPGMUpperInsertData);
+        var relativeDataForUpperInsert = createUpperMoldComponents.createInsert(SimPGMDataProviderService,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,simPGMUpperInsertData,'upper');
+        var combinationofRelativeDataUpperForCurveNInsert = relativeDataForUpperCurve.concat(relativeDataForUpperInsert);
+        var afterScalingFactorRelativeDataForUpperInsertNCurve = scalingFunc.multiplyingEachUpperPointWithScalingFactor(combinationofRelativeDataUpperForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
+        var afterAdjustHeightScalingFactorRelativeDataForUpperInsertNCurveTogether = new ScalingGangFunction().adjustHeightAfterScaling(afterScalingFactorRelativeDataForUpperInsertNCurve, transformingDelta);
+        var afterScalingFactorRelativeDataForMirrorUpperInsertNCurve = scalingFunc.multiplyingEachUpperPointWithScalingFactor(combinationofRelativeDataUpperForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
+        var afterAdjustHeightScalingFactorRelativeDataForMirrorUpperInsertNCurveTogether = new ScalingGangFunction().adjustHeightAfterScaling(afterScalingFactorRelativeDataForMirrorUpperInsertNCurve, transformingDelta);
+        SimPGMDataProviderService.setAfterScalingUpperInsertData(afterAdjustHeightScalingFactorRelativeDataForUpperInsertNCurveTogether);
+        SimPGMDataProviderService.setAfterScalingMirrorUpperInsertData(afterAdjustHeightScalingFactorRelativeDataForMirrorUpperInsertNCurveTogether);
+    }
+
+
     return{
-        drawEveryThingAfterScaling: drawEveryThingAfterScaling
+        drawEveryThingAfterScaling: drawEveryThingAfterScaling,
+        settingLowerDieDataBeforeFinalDraw: settingLowerDieDataBeforeFinalDraw,
+        settingLowerInsertDataBeforeFinalDraw: settingLowerInsertDataBeforeFinalDraw,
+        settingUpperDieDataBeforeFinalDraw: settingUpperDieDataBeforeFinalDraw,
+        settingUpperInsertDataBeforeFinalDraw: settingUpperInsertDataBeforeFinalDraw
     }
 }
