@@ -17,14 +17,12 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
     var scaleMirrorUpperMoldDieData;
     var scaleUpperMoldInsertData;
     var scaleMirrorUpperMoldInsertData;
-    var finalDrawLowerMoldDieData;
-    var finalDrawMirrorLowerMoldDieData;
-    var finalDrawLowerMoldInsertData;
-    var finalDrawMirrorLowerMoldInsertData;
-    var finalDrawUpperMoldDieData;
-    var finalDrawMirrorUpperMoldDieData;
-    var finalDrawUpperMoldInsertData;
-    var finalDrawMirrorUpperMoldInsertData;
+
+    var scaleBeforeAdjustUpperMoldDieData;
+    var scaleBeforeAdjustMirrorUpperMoldDieData;
+    var scaleBeforeAdjustUpperMoldInsertData;
+    var scaleBeforeAdjustMirrorUpperMoldInsertData;
+
 
     var moldCounter = function () {
         var counter = {"MoldDieCounter" : 0,"MoldInsertCounter" : 0,"CurveDataCounter": 0, "circleCounter": 0};
@@ -225,37 +223,38 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
         return this.scaleMirrorUpperMoldInsertData;
     }
 
-    var setFinalDrawLowerMoldDieData = function (finalDrawLowerMoldDieData) {
-        this.finalDrawLowerMoldDieData = finalDrawLowerMoldDieData
+    var setBeforeAdjustUpperDieData = function (scaleBeforeAdjustUpperMoldDieData) {
+        this.scaleBeforeAdjustUpperMoldDieData = scaleBeforeAdjustUpperMoldDieData;
     }
 
-    var getFinalDrawLowerMoldDieData = function () {
-        return this.finalDrawLowerMoldDieData;
+    var getBeforeAdjustUpperDieData = function () {
+        return this.scaleBeforeAdjustUpperMoldDieData;
     }
 
-    var setFinalDrawLowerMoldInsertData = function (finalDrawLowerMoldInsertData) {
-        this.finalDrawLowerMoldInsertData = finalDrawLowerMoldInsertData
+    var setBeforeAdjustMirrorUpperDieData = function (scaleBeforeAdjustMirrorUpperMoldDieData) {
+        this.scaleBeforeAdjustMirrorUpperMoldDieData = scaleBeforeAdjustMirrorUpperMoldDieData;
     }
 
-    var getFinalDrawLowerMoldInsertData = function () {
-        return this.finalDrawLowerMoldInsertData;
+    var getBeforeAdjustMirrorUpperDieData = function () {
+        return this.scaleBeforeAdjustMirrorUpperMoldDieData;
     }
 
-    var setFinalDrawUpperMoldDieData = function (finalDrawUpperMoldDieData) {
-        this.finalDrawUpperMoldDieData = finalDrawUpperMoldDieData
+    var setBeforeAdjustUpperInsertData = function (scaleBeforeAdjustUpperMoldInsertData) {
+        this.scaleBeforeAdjustUpperMoldInsertData = scaleBeforeAdjustUpperMoldInsertData;
     }
 
-    var getFinalDrawUpperMoldDieData = function () {
-        return this.finalDrawUpperMoldDieData;
+    var getBeforeAdjustUpperInsertData = function () {
+        return this.scaleBeforeAdjustUpperMoldInsertData;
     }
 
-    var setFinalDrawUpperMoldInsertData = function (finalDrawUpperMoldInsertData) {
-        this.finalDrawUpperMoldInsertData = finalDrawUpperMoldInsertData
-    };
+    var setBeforeAdjustMirrorUpperInsertData = function (scaleBeforeAdjustMirrorUpperMoldInsertData) {
+        this.scaleBeforeAdjustMirrorUpperMoldInsertData = scaleBeforeAdjustMirrorUpperMoldInsertData;
+    }
 
-    var getFinalDrawUpperMoldInsertData = function () {
-        return this.finalDrawUpperMoldInsertData;
-    };
+    var getBeforeAdjustMirrorUpperInsertData = function () {
+        return this.scaleBeforeAdjustMirrorUpperMoldInsertData;
+    }
+
 
 
     var prepForMoldDataBroadcast = function (nameOfData, currentData, oldValue, portion) {
@@ -329,13 +328,14 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
         getAfterScalingUpperInsertData : getAfterScalingUpperInsertData,
         setAfterScalingMirrorUpperInsertData : setAfterScalingMirrorUpperInsertData,
         getAfterScalingMirrorUpperInsertData : getAfterScalingMirrorUpperInsertData,
-        setFinalDrawLowerMoldDieData : setFinalDrawLowerMoldDieData,
-        getFinalDrawLowerMoldDieData : getFinalDrawLowerMoldDieData,
-        setFinalDrawLowerMoldInsertData : setFinalDrawLowerMoldInsertData,
-        getFinalDrawLowerMoldInsertData : getFinalDrawLowerMoldInsertData,
-        setFinalDrawUpperMoldDieData : setFinalDrawUpperMoldDieData,
-        getFinalDrawUpperMoldDieData : getFinalDrawUpperMoldDieData,
-        setFinalDrawUpperMoldInsertData : setFinalDrawUpperMoldInsertData,
-        getFinalDrawUpperMoldInsertData : getFinalDrawUpperMoldInsertData
+        setBeforeAdjustUpperDieData : setBeforeAdjustUpperDieData,
+        getBeforeAdjustUpperDieData : getBeforeAdjustUpperDieData,
+        setBeforeAdjustUpperInsertData : setBeforeAdjustUpperInsertData,
+        getBeforeAdjustUpperInsertData : getBeforeAdjustUpperInsertData,
+        setBeforeAdjustMirrorUpperDieData : setBeforeAdjustMirrorUpperDieData,
+        getBeforeAdjustMirrorUpperDieData : getBeforeAdjustMirrorUpperDieData,
+        setBeforeAdjustMirrorUpperInsertData : setBeforeAdjustMirrorUpperInsertData,
+        getBeforeAdjustMirrorUpperInsertData : getBeforeAdjustMirrorUpperInsertData
+
     }
 }])

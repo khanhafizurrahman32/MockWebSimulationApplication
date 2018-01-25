@@ -9,7 +9,9 @@ var finalOutput = function () {
         var drawAbleMirrorLowerDieData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingMirrorLowerDieData(),transform_X,transform_Y)
         var drawAbleLowerInsertData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingLowerInsertData(),transform_X,transform_Y)
         var drawAbleMirrorLowerInsertData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingMirrorLowerInsertData(),transform_X,transform_Y)
+        console.log(SimPGMDataProviderService.getAfterScalingUpperDieData());
         var drawAbleUpperDieData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingUpperDieData(),transform_X,transform_Y)
+        console.log(SimPGMDataProviderService.getAfterScalingUpperDieData());
         var drawAbleMirrorUpperDieData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingMirrorUpperDieData(),transform_X,transform_Y)
         var drawAbleUpperInsertData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingUpperInsertData(),transform_X,transform_Y)
         var drawAbleMirrorUpperInsertData = scalingObj.transformEveryPoints(SimPGMDataProviderService.getAfterScalingMirrorUpperInsertData(),transform_X,transform_Y)
@@ -17,11 +19,10 @@ var finalOutput = function () {
     }
 
     var calculatingFinaltransformInX_N_Y_Direction = function (SimPGMDataProviderService,scalingFactor,defineSVGdrawPropertiesObject) {
-        var totalDrawHeight = SimPGMDataProviderService.getLowerMoldDieObject().H_Mold + 2 * SimPGMDataProviderService.circleData()[0].radius + .001 + SimPGMDataProviderService.getUpperMoldDieObject().H_Mold;
-        totalDrawHeight = scalingFactor * totalDrawHeight;
+        var totalDrawHeight = findHeightLowerMoldPlusCircle(SimPGMDataProviderService) + (scalingFactor* .001) +  findMaximumHeightBetween_U_CurveNInsert(SimPGMDataProviderService);
         var drawBoxHeight = defineSVGdrawPropertiesObject.getViewBoxHeight();
         var transform_Y = (drawBoxHeight/2) - (totalDrawHeight/2);
-        var totalDrawWidth = (SimPGMDataProviderService.getLowerMoldDieObject().D_Mold > SimPGMDataProviderService.getUpperMoldDieObject().D_Mold)? SimPGMDataProviderService.getLowerMoldDieObject().D_Mold: SimPGMDataProviderService.getUpperMoldDieObject().D_Mold;
+        var totalDrawWidth = Math.max.apply(Math,[SimPGMDataProviderService.getLowerMoldDieObject().D_Mold,SimPGMDataProviderService.getUpperMoldDieObject().D_Mold]);
         totalDrawWidth = scalingFactor * totalDrawWidth;
         var drawBoxWidth = defineSVGdrawPropertiesObject.getViewBoxWidth();
         var transform_X = (drawBoxWidth/2) - (totalDrawWidth/2);
@@ -92,7 +93,6 @@ var finalOutput = function () {
     }
 
     var drawCirclePolygon = function (SimPGMDataProviderService,transform_X,transform_Y,svgContainer,$scope,circleColor) {
-
         var drawAbleCircleData = [{
             "radius" : SimPGMDataProviderService.getScaleCircleData()[0].radius,
             "x_axis" : SimPGMDataProviderService.getScaleCircleData()[0].x_axis + transform_X,
@@ -130,14 +130,16 @@ var finalOutput = function () {
         var simPGMUpperDieData = SimPGMDataProviderService.getUpperMoldDieObject();
         var relativeDataForUpperDie = createUpperMoldComponents.createDie(SimPGMDataProviderService,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,simPGMUpperDieData,'upper');
         var afterScalingFactorRelativeDataForUpperDie = scalingFunc.multiplyingEachUpperPointWithScalingFactor(relativeDataForUpperDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
-        var remainingSpaceforUpperMold = calculateRemainingSpaceForUpperMold(scalingFactor,SimPGMDataProviderService,relativeDataForCircle,defineSVGdrawPropertiesObject);
+        //var remainingSpaceforUpperMold = calculateRemainingSpaceForUpperMold(scalingFactor,SimPGMDataProviderService,relativeDataForCircle,defineSVGdrawPropertiesObject);
+        var remainingSpaceforUpperMold = calculateRemainingSpaceForUpperMold(scalingFactor,SimPGMDataProviderService);
         var combinationofRelativeDataUpperForCurveNInsert = configureInsertData(SimPGMDataProviderService, createUpperMoldComponents, upperMoldDataStructure, curveUpperPointsData, upperMoldDataC, simPGMUpperMoldProperties);
         var afterScalingFactorRelativeDataForUpperInsertNCurve = scalingFunc.multiplyingEachUpperPointWithScalingFactor(combinationofRelativeDataUpperForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
-        var maxBetweenDie_N_Insert = findMaximumPointBetweenCurveNInsert(afterScalingFactorRelativeDataForUpperDie,afterScalingFactorRelativeDataForUpperInsertNCurve)
+        var maxBetweenDie_N_Insert = findMaximumPointBetween_U_CurveNInsert(afterScalingFactorRelativeDataForUpperDie,afterScalingFactorRelativeDataForUpperInsertNCurve);
         var transformingDelta = maxBetweenDie_N_Insert - remainingSpaceforUpperMold;
         var afterAdjustHeightScalingFactorRelativeDataForUpperDie =scalingFunc.adjustHeightAfterScaling(afterScalingFactorRelativeDataForUpperDie, transformingDelta);
         var afterScalingFactorRelativeDataForMirrorUpperDie = scalingFunc.multiplyingEachUpperPointWithScalingFactor(relativeDataForUpperDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
         var afterAdjustHeightScalingFactorRelativeDataForMirrorUpperDie = scalingFunc.adjustHeightAfterScaling(afterScalingFactorRelativeDataForMirrorUpperDie, transformingDelta);
+        console.log(afterAdjustHeightScalingFactorRelativeDataForUpperDie);
         SimPGMDataProviderService.setAfterScalingUpperDieData(afterAdjustHeightScalingFactorRelativeDataForUpperDie);
         SimPGMDataProviderService.setAfterScalingMirrorUpperDieData(afterAdjustHeightScalingFactorRelativeDataForMirrorUpperDie);
     }
@@ -146,8 +148,9 @@ var finalOutput = function () {
         var combinationofRelativeDataUpperForCurveNInsert = configureInsertData(SimPGMDataProviderService, createUpperMoldComponents, upperMoldDataStructure, curveUpperPointsData, upperMoldDataC, simPGMUpperMoldProperties);
         var afterScalingFactorRelativeDataForUpperInsertNCurve = scalingFunc.multiplyingEachUpperPointWithScalingFactor(combinationofRelativeDataUpperForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
         var afterScalingFactorRelativeDataForUpperDie = configureDieData(SimPGMDataProviderService,createUpperMoldComponents,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,scalingFunc, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H);
-        var maxBetweenDie_N_Insert = findMaximumPointBetweenCurveNInsert(afterScalingFactorRelativeDataForUpperDie,afterScalingFactorRelativeDataForUpperInsertNCurve);
-        var remainingSpaceforUpperMold = calculateRemainingSpaceForUpperMold(scalingFactor,SimPGMDataProviderService,relativeDataForCircle,defineSVGdrawPropertiesObject)
+        var maxBetweenDie_N_Insert = findMaximumPointBetween_U_CurveNInsert(afterScalingFactorRelativeDataForUpperDie,afterScalingFactorRelativeDataForUpperInsertNCurve);
+        var remainingSpaceforUpperMold = calculateRemainingSpaceForUpperMold(scalingFactor,SimPGMDataProviderService)
+        //var remainingSpaceforUpperMold = calculateRemainingSpaceForUpperMold(scalingFactor,SimPGMDataProviderService,relativeDataForCircle,defineSVGdrawPropertiesObject)
         var transformingDelta = maxBetweenDie_N_Insert - remainingSpaceforUpperMold;
         var afterAdjustHeightScalingFactorRelativeDataForUpperInsertNCurveTogether = new ScalingGangFunction().adjustHeightAfterScaling(afterScalingFactorRelativeDataForUpperInsertNCurve, transformingDelta);
         var afterScalingFactorRelativeDataForMirrorUpperInsertNCurve = scalingFunc.multiplyingEachUpperPointWithScalingFactor(combinationofRelativeDataUpperForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
@@ -156,28 +159,93 @@ var finalOutput = function () {
         SimPGMDataProviderService.setAfterScalingMirrorUpperInsertData(afterAdjustHeightScalingFactorRelativeDataForMirrorUpperInsertNCurveTogether);
     }
 
-    var calculateRemainingSpaceForUpperMold = function (scalingFactor,SimPGMDataProviderService,relativeDataForCircle,defineSVGdrawPropertiesObject) {
-        var totalDistancebetweenGroundtoUpperMold = scalingFactor * (SimPGMDataProviderService.getLowerMoldDieObject().H_Mold + relativeDataForCircle[0].radius*2 + .001);
-        var remainingSpaceforUpperMold = defineSVGdrawPropertiesObject.getViewBoxHeight() - totalDistancebetweenGroundtoUpperMold;
-        return remainingSpaceforUpperMold;
+    var calculateRemainingSpaceForUpperMold = function (scalingFactor,SimPGMDataProviderService) {
+        var circleYPosition =  calculateMaxCircleYPoint(SimPGMDataProviderService);
+        var scalableSimPGm_L_DieData =  SimPGMDataProviderService.getAfterScalingLowerDieData();
+        var scalableSimPGm_L_InsertData =  SimPGMDataProviderService.getAfterScalingLowerInsertData();
+        var maxYSimPGM_L_DieData = Math.max.apply(Math, scalableSimPGm_L_DieData.map(function (currentObj) {
+            return currentObj.y;
+        }));
+        var minYSimPGM_L_DieData = Math.min.apply(Math, scalableSimPGm_L_DieData.map(function (currentObj) {
+            return currentObj.y;
+        }));
+        var heightOfSimPGM_L_DieData = maxYSimPGM_L_DieData - minYSimPGM_L_DieData;
+        var maxYSimPGM_L_InsertData = Math.max.apply(Math, scalableSimPGm_L_InsertData.map(function (currentObj) {
+            return currentObj.y;
+        }))
+        var minYSimPGM_L_InsertData = Math.min.apply(Math, scalableSimPGm_L_InsertData.map(function (currentObj) {
+            return currentObj.y;
+        }))
+        var heightOfSimPGM_L_InsertData = maxYSimPGM_L_InsertData - minYSimPGM_L_InsertData;
+        var maxAmongthree = Math.max.apply(Math,[circleYPosition,heightOfSimPGM_L_DieData,heightOfSimPGM_L_InsertData]);
+        return maxAmongthree;
+    }
+    // var calculateRemainingSpaceForUpperMold = function (scalingFactor,SimPGMDataProviderService,relativeDataForCircle,defineSVGdrawPropertiesObject) {
+    //     var totalDistancebetweenGroundtoUpperMold = scalingFactor * (SimPGMDataProviderService.getLowerMoldDieObject().H_Mold + relativeDataForCircle[0].radius*2 + .001);
+    //     var remainingSpaceforUpperMold = defineSVGdrawPropertiesObject.getViewBoxHeight() - totalDistancebetweenGroundtoUpperMold;
+    //     return remainingSpaceforUpperMold;
+    // }
+
+    var findMaximumHeightBetween_U_CurveNInsert = function(SimPGMDataProviderService){
+        var afterScalingFactorRelativeDataForUpperDie = SimPGMDataProviderService.getAfterScalingUpperDieData();
+        var afterScalingFactorRelativeDataForUpperInsertNCurve = SimPGMDataProviderService.getAfterScalingUpperInsertData();
+        var maxPointOfAfterScalingFactorRelativeDataForUpperDie = Math.max.apply(Math, afterScalingFactorRelativeDataForUpperDie.map(function (currentObj) {
+            return currentObj.y;
+        }))
+        var minPointOfAfterScalingFactorRelativeDataForUpperDie = Math.min.apply(Math, afterScalingFactorRelativeDataForUpperDie.map(function (currentObj) {
+            return currentObj.y;
+        }))
+        var heightOf_U_Die = maxPointOfAfterScalingFactorRelativeDataForUpperDie - minPointOfAfterScalingFactorRelativeDataForUpperDie;
+        var maxPointOfAfterScalingFactorRelativeDataForUpperInsertNCurve = Math.max.apply(Math, afterScalingFactorRelativeDataForUpperInsertNCurve.map(function (currentObj) {
+            return currentObj.y;
+        }))
+
+        var minPointOfAfterScalingFactorRelativeDataForUpperInsertNCurve = Math.min.apply(Math, afterScalingFactorRelativeDataForUpperInsertNCurve.map(function (currentObj) {
+            return currentObj.y;
+        }))
+
+        var heightOf_U_Insert = maxPointOfAfterScalingFactorRelativeDataForUpperInsertNCurve - minPointOfAfterScalingFactorRelativeDataForUpperInsertNCurve;
+        return Math.max.apply(Math,[heightOf_U_Die,heightOf_U_Insert]);
     }
 
-    var findMaximumPointBetweenCurveNInsert = function(afterScalingFactorRelativeDataForUpperDie,afterScalingFactorRelativeDataForUpperInsertNCurve){
-        var maxBetweenDie_N_Insert = -9999;
+        var findMaximumPointBetween_U_CurveNInsert = function(afterScalingFactorRelativeDataForUpperDie,afterScalingFactorRelativeDataForUpperInsertNCurve ){
         var maxPointOfAfterScalingFactorRelativeDataForUpperDie = Math.max.apply(Math, afterScalingFactorRelativeDataForUpperDie.map(function (currentObj) {
             return currentObj.y;
         }))
         var maxPointOfAfterScalingFactorRelativeDataForUpperInsertNCurve = Math.max.apply(Math, afterScalingFactorRelativeDataForUpperInsertNCurve.map(function (currentObj) {
             return currentObj.y;
         }))
-        if(maxPointOfAfterScalingFactorRelativeDataForUpperDie >= maxPointOfAfterScalingFactorRelativeDataForUpperInsertNCurve){
-            maxBetweenDie_N_Insert = maxPointOfAfterScalingFactorRelativeDataForUpperDie;
-        }else{
-            maxBetweenDie_N_Insert = maxPointOfAfterScalingFactorRelativeDataForUpperInsertNCurve;
-        }
-        return maxBetweenDie_N_Insert;
+        return Math.max.apply(Math,[maxPointOfAfterScalingFactorRelativeDataForUpperDie,maxPointOfAfterScalingFactorRelativeDataForUpperInsertNCurve]);
     }
 
+    var findHeightLowerMoldPlusCircle = function(SimPGMDataProviderService){
+        var circleYPosition =  calculateMaxCircleYPoint(SimPGMDataProviderService);
+        var scalableSimPGm_L_DieData =  SimPGMDataProviderService.getAfterScalingLowerDieData();
+        var scalableSimPGm_L_InsertData =  SimPGMDataProviderService.getAfterScalingLowerInsertData();
+        var maxYSimPGM_L_DieData = Math.max.apply(Math, scalableSimPGm_L_DieData.map(function (currentObj) {
+            return currentObj.y;
+        }));
+        var minYSimPGM_L_DieData = Math.min.apply(Math, scalableSimPGm_L_DieData.map(function (currentObj) {
+            return currentObj.y;
+        }));
+        var heightOfSimPGM_L_DieData = maxYSimPGM_L_DieData - minYSimPGM_L_DieData;
+        var maxYSimPGM_L_InsertData = Math.max.apply(Math, scalableSimPGm_L_InsertData.map(function (currentObj) {
+            return currentObj.y;
+        }))
+        var minYSimPGM_L_InsertData = Math.min.apply(Math, scalableSimPGm_L_InsertData.map(function (currentObj) {
+            return currentObj.y;
+        }))
+        var heightOfSimPGM_L_InsertData = maxYSimPGM_L_InsertData - minYSimPGM_L_InsertData;
+        var maxAmongthree = Math.max.apply(Math,[circleYPosition,heightOfSimPGM_L_DieData,heightOfSimPGM_L_InsertData]);
+        var maxbetween_L_DieNInsert = Math.max.apply(Math,[maxYSimPGM_L_InsertData, maxYSimPGM_L_DieData]);
+        var heightConsistOFLowerMoldNCircle = maxbetween_L_DieNInsert - maxAmongthree;
+        return heightConsistOFLowerMoldNCircle;
+
+    }
+
+    var calculateMaxCircleYPoint = function (SimPGMDataProviderService) {
+        return SimPGMDataProviderService.getScaleCircleData()[0].y_axis - SimPGMDataProviderService.getScaleCircleData()[0].radius;
+    }
     var configureDieData = function (SimPGMDataProviderService,createUpperMoldComponents,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,scalingFunc, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H) {
         var simPGMUpperDieData = SimPGMDataProviderService.getUpperMoldDieObject();
         var relativeDataForUpperDie = createUpperMoldComponents.createDie(SimPGMDataProviderService,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,simPGMUpperDieData,'upper');

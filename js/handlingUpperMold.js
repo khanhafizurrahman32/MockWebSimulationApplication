@@ -35,6 +35,10 @@ var respondToUpperMold = function(){
         var afterScalingFactorRelativeDataForMirrorUpperDie = scalingFunc.multiplyingEachUpperPointWithScalingFactor(relativeDataForUpperDie,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
         var combinationofRelativeDataUpperForCurveNInsert = configureInsertData(SimPGMDataProviderService, createUpperMoldComponents, upperMoldDataStructure, curveUpperPointsData, upperMoldDataC, simPGMUpperMoldProperties);
         var afterScalingFactorRelativeDataForUpperInsertNCurve = scalingFunc.multiplyingEachUpperPointWithScalingFactor(combinationofRelativeDataUpperForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
+        SimPGMDataProviderService.setBeforeAdjustUpperDieData(afterScalingFactorRelativeDataForUpperDie);
+        SimPGMDataProviderService.setBeforeAdjustUpperInsertData(afterScalingFactorRelativeDataForUpperInsertNCurve);
+        SimPGMDataProviderService.setBeforeAdjustMirrorUpperDieData(afterScalingFactorRelativeDataForMirrorUpperDie);
+        //SimPGMDataProviderService.setBeforeAdjustMirrorUpperInsertData(afterScalingFactorRelativeDataForMirrorUpperInsertNCurve);
         var maxBetweenDie_N_Insert = findMaximumPointBetweenCurveNInsert(afterScalingFactorRelativeDataForUpperDie,afterScalingFactorRelativeDataForUpperInsertNCurve)
         var transformingDelta = maxBetweenDie_N_Insert - remainingSpaceforUpperMold;
         lastObjectToDrawEverything.settingUpperInsertDataBeforeFinalDraw(SimPGMDataProviderService,createUpperMoldComponents,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,scalingFunc,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,relativeDataForCircle,defineSVGdrawPropertiesObject);
@@ -87,6 +91,9 @@ var respondToUpperMold = function(){
         var afterScalingFactorRelativeDataForUpperInsertNCurve = scalingFunc.multiplyingEachUpperPointWithScalingFactor(combinationofRelativeDataUpperForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Original');
         var afterScalingFactorRelativeDataForMirrorUpperInsertNCurve = scalingFunc.multiplyingEachUpperPointWithScalingFactor(combinationofRelativeDataUpperForCurveNInsert,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,'Mirror');
         var afterScalingFactorRelativeDataForUpperDie = configureDieData(SimPGMDataProviderService,createUpperMoldComponents,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,scalingFunc, scalingFactor, drawWidthDiameter_D, drawwidthHeight_H);
+        SimPGMDataProviderService.setBeforeAdjustUpperDieData(afterScalingFactorRelativeDataForUpperDie);
+        SimPGMDataProviderService.setBeforeAdjustUpperInsertData(afterScalingFactorRelativeDataForUpperInsertNCurve);
+        SimPGMDataProviderService.setBeforeAdjustMirrorUpperInsertData(afterScalingFactorRelativeDataForMirrorUpperInsertNCurve);
         var maxBetweenDie_N_Insert = findMaximumPointBetweenCurveNInsert(afterScalingFactorRelativeDataForUpperDie,afterScalingFactorRelativeDataForUpperInsertNCurve);
         var transformingDelta = maxBetweenDie_N_Insert - remainingSpaceforUpperMold;
         // configureDieData(SimPGMDataProviderService,createUpperMoldComponents,upperMoldDataStructure,curveUpperPointsData,upperMoldDataC,simPGMUpperMoldProperties,scalingFunc,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H,transformingDelta);
