@@ -62,6 +62,7 @@ var clickEventsToPolygon = function () {
                     $scope.lowerMoldCurveDataC = data;
 
             });
+            console.log($scope.upperMoldDieDataC);
             d3.selectAll(clickPolygonClass).style("fill",fillAfterClickEvents(showInputForm,clickPolygon));
             d3.selectAll(correspondingPolygonClass).style("fill",fillAfterClickEvents(showInputForm,correspondingPolygon));
 
