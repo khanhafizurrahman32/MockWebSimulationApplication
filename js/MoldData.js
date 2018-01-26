@@ -32,6 +32,7 @@ var moldDataCreation = function (){
     }
     
     var definingDiePoints = function (D_Insert,D_Mold,H_Mold,H_1_Sleeve_1,H_1_Insert,D_1_Insert,y_RF_surf_Mold,RF_surf_Mold,H_Insert,upperMoldDataStructure,tempArrayForFiftyPoints,portion) {
+        console.log(y_RF_surf_Mold,RF_surf_Mold,H_Insert);
         var point3 = {"x":D_1_Insert/2, "y": y_RF_surf_Mold-RF_surf_Mold-(H_Mold-H_Insert)};
         var point4 = {"x":D_Mold/2, "y": y_RF_surf_Mold-RF_surf_Mold-(H_Mold-H_Insert)};
         var point5,point8,point9,point10

@@ -21,7 +21,9 @@ var ScalingGangFunction = function () {
         });
 
         var relativeDataForUpper_Y_mult_scalingNumber = currentObjectArray.map(function (currentObject) {
-            return (-(scalingFactor * currentObject.y) + drawwidthHeight_H/2) ;
+            // return (-(scalingFactor * currentObject.y) + drawwidthHeight_H/2) ;
+            // return ((scalingFactor * currentObject.y) + drawwidthHeight_H/2) ;
+            return ((scalingFactor * currentObject.y) + drawwidthHeight_H) ;
         });
 
         var relativeDataForUpperAfterMult = [];

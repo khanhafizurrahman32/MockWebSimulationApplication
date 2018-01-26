@@ -7,6 +7,7 @@ var myModule = angular.module("mySimPGMWebApp",[]);
 myModule.controller('upperMoldDieInputController',['$scope','SimPGMDataProviderService', function($scope,SimPGMDataProviderService){
 
     $scope.$watch('upperMoldDieDataC', function(data){
+        console.log(data)
         SimPGMDataProviderService.prepForMoldDataBroadcast('upperMoldDieData',data);
     },true);
 

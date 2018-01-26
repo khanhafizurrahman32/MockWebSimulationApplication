@@ -8,7 +8,9 @@ var respondToLowerMold = function(){
         simPGMLowerDieData = SimPGMDataProviderService.getLowerMoldDieObject();
         for (var key in simPGMLowerDieData){
             if(typeof (simPGMLowerDieData[key]) === "string"){
-                if(parseFloat(simPGMLowerDieData[key]) !== 0)
+                var stringValue = simPGMLowerDieData[key];
+                var subStringValue = stringValue.split(".")[1];
+                if((stringValue[stringValue.length - 1] !== ".") && (parseFloat(subStringValue) !== 0))
                     simPGMLowerDieData[key] = parseFloat(simPGMLowerDieData[key])
             }
         }
@@ -48,9 +50,9 @@ var respondToLowerMold = function(){
         simPGMLowerInsertData = SimPGMDataProviderService.getLowerMoldInsertObject();
         for (var key in simPGMLowerInsertData){
             if(typeof (simPGMLowerInsertData[key]) === "string"){
-                // if(parseFloat(simPGMLowerInsertData[key]) !== 0)
                 var stringValue = simPGMLowerInsertData[key];
-                if((stringValue[stringValue.length - 1] !== "."))
+                var subStringValue = stringValue.split(".")[1];
+                if((stringValue[stringValue.length - 1] !== ".") && (parseFloat(subStringValue) !== 0))
                     simPGMLowerInsertData[key] = parseFloat(simPGMLowerInsertData[key])
             }
         }

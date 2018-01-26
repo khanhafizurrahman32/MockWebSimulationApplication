@@ -17,6 +17,7 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
     var scaleMirrorUpperMoldDieData;
     var scaleUpperMoldInsertData;
     var scaleMirrorUpperMoldInsertData;
+    var centrePoint;
 
 
 
@@ -212,6 +213,14 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
         return this.scaleMirrorUpperMoldInsertData;
     }
 
+    var setCentrePoints = function (centrePoint) {
+        this.centrePoint = centrePoint;
+    }
+
+    var getCentrePoints = function () {
+        return this.centrePoint;
+    }
+
 
 
     var prepForMoldDataBroadcast = function (nameOfData, currentData, oldValue, portion) {
@@ -285,6 +294,7 @@ myModule.factory('SimPGMDataProviderService',['$rootScope',function($rootScope){
         getAfterScalingUpperInsertData : getAfterScalingUpperInsertData,
         setAfterScalingMirrorUpperInsertData : setAfterScalingMirrorUpperInsertData,
         getAfterScalingMirrorUpperInsertData : getAfterScalingMirrorUpperInsertData,
-
+        setCentrePoints : setCentrePoints,
+        getCentrePoints : getCentrePoints
     }
 }])

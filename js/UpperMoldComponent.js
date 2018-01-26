@@ -38,6 +38,8 @@ var createIndividualMold = function () {
         MoldDataStructure.setYVal50PointsArray([(curvePointsData.y_RF_surf_fin_Mold-simPGMUMoldProperties.getPropertiesForDie().RF_surf_Mold),
             (curvePointsData.y_RF_surf_fin_Mold-simPGMUMoldProperties.getPropertiesForDie().RF_surf_Mold-(this.simPGMDieData.H_Mold-simPGMUMoldProperties.getPropertiesForDie().H_Insert)),
             (curvePointsData.y_RF_surf_fin_Mold-simPGMUMoldProperties.getPropertiesForDie().RF_surf_Mold+simPGMUMoldProperties.getPropertiesForDie().H_Insert)]);
+        console.log('comp ', curvePointsData.y_RF_surf_fin_Mold);
+        //console.log(this.simPGMDieData.D_Insert,this.simPGMDieData.D_Mold,this.simPGMDieData.H_Mold,this.simPGMDieData.H_1_Sleeve_1,this.simPGMDieData.H_1_Insert,this.simPGMDieData.D_1_Insert,curvePointsData.y_RF_surf_fin_Mold,simPGMUMoldProperties.getPropertiesForDie().RF_surf_Mold,simPGMUMoldProperties.getPropertiesForDie().H_Insert,MoldDataStructure.gettempArrayforFiftyPoints());
         MoldDataC.definingDiePoints(this.simPGMDieData.D_Insert,this.simPGMDieData.D_Mold,this.simPGMDieData.H_Mold,this.simPGMDieData.H_1_Sleeve_1,this.simPGMDieData.H_1_Insert,this.simPGMDieData.D_1_Insert,curvePointsData.y_RF_surf_fin_Mold,simPGMUMoldProperties.getPropertiesForDie().RF_surf_Mold,simPGMUMoldProperties.getPropertiesForDie().H_Insert,MoldDataStructure,MoldDataStructure.gettempArrayforFiftyPoints(),portion);
         return MoldDataStructure.getObjectArray2()
     };

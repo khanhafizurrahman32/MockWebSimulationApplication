@@ -43,7 +43,8 @@ var clickEventsToPolygon = function () {
         (clickPolygonClass.includes('Mirror'))?correspondingPolygon = clickPolygon.replace('Mirror','')
             :correspondingPolygon = [clickPolygon.slice(0,(clickPolygon.length-7)),"Mirror",clickPolygon.slice((clickPolygon.length-7),clickPolygon.length)].join('');
         var correspondingPolygonClass = '.' + correspondingPolygon;
-
+        if(clickPolygon.includes('Mirror'))
+            clickPolygon = clickPolygon.replace('Mirror','');
         d3.select(clickId).on('click',function(){
             var showInputForm = showHideInputShow(clickId.slice(1,(clickId.length-2)),$scope);
             //dont delete this line : $scope.$apply()
@@ -62,7 +63,6 @@ var clickEventsToPolygon = function () {
                     $scope.lowerMoldCurveDataC = data;
 
             });
-            console.log($scope.upperMoldDieDataC);
             d3.selectAll(clickPolygonClass).style("fill",fillAfterClickEvents(showInputForm,clickPolygon));
             d3.selectAll(correspondingPolygonClass).style("fill",fillAfterClickEvents(showInputForm,correspondingPolygon));
 
