@@ -50,7 +50,8 @@ myModule.directive('drawCompleteMold',function (SimPGMDataProviderService){
         var simPGMLowerInsertData = SimPGMDataProviderService.getLowerMoldInsertObject();
         SimPGMDataProviderService.setLowerMoldDieObject(0.044,0.064,0.015,0.04,0.004,0.036);
         var simPGMLowerDieData = SimPGMDataProviderService.getLowerMoldDieObject();
-        SimPGMDataProviderService.setCircleData(0,.0768,.0069);//0.00000001
+        // SimPGMDataProviderService.setCircleData(0,.0768,.0069);//0.00000001
+        SimPGMDataProviderService.setCircleData(0, -.0069,.0069);//0.00000001
         var relativeDataForCircle = SimPGMDataProviderService.circleData();
         var widthDivisor = simPGMLowerDieData.D_Mold;
         var heightDivisor = simPGMLowerDieData.H_Mold + .001 + 2* relativeDataForCircle[0].radius + simPGMLowerDieData.H_Mold;

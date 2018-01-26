@@ -80,7 +80,8 @@ var ScalingGangFunction = function () {
     var multiplyingEachCirclePointWithScalingFactor = function (currentObjectArray,scalingFactor,drawWidthDiameter_D,drawwidthHeight_H) {
         var newObjectArray = [{"x_axis": 0, "y_axis": 0, "radius": 0}];
         newObjectArray[0].x_axis = scalingFactor * currentObjectArray[0].x_axis + (drawWidthDiameter_D/2);
-        newObjectArray[0].y_axis = scalingFactor * currentObjectArray[0].y_axis ; //-200
+        // newObjectArray[0].y_axis = scalingFactor * currentObjectArray[0].y_axis ; //-200
+        newObjectArray[0].y_axis = (scalingFactor * currentObjectArray[0].y_axis) + drawwidthHeight_H; //-200
         newObjectArray[0].radius = scalingFactor * currentObjectArray[0].radius;
         return newObjectArray;
     }

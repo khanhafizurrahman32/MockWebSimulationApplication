@@ -72,14 +72,16 @@ myModule.controller('circleInputController',['$scope','SimPGMDataProviderService
     $scope.circleDataC = SimPGMDataProviderService.circleData();
     $scope.circleScaleY;
     $scope.$watch('circleDataC', function(data,oldValue){
-        var differenceInCircularRadius = data[0].radius - oldValue[0].radius;
-
-        // - because of the drawing y axis is invert ... plus moves to down and - moves to up
-        if(differenceInCircularRadius != 0 ){
-
-            data[0].y_axis = data[0].y_axis - differenceInCircularRadius;
-
-        }
+        data[0].y_axis = - (data[0].radius);
+        console.log(data);
+        // var differenceInCircularRadius = data[0].radius - oldValue[0].radius;
+        //
+        // // - because of the drawing y axis is invert ... plus moves to down and - moves to up
+        // if(differenceInCircularRadius != 0 ){
+        //
+        //     data[0].y_axis = data[0].y_axis - differenceInCircularRadius;
+        //
+        // }
         SimPGMDataProviderService.prepForMoldDataBroadcast('circleData',data,oldValue,'circle');
     },true);
 
